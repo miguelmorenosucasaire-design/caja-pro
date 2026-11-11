@@ -139,42 +139,6 @@
                 padding: 0 4mm !important;
             }
         }
-            body {
-                background: white !important;
-                color: #0f172a !important;
-                font-size: 10pt !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            aside, header, #excel-sheet-tabs-bar, #filtro-top-bar, .no-print, button, form, .modal-backdrop, select {
-                display: none !important;
-            }
-            main {
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-                overflow: visible !important;
-            }
-            #section-factura {
-                display: block !important;
-                visibility: visible !important;
-            }
-            #contenedor-comprobante-oficial {
-                box-shadow: none !important;
-                margin: 0 auto !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                border-color: #1e40af !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            .section-activa-print {
-                display: block !important;
-                visibility: visible !important;
-            }
-        }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -553,6 +517,17 @@
         </header>
 
         <main class="flex-1 overflow-y-auto p-8 custom-scrollbar bg-slate-50/60">
+
+            <!-- Banner de Alerta en caso de apertura errónea con doble clic (file://) -->
+            <div id="banner-alerta-protocolo" class="hidden bg-amber-500 text-slate-950 p-4 rounded-2xl shadow-lg border border-amber-600 mb-6 flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-950 text-amber-400 flex items-center justify-center text-xl flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-sm">Modo Desconectado (Archivo HTML Abierto Directamente con Doble Clic)</h4>
+                    <p class="text-xs">Para visualizar los <strong>176 estudiantes</strong> y el balance contable real de <strong>S/. 25,080.00</strong>, inicie el sistema ejecutando <strong class="underline">INICIAR_SISTEMA.bat</strong> o <strong class="underline">EduCaja_Pro.exe</strong> e ingrese a <a href="http://localhost:5000" class="underline font-bold text-slate-900">http://localhost:5000</a>.</p>
+                </div>
+            </div>
 
             <!-- ========================================== -->
             <!-- 1. SECCIÓN: DASHBOARD (PANEL GENERAL)      -->
@@ -6763,6 +6738,10 @@
         }
 
         async function cargarTodo() {
+            if (window.location.protocol === 'file:') {
+                document.getElementById('banner-alerta-protocolo')?.classList.remove('hidden');
+                console.warn('Ejecutando en protocolo file://. El servidor Node.js debe iniciarse en http://localhost:5000');
+            }
             initTheme();
             await cargarConfiguracion();
             await cargarCarreras();
@@ -7023,7 +7002,14 @@
         }
 
         function renderChart(chartData) {
-            const ctx = document.getElementById('chart-mensual').getContext('2d');
+            if (!chartData) return;
+            const canvas = document.getElementById('chart-mensual');
+            if (!canvas) return;
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js no disponible o modo sin conexion.');
+                return;
+            }
+            const ctx = canvas.getContext('2d');
             if (myChart) myChart.destroy();
 
             myChart = new Chart(ctx, {
