@@ -6,7 +6,7 @@
   "bin": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/verify_baseline.js",
+    "test": "node tests/verify_baseline.js && node tests/test_live_api.js",
     "build:exe": "npx @yao-pkg/pkg -t node22-win-x64 server.js -o EduCaja_Pro.exe"
   },
   "pkg": {
