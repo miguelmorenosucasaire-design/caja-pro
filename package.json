@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node tests/verify_baseline.js && node tests/test_live_api.js",
+    "audit": "node tests/verify_baseline.js && node tests/audit_database.js && node tests/audit_all_endpoints.js && node tests/audit_mutations.js && node tests/audit_excel_sync.js && node tests/audit_navigation_sections.js && node tests/audit_frontend_actions.js",
     "build:exe": "npx @yao-pkg/pkg -t node22-win-x64 server.js -o EduCaja_Pro.exe"
   },
   "pkg": {

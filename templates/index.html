@@ -448,6 +448,13 @@
                 <i class="fa-solid fa-gear w-4 text-center text-amber-400 text-xs"></i>
                 <span class="truncate">CONFIGURACIÓN</span>
             </button>
+
+            <!-- 13. CARRERAS Y ESPECIALIDADES -->
+            <button onclick="cambiarSeccion('carreras')" id="nav-carreras" class="nav-item w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition-all text-slate-300 hover:text-white hover:bg-slate-800/80">
+                <i class="fa-solid fa-graduation-cap w-4 text-center text-purple-400 text-xs"></i>
+                <span class="truncate">CARRERAS TÉCNICAS</span>
+                <span id="badge-carreras-count" class="ml-auto bg-purple-500/20 text-purple-300 text-[10px] px-2 py-0.5 rounded-full font-bold">13</span>
+            </button>
         </nav>
 
         <!-- Footer Sidebar -->
@@ -5003,6 +5010,36 @@
             window.location.href = `/api/exportar/hoja?sheet=${sheetName}`;
         }
 
+        async function exportarYRespaldar() {
+            try {
+                const res = await fetch('/api/backups/crear', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ motivo: 'Respaldo_Rapido' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(`✅ Respaldo de seguridad creado exitosamente: ${data.archivo}`);
+                    await cargarRespaldos();
+                } else {
+                    alert(`Error al respaldar: ${data.error || 'Fallo desconocido'}`);
+                }
+            } catch (err) {
+                alert('Error de conexión al generar el respaldo.');
+            }
+        }
+
+        function filtrarCajaPorGrupo(nombreGrupo) {
+            cambiarSeccion('caja');
+            setTimeout(() => {
+                const sel = document.getElementById('filtro-grupo');
+                if (sel) {
+                    sel.value = nombreGrupo;
+                    filtrarMovimientos();
+                }
+            }, 100);
+        }
+
         // =========================================================================
         // CONTROL Y NAVEGACIÓN DE PLANTILLAS POR SECCIÓN / GRUPO
         // =========================================================================
@@ -7721,6 +7758,9 @@
             try {
                 const res = await fetch('/api/carreras');
                 carrerasGlobales = await res.json();
+                if (document.getElementById('badge-carreras-count')) {
+                    document.getElementById('badge-carreras-count').innerText = carrerasGlobales.length;
+                }
                 renderReporteCarreras(carrerasGlobales);
                 renderTablaCarrerasConfig(carrerasGlobales);
                 poblarSelectsCarreras(carrerasGlobales);

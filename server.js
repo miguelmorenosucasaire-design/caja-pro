@@ -1325,15 +1325,23 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             const data = await parseBody(req);
             const hoyStr = new Date().toISOString().split('T')[0];
             const fecha = data.fecha || hoyStr;
-            const tipo = data.tipo || 'Ingreso';
+            const tipo = (data.tipo === 'Egreso') ? 'Egreso' : 'Ingreso';
             const estado = data.estado || 'Pagado';
             const rol = data.rol || 'Estudiante';
             const nombre = (data.nombre || '').trim();
+            if (!nombre) {
+                sendJSON(res, { error: "El nombre de la persona o beneficiario es obligatorio" }, 400);
+                return;
+            }
+            const monto = parseFloat(data.monto || 0);
+            if (isNaN(monto) || (monto <= 0 && estado !== 'Anulado')) {
+                sendJSON(res, { error: "El monto de la operación debe ser un valor mayor a cero (S/. 0.00 reservado para anulados)" }, 400);
+                return;
+            }
             const carrera = (data.carrera || '').trim();
             const grupo = (data.grupo || 'General').trim();
             const encargado = (data.encargado || (rol === 'Docente' ? nombre : 'General')).trim();
             const concepto = (data.concepto || '').trim();
-            const monto = parseFloat(data.monto || 0);
             const montoTotal = parseFloat(data.monto_total || monto || 0);
             const montoAbonado = parseFloat(data.monto_abonado || 0);
             const metodo = data.metodo_pago || 'Efectivo';
