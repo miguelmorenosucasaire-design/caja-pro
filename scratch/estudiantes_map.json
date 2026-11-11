@@ -1,0 +1,1178 @@
+{
+  "Pedro Luis Yana Panca": {
+    "codigo": "E001",
+    "nombre": "Pedro Luis Yana Panca",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-01-12"
+  },
+  "Ruth Danitza Yucra Jalliri": {
+    "codigo": "E002",
+    "nombre": "Ruth Danitza Yucra Jalliri",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-01-15"
+  },
+  "Jean Marco Hilasaca Colquehuanca": {
+    "codigo": "E003",
+    "nombre": "Jean Marco Hilasaca Colquehuanca",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-01-18"
+  },
+  "Yuly Noemi Hilasaca Colquehuanca": {
+    "codigo": "E004",
+    "nombre": "Yuly Noemi Hilasaca Colquehuanca",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-01-20"
+  },
+  "Roxana Jeydi Calcina Larico": {
+    "codigo": "E005",
+    "nombre": "Roxana Jeydi Calcina Larico",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-01-24"
+  },
+  "Jesus Leandro Lopez Tavera": {
+    "codigo": "E006",
+    "nombre": "Jesus Leandro Lopez Tavera",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-02-03"
+  },
+  "Naomi Dalila Tito Sucso": {
+    "codigo": "E007",
+    "nombre": "Naomi Dalila Tito Sucso",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-02-06"
+  },
+  "Maribel Sabina Turpo Romero": {
+    "codigo": "E008",
+    "nombre": "Maribel Sabina Turpo Romero",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-02-10"
+  },
+  "Aron Esteban Ames Mamani": {
+    "codigo": "E009",
+    "nombre": "Aron Esteban Ames Mamani",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-02-14"
+  },
+  "Alvaro A. Chirinos Poma": {
+    "codigo": "E010",
+    "nombre": "Alvaro A. Chirinos Poma",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-02-17"
+  },
+  "Facundo Mamani Mamani": {
+    "codigo": "E011",
+    "nombre": "Facundo Mamani Mamani",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-02-20"
+  },
+  "Rommel Joel Ojeda Calla": {
+    "codigo": "E012",
+    "nombre": "Rommel Joel Ojeda Calla",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-02-23"
+  },
+  "Jhon Lincol Laura Ojeda": {
+    "codigo": "E013",
+    "nombre": "Jhon Lincol Laura Ojeda",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-02-26"
+  },
+  "Jorge Miguel Arce Adco": {
+    "codigo": "E014",
+    "nombre": "Jorge Miguel Arce Adco",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-02"
+  },
+  "Brayan Arce Adco": {
+    "codigo": "E015",
+    "nombre": "Brayan Arce Adco",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-02"
+  },
+  "Yan Marco Ramos Juarez": {
+    "codigo": "E016",
+    "nombre": "Yan Marco Ramos Juarez",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-03"
+  },
+  "Tonny Inder Mamani Juarez": {
+    "codigo": "E017",
+    "nombre": "Tonny Inder Mamani Juarez",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-03"
+  },
+  "Vilma Elizabeth Coaquira Coaquira": {
+    "codigo": "E018",
+    "nombre": "Vilma Elizabeth Coaquira Coaquira",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-04"
+  },
+  "Evelin Anyela Cutiri Hancco": {
+    "codigo": "E019",
+    "nombre": "Evelin Anyela Cutiri Hancco",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-04"
+  },
+  "Evelin Yulisa Quispe Quispe": {
+    "codigo": "E020",
+    "nombre": "Evelin Yulisa Quispe Quispe",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-05"
+  },
+  "Marco Antonio Zegarra Laura": {
+    "codigo": "E021",
+    "nombre": "Marco Antonio Zegarra Laura",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-05"
+  },
+  "Liz Magaly Turpo Calli": {
+    "codigo": "E022",
+    "nombre": "Liz Magaly Turpo Calli",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-06"
+  },
+  "Fortunata Vilca Gutierrez": {
+    "codigo": "E023",
+    "nombre": "Fortunata Vilca Gutierrez",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-06"
+  },
+  "Madely Flor Vilca Gutierrez": {
+    "codigo": "E024",
+    "nombre": "Madely Flor Vilca Gutierrez",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-07"
+  },
+  "Ivan Vilca Gutierrez": {
+    "codigo": "E025",
+    "nombre": "Ivan Vilca Gutierrez",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-07"
+  },
+  "Mirian Lizbeth Mamani Lipa": {
+    "codigo": "E026",
+    "nombre": "Mirian Lizbeth Mamani Lipa",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-09"
+  },
+  "Edwin Condori Churata": {
+    "codigo": "E027",
+    "nombre": "Edwin Condori Churata",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-09"
+  },
+  "Sussan Marleny Catunta Quispe": {
+    "codigo": "E028",
+    "nombre": "Sussan Marleny Catunta Quispe",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-10"
+  },
+  "Royan Nadher Quea Mamani": {
+    "codigo": "E029",
+    "nombre": "Royan Nadher Quea Mamani",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-10"
+  },
+  "Julia Carina Uscamayta Chipana": {
+    "codigo": "E030",
+    "nombre": "Julia Carina Uscamayta Chipana",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-11"
+  },
+  "Doris Karina Carcasi Condori": {
+    "codigo": "E031",
+    "nombre": "Doris Karina Carcasi Condori",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-11"
+  },
+  "Franklin Roy Calloapaza Condori": {
+    "codigo": "E032",
+    "nombre": "Franklin Roy Calloapaza Condori",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-12"
+  },
+  "Soledad Alvarez Quispe": {
+    "codigo": "E033",
+    "nombre": "Soledad Alvarez Quispe",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-13"
+  },
+  "Maily Laila Pacco Huaman": {
+    "codigo": "E034",
+    "nombre": "Maily Laila Pacco Huaman",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-13"
+  },
+  "Lizbeth Coaquira Condori": {
+    "codigo": "E035",
+    "nombre": "Lizbeth Coaquira Condori",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-14"
+  },
+  "Rita Edith Tuero Vilca": {
+    "codigo": "E036",
+    "nombre": "Rita Edith Tuero Vilca",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-14"
+  },
+  "Nilda Yanapa Ccarita": {
+    "codigo": "E037",
+    "nombre": "Nilda Yanapa Ccarita",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-16"
+  },
+  "Hilda Marleny Leon Sacho": {
+    "codigo": "E038",
+    "nombre": "Hilda Marleny Leon Sacho",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-16"
+  },
+  "Alan Ronald Hallasi Morales": {
+    "codigo": "E039",
+    "nombre": "Alan Ronald Hallasi Morales",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-17"
+  },
+  "Paolo Rovianov Mamani Altamirano": {
+    "codigo": "E040",
+    "nombre": "Paolo Rovianov Mamani Altamirano",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-17"
+  },
+  "Jonas Quispe Quispe": {
+    "codigo": "E041",
+    "nombre": "Jonas Quispe Quispe",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-18"
+  },
+  "Griselda Olivares Ccapatinta": {
+    "codigo": "E042",
+    "nombre": "Griselda Olivares Ccapatinta",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-18"
+  },
+  "Lila Anco Condori": {
+    "codigo": "E043",
+    "nombre": "Lila Anco Condori",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-19"
+  },
+  "Luis Angel Hancco Choque": {
+    "codigo": "E044",
+    "nombre": "Luis Angel Hancco Choque",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-19"
+  },
+  "Sabina Naira Silva": {
+    "codigo": "E045",
+    "nombre": "Sabina Naira Silva",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-20"
+  },
+  "Juana Lidia Ponce Mamanchura": {
+    "codigo": "E046",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-20"
+  },
+  "Deysi Caterin Lipe Machaca": {
+    "codigo": "E047",
+    "nombre": "Deysi Caterin Lipe Machaca",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-23"
+  },
+  "Yenifer Meliza Huaman Laura": {
+    "codigo": "E048",
+    "nombre": "Yenifer Meliza Huaman Laura",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-24"
+  },
+  "Dina Lisbeth Hancco Choque": {
+    "codigo": "E049",
+    "nombre": "Dina Lisbeth Hancco Choque",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-24"
+  },
+  "Martin Ebani Maque Canaza": {
+    "codigo": "E050",
+    "nombre": "Martin Ebani Maque Canaza",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-25"
+  },
+  "Yasmin Maricruz Gonzales Herrera": {
+    "codigo": "E051",
+    "nombre": "Yasmin Maricruz Gonzales Herrera",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-25"
+  },
+  "Antonia D. Uscamayta Yucra": {
+    "codigo": "E052",
+    "nombre": "Antonia D. Uscamayta Yucra",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-26"
+  },
+  "Felix B. Chata Calla": {
+    "codigo": "E053",
+    "nombre": "Felix B. Chata Calla",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-26"
+  },
+  "Juana Salas Ticona": {
+    "codigo": "E054",
+    "nombre": "Juana Salas Ticona",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-27"
+  },
+  "Shiril D. Chuquimamani Mamani": {
+    "codigo": "E055",
+    "nombre": "Shiril D. Chuquimamani Mamani",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-27"
+  },
+  "Katy L. Baez Caceres": {
+    "codigo": "E056",
+    "nombre": "Katy L. Baez Caceres",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-28"
+  },
+  "Judith Quispe Quispe": {
+    "codigo": "E057",
+    "nombre": "Judith Quispe Quispe",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-28"
+  },
+  "Naleli Lisbeth Cabrera L.": {
+    "codigo": "E058",
+    "nombre": "Naleli Lisbeth Cabrera L.",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-30"
+  },
+  "Luz Dayanna Quispe Luque": {
+    "codigo": "E059",
+    "nombre": "Luz Dayanna Quispe Luque",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-30"
+  },
+  "Vanessa Calsin Tupa": {
+    "codigo": "E060",
+    "nombre": "Vanessa Calsin Tupa",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Nory Yoselin Apaza": {
+    "codigo": "E061",
+    "nombre": "Nory Yoselin Apaza",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Arminda Ramirez Apaza": {
+    "codigo": "E062",
+    "nombre": "Arminda Ramirez Apaza",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Paulina Laruta Gutierrez": {
+    "codigo": "E063",
+    "nombre": "Paulina Laruta Gutierrez",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Nilda Elizabeth Mamani Cari": {
+    "codigo": "E064",
+    "nombre": "Nilda Elizabeth Mamani Cari",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Fanny Mamani Mendoza": {
+    "codigo": "E065",
+    "nombre": "Fanny Mamani Mendoza",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Yanela Candy Chambi Aquino": {
+    "codigo": "E066",
+    "nombre": "Yanela Candy Chambi Aquino",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-03-31"
+  },
+  "Pedro Claudio Quispe Colque": {
+    "codigo": "E067",
+    "nombre": "Pedro Claudio Quispe Colque",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-01"
+  },
+  "Jhoel Ramiro Quispe Calla": {
+    "codigo": "E068",
+    "nombre": "Jhoel Ramiro Quispe Calla",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-01"
+  },
+  "Nancy M. Martinez Charaja": {
+    "codigo": "E069",
+    "nombre": "Nancy M. Martinez Charaja",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-02"
+  },
+  "Edith Medaly Puma Quispe": {
+    "codigo": "E070",
+    "nombre": "Edith Medaly Puma Quispe",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-02"
+  },
+  "Judith Quispe Oblitas": {
+    "codigo": "E071",
+    "nombre": "Judith Quispe Oblitas",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-04-03"
+  },
+  "Beatriz M. Quispe Mamani": {
+    "codigo": "E072",
+    "nombre": "Beatriz M. Quispe Mamani",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-04-03"
+  },
+  "Cliver Parillo Quispe": {
+    "codigo": "E073",
+    "nombre": "Cliver Parillo Quispe",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-04"
+  },
+  "Delfina Abado Chambi": {
+    "codigo": "E074",
+    "nombre": "Delfina Abado Chambi",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-04"
+  },
+  "Maodele Machaca Adco": {
+    "codigo": "E075",
+    "nombre": "Maodele Machaca Adco",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-06"
+  },
+  "Juan Widef Quispe Mamani": {
+    "codigo": "E076",
+    "nombre": "Juan Widef Quispe Mamani",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-06"
+  },
+  "Beatriz Mariela Quispe Mamani": {
+    "codigo": "E077",
+    "nombre": "Beatriz Mariela Quispe Mamani",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-04-07"
+  },
+  "Cynthia Lizbeth Mamani Cerpa": {
+    "codigo": "E078",
+    "nombre": "Cynthia Lizbeth Mamani Cerpa",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-04-07"
+  },
+  "Reyna Lucrecia Mamani Luque": {
+    "codigo": "E079",
+    "nombre": "Reyna Lucrecia Mamani Luque",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-08"
+  },
+  "Jhoel Wilber Centeno Incahuanaco": {
+    "codigo": "E080",
+    "nombre": "Jhoel Wilber Centeno Incahuanaco",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-08"
+  },
+  "Deysi Yanet Torres Calcina": {
+    "codigo": "E081",
+    "nombre": "Deysi Yanet Torres Calcina",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-09"
+  },
+  "Lourdes Maquera Mamani": {
+    "codigo": "E082",
+    "nombre": "Lourdes Maquera Mamani",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-09"
+  },
+  "Liz Betzabe Maquera Mamani": {
+    "codigo": "E083",
+    "nombre": "Liz Betzabe Maquera Mamani",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-04-10"
+  },
+  "Alicia Ojeda Poma": {
+    "codigo": "E084",
+    "nombre": "Alicia Ojeda Poma",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-04-10"
+  },
+  "Lourdes Mamani Quiroz": {
+    "codigo": "E085",
+    "nombre": "Lourdes Mamani Quiroz",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-11"
+  },
+  "Rios Quinto Vilca Chino": {
+    "codigo": "E086",
+    "nombre": "Rios Quinto Vilca Chino",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-13"
+  },
+  "Dianeth Amelia Quispe Ccarcahusto": {
+    "codigo": "E087",
+    "nombre": "Dianeth Amelia Quispe Ccarcahusto",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-13"
+  },
+  "Yesabela Supa Haccolla": {
+    "codigo": "E088",
+    "nombre": "Yesabela Supa Haccolla",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-14"
+  },
+  "Jesús Gonzalo Chambi Tito": {
+    "codigo": "E089",
+    "nombre": "Jesús Gonzalo Chambi Tito",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-04-14"
+  },
+  "Eddie Merced Condori Mamani": {
+    "codigo": "E090",
+    "nombre": "Eddie Merced Condori Mamani",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-04-15"
+  },
+  "Juana Pampa Valencia": {
+    "codigo": "E091",
+    "nombre": "Juana Pampa Valencia",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-15"
+  },
+  "Maicol Stiu Ramos Quea": {
+    "codigo": "E092",
+    "nombre": "Maicol Stiu Ramos Quea",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-16"
+  },
+  "Magda Chuahuara Cordova": {
+    "codigo": "E093",
+    "nombre": "Magda Chuahuara Cordova",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-17"
+  },
+  "Lilia Luz Mestas Cayo": {
+    "codigo": "E094",
+    "nombre": "Lilia Luz Mestas Cayo",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-17"
+  },
+  "Klever Edu Aracca Sumari": {
+    "codigo": "E095",
+    "nombre": "Klever Edu Aracca Sumari",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-04-18"
+  },
+  "Jenyfer Paola Ramos Mayta": {
+    "codigo": "E096",
+    "nombre": "Jenyfer Paola Ramos Mayta",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-04-20"
+  },
+  "Waldir Renzo Ramos Mayta": {
+    "codigo": "E097",
+    "nombre": "Waldir Renzo Ramos Mayta",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-04-21"
+  },
+  "Yeny Marisol Asaño Quispe": {
+    "codigo": "E098",
+    "nombre": "Yeny Marisol Asaño Quispe",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-04-22"
+  },
+  "Lesly A. Asaño Quispe": {
+    "codigo": "E099",
+    "nombre": "Lesly A. Asaño Quispe",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-04-22"
+  },
+  "Victor Pineda Herrera": {
+    "codigo": "E100",
+    "nombre": "Victor Pineda Herrera",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-04-23"
+  },
+  "Leonardo Josue Choque Apuri": {
+    "codigo": "E101",
+    "nombre": "Leonardo Josue Choque Apuri",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-06-02"
+  },
+  "Ruben Jobel Ramirez Apaza": {
+    "codigo": "E102",
+    "nombre": "Ruben Jobel Ramirez Apaza",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-06-03"
+  },
+  "Gladys Mery Chura Mamani": {
+    "codigo": "E103",
+    "nombre": "Gladys Mery Chura Mamani",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-06-04"
+  },
+  "Lucero Erika Condori Quispe": {
+    "codigo": "E104",
+    "nombre": "Lucero Erika Condori Quispe",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-06-05"
+  },
+  "Deysi Lizbeth Pacci Mamani": {
+    "codigo": "E105",
+    "nombre": "Deysi Lizbeth Pacci Mamani",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-06-10"
+  },
+  "Nely Cuevas Cerpa": {
+    "codigo": "E106",
+    "nombre": "Nely Cuevas Cerpa",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-06-15"
+  },
+  "Christopher J. Puma Condori": {
+    "codigo": "E107",
+    "nombre": "Christopher J. Puma Condori",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-06-23"
+  },
+  "Ronal Angel Orihuela Ordoñez": {
+    "codigo": "E108",
+    "nombre": "Ronal Angel Orihuela Ordoñez",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-07-02"
+  },
+  "Sonia Y. Yunga Yupanqui": {
+    "codigo": "E109",
+    "nombre": "Sonia Y. Yunga Yupanqui",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-07-03"
+  },
+  "Braulio A. Hancco Ramos": {
+    "codigo": "E110",
+    "nombre": "Braulio A. Hancco Ramos",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-07-06"
+  },
+  "Edu Rex Flores Ticona": {
+    "codigo": "E111",
+    "nombre": "Edu Rex Flores Ticona",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-07-08"
+  },
+  "Alfredo Velasquez Velasquez": {
+    "codigo": "E112",
+    "nombre": "Alfredo Velasquez Velasquez",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-07-09"
+  },
+  "Irma Lilia Ticona Quispe": {
+    "codigo": "E113",
+    "nombre": "Irma Lilia Ticona Quispe",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-07-13"
+  },
+  "Antonia Clara Jahuira Huarcaya": {
+    "codigo": "E114",
+    "nombre": "Antonia Clara Jahuira Huarcaya",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-07-15"
+  },
+  "Erik Leiton Velasquez Ticona": {
+    "codigo": "E115",
+    "nombre": "Erik Leiton Velasquez Ticona",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-07-17"
+  },
+  "Stiven Yamir Velasquez Ticona": {
+    "codigo": "E116",
+    "nombre": "Stiven Yamir Velasquez Ticona",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-07-20"
+  },
+  "Jean Franco Quispe Pilco": {
+    "codigo": "E117",
+    "nombre": "Jean Franco Quispe Pilco",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-07-21"
+  },
+  "Juana Nieves Viza Yana": {
+    "codigo": "E118",
+    "nombre": "Juana Nieves Viza Yana",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-07-22"
+  },
+  "Maribel Luque Catunta": {
+    "codigo": "E119",
+    "nombre": "Maribel Luque Catunta",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-07-24"
+  },
+  "Heydy Milagros Uscamayta Y.": {
+    "codigo": "E120",
+    "nombre": "Heydy Milagros Uscamayta Y.",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-07-27"
+  },
+  "Wilian Jose Choque Ñaupa": {
+    "codigo": "E121",
+    "nombre": "Wilian Jose Choque Ñaupa",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-08-03"
+  },
+  "Huber Mamani Limachi": {
+    "codigo": "E122",
+    "nombre": "Huber Mamani Limachi",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-08-04"
+  },
+  "Mark Esthif Ruelas Condori": {
+    "codigo": "E123",
+    "nombre": "Mark Esthif Ruelas Condori",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-08-05"
+  },
+  "Alicia Ruelas Quispe": {
+    "codigo": "E124",
+    "nombre": "Alicia Ruelas Quispe",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-08-06"
+  },
+  "Noemi Gianela Mamani Soncco": {
+    "codigo": "E125",
+    "nombre": "Noemi Gianela Mamani Soncco",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-08-07"
+  },
+  "Nestor Guevara Machaca": {
+    "codigo": "E126",
+    "nombre": "Nestor Guevara Machaca",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-08-10"
+  },
+  "Nory Yoselin Pomari Apaza": {
+    "codigo": "E127",
+    "nombre": "Nory Yoselin Pomari Apaza",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-08-11"
+  },
+  "Olinda Flores Tito": {
+    "codigo": "E128",
+    "nombre": "Olinda Flores Tito",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-08-13"
+  },
+  "Yessica Trujillo Condori": {
+    "codigo": "E129",
+    "nombre": "Yessica Trujillo Condori",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-08-17"
+  },
+  "Erika Pinto Soco": {
+    "codigo": "E130",
+    "nombre": "Erika Pinto Soco",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-08-19"
+  },
+  "Ada Merced Jilapa Calsin": {
+    "codigo": "E131",
+    "nombre": "Ada Merced Jilapa Calsin",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-08-20"
+  },
+  "Noemi Martha Coaquira Roque": {
+    "codigo": "E132",
+    "nombre": "Noemi Martha Coaquira Roque",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-08-21"
+  },
+  "Cinthia Lizbeth Mamani Cerpa": {
+    "codigo": "E133",
+    "nombre": "Cinthia Lizbeth Mamani Cerpa",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-08-21"
+  },
+  "Hilda Pari Condori": {
+    "codigo": "E134",
+    "nombre": "Hilda Pari Condori",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-08-24"
+  },
+  "Alcides Huanca Quispe": {
+    "codigo": "E135",
+    "nombre": "Alcides Huanca Quispe",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-08-24"
+  },
+  "Silvia Elsa Paredes Checalla": {
+    "codigo": "E136",
+    "nombre": "Silvia Elsa Paredes Checalla",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-08-26"
+  },
+  "Laura Paredes Checalla": {
+    "codigo": "E137",
+    "nombre": "Laura Paredes Checalla",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-08-26"
+  },
+  "Gregoria Paredes Checalla": {
+    "codigo": "E138",
+    "nombre": "Gregoria Paredes Checalla",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-08-27"
+  },
+  "Veronica Cruz Sejje": {
+    "codigo": "E139",
+    "nombre": "Veronica Cruz Sejje",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-08-27"
+  },
+  "Alexander Antony Apaza M.": {
+    "codigo": "E140",
+    "nombre": "Alexander Antony Apaza M.",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-08-28"
+  },
+  "Licet Dina Leon Lima": {
+    "codigo": "E141",
+    "nombre": "Licet Dina Leon Lima",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-08-31"
+  },
+  "Alcina Ojeda Poma": {
+    "codigo": "E142",
+    "nombre": "Alcina Ojeda Poma",
+    "carrera": "Gastronomía y Repostería",
+    "grupo": "Gastronomía y Repostería - Grupo A",
+    "encargado": "Marleny Huaylla Condori",
+    "fechaMatricula": "2026-08-31"
+  },
+  "Ruben Ramirez Apaza": {
+    "codigo": "E143",
+    "nombre": "Ruben Ramirez Apaza",
+    "carrera": "Corte y Confección",
+    "grupo": "Corte y Confección - Grupo A",
+    "encargado": "Teresa Aguilar Gómez",
+    "fechaMatricula": "2026-08-31"
+  },
+  "Julio Cesar Mamani Chambi": {
+    "codigo": "E144",
+    "nombre": "Julio Cesar Mamani Chambi",
+    "carrera": "Mecánica Automotriz",
+    "grupo": "Mecánica Automotriz - Grupo A",
+    "encargado": "Miguel Ángel Torres Cárdenas",
+    "fechaMatricula": "2026-09-02"
+  },
+  "Yenefer Carmen Mamani Chambi": {
+    "codigo": "E145",
+    "nombre": "Yenefer Carmen Mamani Chambi",
+    "carrera": "Computación e Informática",
+    "grupo": "Computación e Informática - Grupo A",
+    "encargado": "Rosa Elena Quispe Huamán",
+    "fechaMatricula": "2026-09-03"
+  },
+  "Jhon Alexander Coloma Mamani": {
+    "codigo": "E146",
+    "nombre": "Jhon Alexander Coloma Mamani",
+    "carrera": "Electricidad Domiciliaria",
+    "grupo": "Electricidad Domiciliaria - Grupo A",
+    "encargado": "Carlos Alberto Mendoza Ríos",
+    "fechaMatricula": "2026-09-04"
+  },
+  "Nelson Mamani Pari": {
+    "codigo": "E147",
+    "nombre": "Nelson Mamani Pari",
+    "carrera": "Cosmetología",
+    "grupo": "Cosmetología - Grupo A",
+    "encargado": "Lucía Fernanda Paredes Soto",
+    "fechaMatricula": "2026-09-15"
+  }
+}

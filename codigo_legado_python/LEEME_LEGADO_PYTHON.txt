@@ -1,0 +1,21 @@
+====================================================================
+CETPRO SAN MIGUEL - MICAELA BASTIDAS PUYUCAMA
+CARPETA: CÓDIGO LEGADO EN PYTHON Y VBA (PROTOTIPO INICIAL)
+====================================================================
+
+Esta carpeta preserva los archivos del primer prototipo desarrollado en Python/Flask y macros VBA:
+
+1. app.py
+   - Servidor inicial desarrollado en Flask (Python).
+
+2. generar_excel.py / generar_xlsm.py
+   - Scripts antiguos para generar archivos de Excel.
+
+3. macro_vba.txt
+   - Código VBA para macros en Excel.
+
+--------------------------------------------------------------------
+NOTA:
+El sistema moderno opera al 100% bajo arquitectura nativa de Node.js y SQLite ("server.js" / "EduCaja_Pro.exe"),
+ofreciendo alto rendimiento, respaldos criptográficos automáticos y funcionamiento autónomo.
+====================================================================

@@ -1,0 +1,3 @@
+Images are located. The tool appears capable of viewing them. Initial thought is to check if previous transcriptions exist within a specified data file to avoid redundant work; a search script seems appropriate for this.
+
+

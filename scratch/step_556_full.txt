@@ -1,0 +1,3 @@
+MARZO 2026 data is present, appears to be a list of names, associated amounts and some other identifier 'M'. The data contains several entries; each likely represents a transaction. Further analysis is needed to understand the meaning of the amounts and the significance of 'M'.
+
+

@@ -1,0 +1,26 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Executable binaries
+EduCaja_Pro.exe
+
+# Backup snapshots and large historical dumps
+backups/
+archivos_historicos_excel/
+
+# Temporary and office lock files
+~$*
+*.tmp
+*.log
+
+# Scratch temp folders
+scratch/excel_clean_temp/
+scratch/excel_unpacked/
+
+# Operating system files
+Thumbs.db
+Desktop.ini
+.DS_Store

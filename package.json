@@ -1,0 +1,33 @@
+{
+  "name": "educaja-pro",
+  "version": "1.0.0",
+  "description": "Sistema de Gestion Financiera Institucional de Caja Chica, Docentes y Estudiantes",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build:exe": "npx @yao-pkg/pkg -t node22-win-x64 server.js -o EduCaja_Pro.exe"
+  },
+  "pkg": {
+    "assets": [
+      "templates/**/*",
+      "public/**/*"
+    ],
+    "targets": [
+      "node22-win-x64"
+    ],
+    "outputPath": "."
+  },
+  "keywords": [
+    "caja",
+    "finanzas",
+    "estudiantes",
+    "docentes"
+  ],
+  "author": "Miguel",
+  "license": "ISC",
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "xlsx": "^0.18.5"
+  }
+}

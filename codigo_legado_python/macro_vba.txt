@@ -1,0 +1,87 @@
+Sub GuardarMovimiento()
+    Dim wsForm As Worksheet
+    Dim wsCaja As Worksheet
+    Dim lastRow As Long
+    Dim newID As Long
+    
+    Set wsForm = ThisWorkbook.Sheets("Ingresar_Registro")
+    Set wsCaja = ThisWorkbook.Sheets("Caja_Movimientos")
+    
+    ' Encontrar la última fila en la caja
+    lastRow = wsCaja.Cells(wsCaja.Rows.Count, "A").End(xlUp).Row
+    
+    ' Generar nuevo ID
+    If lastRow = 1 Then
+        newID = 1
+    Else
+        newID = wsCaja.Cells(lastRow, 1).Value + 1
+    End If
+    
+    ' Validar campos obligatorios
+    If wsForm.Range("B4").Value = "" Or wsForm.Range("B10").Value = "" Then
+        MsgBox "Por favor, llene al menos el Tipo y el Monto.", vbExclamation, "Campos Incompletos"
+        Exit Sub
+    End If
+    
+    ' Copiar datos a la siguiente fila vacía
+    lastRow = lastRow + 1
+    wsCaja.Cells(lastRow, 1).Value = newID
+    wsCaja.Cells(lastRow, 2).Value = wsForm.Range("B3").Value ' Fecha
+    wsCaja.Cells(lastRow, 3).Value = wsForm.Range("B4").Value ' Tipo
+    wsCaja.Cells(lastRow, 4).Value = wsForm.Range("B5").Value ' Estado
+    wsCaja.Cells(lastRow, 5).Value = wsForm.Range("B6").Value ' Rol
+    wsCaja.Cells(lastRow, 6).Value = wsForm.Range("B7").Value ' Nombre
+    wsCaja.Cells(lastRow, 7).Value = wsForm.Range("B8").Value ' Carrera
+    wsCaja.Cells(lastRow, 8).Value = wsForm.Range("B9").Value ' Concepto
+    wsCaja.Cells(lastRow, 9).Value = wsForm.Range("B10").Value ' Monto
+    wsCaja.Cells(lastRow, 10).Value = wsForm.Range("B11").Value ' Fecha Vencimiento
+    
+    ' Formula de dias para vencer
+    If wsForm.Range("B5").Value = "Pendiente" And wsForm.Range("B11").Value <> "" Then
+        wsCaja.Cells(lastRow, 11).Formula = "=(J" & lastRow & "-TODAY())"
+    End If
+    
+    ' Limpiar formulario
+    wsForm.Range("B3:B11").ClearContents
+    
+    MsgBox "Movimiento guardado exitosamente.", vbInformation, "Éxito"
+    
+    ' Actualizar la lista de deudores automáticamente
+    Call ActualizarDeudores
+End Sub
+
+Sub ActualizarDeudores()
+    Dim wsCaja As Worksheet
+    Dim wsDeudores As Worksheet
+    Dim lastRowCaja As Long
+    Dim outRow As Long
+    Dim i As Long
+    
+    Set wsCaja = ThisWorkbook.Sheets("Caja_Movimientos")
+    Set wsDeudores = ThisWorkbook.Sheets("Deudores")
+    
+    ' Limpiar hoja de deudores (excepto la cabecera)
+    wsDeudores.Range("A2:I10000").ClearContents
+    
+    lastRowCaja = wsCaja.Cells(wsCaja.Rows.Count, "A").End(xlUp).Row
+    outRow = 2
+    
+    For i = 2 To lastRowCaja
+        ' Si es ingreso, está pendiente y es estudiante
+        If wsCaja.Cells(i, 3).Value = "Ingreso" And wsCaja.Cells(i, 4).Value = "Pendiente" And wsCaja.Cells(i, 5).Value = "Estudiante" Then
+            wsDeudores.Cells(outRow, 1).Value = wsCaja.Cells(i, 1).Value ' ID
+            wsDeudores.Cells(outRow, 2).Value = wsCaja.Cells(i, 2).Value ' Fecha
+            wsDeudores.Cells(outRow, 3).Value = wsCaja.Cells(i, 6).Value ' Nombre
+            wsDeudores.Cells(outRow, 4).Value = wsCaja.Cells(i, 7).Value ' Carrera
+            wsDeudores.Cells(outRow, 5).Value = wsCaja.Cells(i, 8).Value ' Concepto
+            wsDeudores.Cells(outRow, 6).Value = wsCaja.Cells(i, 9).Value ' Monto
+            wsDeudores.Cells(outRow, 7).Value = wsCaja.Cells(i, 10).Value ' Fecha Vencimiento
+            wsDeudores.Cells(outRow, 8).Formula = "=(G" & outRow & "-TODAY())" ' Días Vencidos
+            wsDeudores.Cells(outRow, 9).Value = "Pendiente" ' Estado
+            
+            outRow = outRow + 1
+        End If
+    Next i
+    
+    MsgBox "Lista de deudores actualizada.", vbInformation, "Actualización"
+End Sub

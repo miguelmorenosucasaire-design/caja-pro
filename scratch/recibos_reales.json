@@ -1,0 +1,1618 @@
+[
+  {
+    "num": "0000601",
+    "fecha": "2026-01-12",
+    "nombre": "Pedro Luis Yana Panca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Enero"
+  },
+  {
+    "num": "0000602",
+    "fecha": "2026-01-15",
+    "nombre": "Ruth Danitza Yucra Jalliri",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Enero"
+  },
+  {
+    "num": "0000603",
+    "fecha": "2026-01-18",
+    "nombre": "Jean Marco Hilasaca Colquehuanca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Enero"
+  },
+  {
+    "num": "0000604",
+    "fecha": "2026-01-20",
+    "nombre": "Yuly Noemi Hilasaca Colquehuanca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Enero"
+  },
+  {
+    "num": "0000605",
+    "fecha": "2026-01-24",
+    "nombre": "Roxana Jeydi Calcina Larico",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Enero"
+  },
+  {
+    "num": "0000606",
+    "fecha": "2026-02-03",
+    "nombre": "Jesus Leandro Lopez Tavera",
+    "monto": 250,
+    "concepto": "Título",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000607",
+    "fecha": "2026-02-03",
+    "nombre": "Jesus Leandro Lopez Tavera",
+    "monto": 60,
+    "concepto": "Certificado Modular",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000608",
+    "fecha": "2026-02-06",
+    "nombre": "Naomi Dalila Tito Sucso",
+    "monto": 250,
+    "concepto": "Título",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000609",
+    "fecha": "2026-02-10",
+    "nombre": "Maribel Sabina Turpo Romero",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000610",
+    "fecha": "2026-02-14",
+    "nombre": "Aron Esteban Ames Mamani",
+    "monto": 250,
+    "concepto": "Título",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000611",
+    "fecha": "2026-02-17",
+    "nombre": "Alvaro A. Chirinos Poma",
+    "monto": 250,
+    "concepto": "Título",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000612",
+    "fecha": "2026-02-20",
+    "nombre": "Facundo Mamani Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000613",
+    "fecha": "2026-02-23",
+    "nombre": "Rommel Joel Ojeda Calla",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000614",
+    "fecha": "2026-02-26",
+    "nombre": "Jhon Lincol Laura Ojeda",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Febrero"
+  },
+  {
+    "num": "0000616",
+    "fecha": "2026-03-02",
+    "nombre": "Jorge Miguel Arce Adco",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000617",
+    "fecha": "2026-03-02",
+    "nombre": "Brayan Arce Adco",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000618",
+    "fecha": "2026-03-03",
+    "nombre": "Yan Marco Ramos Juarez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000619",
+    "fecha": "2026-03-03",
+    "nombre": "Tonny Inder Mamani Juarez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000620",
+    "fecha": "2026-03-04",
+    "nombre": "Vilma Elizabeth Coaquira Coaquira",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000621",
+    "fecha": "2026-03-04",
+    "nombre": "Evelin Anyela Cutiri Hancco",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000622",
+    "fecha": "2026-03-05",
+    "nombre": "Evelin Yulisa Quispe Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000623",
+    "fecha": "2026-03-05",
+    "nombre": "Marco Antonio Zegarra Laura",
+    "monto": 300,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000624",
+    "fecha": "2026-03-06",
+    "nombre": "Liz Magaly Turpo Calli",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000625",
+    "fecha": "2026-03-06",
+    "nombre": "Fortunata Vilca Gutierrez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000626",
+    "fecha": "2026-03-07",
+    "nombre": "Madely Flor Vilca Gutierrez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000627",
+    "fecha": "2026-03-07",
+    "nombre": "Ivan Vilca Gutierrez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000628",
+    "fecha": "2026-03-09",
+    "nombre": "Mirian Lizbeth Mamani Lipa",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000629",
+    "fecha": "2026-03-09",
+    "nombre": "Edwin Condori Churata",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000630",
+    "fecha": "2026-03-10",
+    "nombre": "Sussan Marleny Catunta Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000631",
+    "fecha": "2026-03-10",
+    "nombre": "Royan Nadher Quea Mamani",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000632",
+    "fecha": "2026-03-11",
+    "nombre": "Julia Carina Uscamayta Chipana",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000633",
+    "fecha": "2026-03-11",
+    "nombre": "Doris Karina Carcasi Condori",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000634",
+    "fecha": "2026-03-12",
+    "nombre": "Doris Karina Carcasi Condori",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000635",
+    "fecha": "2026-03-12",
+    "nombre": "Franklin Roy Calloapaza Condori",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000636",
+    "fecha": "2026-03-13",
+    "nombre": "Soledad Alvarez Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000637",
+    "fecha": "2026-03-13",
+    "nombre": "Maily Laila Pacco Huaman",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000638",
+    "fecha": "2026-03-14",
+    "nombre": "Lizbeth Coaquira Condori",
+    "monto": 300,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000639",
+    "fecha": "2026-03-14",
+    "nombre": "Rita Edith Tuero Vilca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000640",
+    "fecha": "2026-03-16",
+    "nombre": "Nilda Yanapa Ccarita",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000641",
+    "fecha": "2026-03-16",
+    "nombre": "Hilda Marleny Leon Sacho",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000642",
+    "fecha": "2026-03-17",
+    "nombre": "Alan Ronald Hallasi Morales",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000643",
+    "fecha": "2026-03-17",
+    "nombre": "Paolo Rovianov Mamani Altamirano",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000644",
+    "fecha": "2026-03-18",
+    "nombre": "Jonas Quispe Quispe",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000645",
+    "fecha": "2026-03-18",
+    "nombre": "Griselda Olivares Ccapatinta",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000646",
+    "fecha": "2026-03-19",
+    "nombre": "Lila Anco Condori",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000647",
+    "fecha": "2026-03-19",
+    "nombre": "Luis Angel Hancco Choque",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000648",
+    "fecha": "2026-03-20",
+    "nombre": "Sabina Naira Silva",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000649",
+    "fecha": "2026-03-20",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000650",
+    "fecha": "2026-03-21",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000652",
+    "fecha": "2026-03-23",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000653",
+    "fecha": "2026-03-23",
+    "nombre": "Deysi Caterin Lipe Machaca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000654",
+    "fecha": "2026-03-24",
+    "nombre": "Yenifer Meliza Huaman Laura",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000655",
+    "fecha": "2026-03-24",
+    "nombre": "Dina Lisbeth Hancco Choque",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000656",
+    "fecha": "2026-03-25",
+    "nombre": "Martin Ebani Maque Canaza",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000657",
+    "fecha": "2026-03-25",
+    "nombre": "Yasmin Maricruz Gonzales Herrera",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000658",
+    "fecha": "2026-03-26",
+    "nombre": "Antonia D. Uscamayta Yucra",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000659",
+    "fecha": "2026-03-26",
+    "nombre": "Felix B. Chata Calla",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000660",
+    "fecha": "2026-03-27",
+    "nombre": "Juana Salas Ticona",
+    "monto": 150,
+    "concepto": "Matrícula Convenio",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000661",
+    "fecha": "2026-03-27",
+    "nombre": "Shiril D. Chuquimamani Mamani",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000662",
+    "fecha": "2026-03-28",
+    "nombre": "Katy L. Baez Caceres",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000663",
+    "fecha": "2026-03-28",
+    "nombre": "Judith Quispe Quispe",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000664",
+    "fecha": "2026-03-30",
+    "nombre": "Naleli Lisbeth Cabrera L.",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000665",
+    "fecha": "2026-03-30",
+    "nombre": "Luz Dayanna Quispe Luque",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000666",
+    "fecha": "2026-03-31",
+    "nombre": "Vanessa Calsin Tupa",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000667",
+    "fecha": "2026-03-31",
+    "nombre": "Nory Yoselin Apaza",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000668",
+    "fecha": "2026-03-31",
+    "nombre": "Arminda Ramirez Apaza",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000669",
+    "fecha": "2026-03-31",
+    "nombre": "Paulina Laruta Gutierrez",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000670",
+    "fecha": "2026-03-31",
+    "nombre": "Nilda Elizabeth Mamani Cari",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000671",
+    "fecha": "2026-03-31",
+    "nombre": "Fanny Mamani Mendoza",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000672",
+    "fecha": "2026-03-31",
+    "nombre": "Yanela Candy Chambi Aquino",
+    "monto": 20,
+    "concepto": "Matrícula",
+    "mes": "Marzo"
+  },
+  {
+    "num": "0000673",
+    "fecha": "2026-04-01",
+    "nombre": "Pedro Claudio Quispe Colque",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000674",
+    "fecha": "2026-04-01",
+    "nombre": "Jhoel Ramiro Quispe Calla",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000675",
+    "fecha": "2026-04-02",
+    "nombre": "Nancy M. Martinez Charaja",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000676",
+    "fecha": "2026-04-02",
+    "nombre": "Edith Medaly Puma Quispe",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000677",
+    "fecha": "2026-04-03",
+    "nombre": "Judith Quispe Oblitas",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000678",
+    "fecha": "2026-04-03",
+    "nombre": "Beatriz M. Quispe Mamani",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000679",
+    "fecha": "2026-04-04",
+    "nombre": "Cliver Parillo Quispe",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000680",
+    "fecha": "2026-04-04",
+    "nombre": "Delfina Abado Chambi",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000681",
+    "fecha": "2026-04-06",
+    "nombre": "Maodele Machaca Adco",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000682",
+    "fecha": "2026-04-06",
+    "nombre": "Juan Widef Quispe Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000683",
+    "fecha": "2026-04-07",
+    "nombre": "Beatriz Mariela Quispe Mamani",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000684",
+    "fecha": "2026-04-07",
+    "nombre": "Cynthia Lizbeth Mamani Cerpa",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000685",
+    "fecha": "2026-04-08",
+    "nombre": "Reyna Lucrecia Mamani Luque",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000686",
+    "fecha": "2026-04-08",
+    "nombre": "Jhoel Wilber Centeno Incahuanaco",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000687",
+    "fecha": "2026-04-09",
+    "nombre": "Deysi Yanet Torres Calcina",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000688",
+    "fecha": "2026-04-09",
+    "nombre": "Lourdes Maquera Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000689",
+    "fecha": "2026-04-10",
+    "nombre": "Liz Betzabe Maquera Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000690",
+    "fecha": "2026-04-10",
+    "nombre": "Alicia Ojeda Poma",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000691",
+    "fecha": "2026-04-11",
+    "nombre": "Lourdes Mamani Quiroz",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000692",
+    "fecha": "2026-04-13",
+    "nombre": "Rios Quinto Vilca Chino",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000693",
+    "fecha": "2026-04-13",
+    "nombre": "Dianeth Amelia Quispe Ccarcahusto",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000694",
+    "fecha": "2026-04-14",
+    "nombre": "Yesabela Supa Haccolla",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000695",
+    "fecha": "2026-04-14",
+    "nombre": "Jesús Gonzalo Chambi Tito",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000696",
+    "fecha": "2026-04-15",
+    "nombre": "Eddie Merced Condori Mamani",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000697",
+    "fecha": "2026-04-15",
+    "nombre": "Juana Pampa Valencia",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000698",
+    "fecha": "2026-04-16",
+    "nombre": "Maicol Stiu Ramos Quea",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000699",
+    "fecha": "2026-04-16",
+    "nombre": "Delfina Abado Chambi",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000700",
+    "fecha": "2026-04-17",
+    "nombre": "Magda Chuahuara Cordova",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000701",
+    "fecha": "2026-04-17",
+    "nombre": "Lilia Luz Mestas Cayo",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000702",
+    "fecha": "2026-04-18",
+    "nombre": "Klever Edu Aracca Sumari",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000703",
+    "fecha": "2026-04-20",
+    "nombre": "Jenyfer Paola Ramos Mayta",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000704",
+    "fecha": "2026-04-20",
+    "nombre": "Jenyfer Paola Ramos Mayta",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000705",
+    "fecha": "2026-04-21",
+    "nombre": "Waldir Renzo Ramos Mayta",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000707",
+    "fecha": "2026-04-22",
+    "nombre": "Yeny Marisol Asaño Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000708",
+    "fecha": "2026-04-22",
+    "nombre": "Lesly A. Asaño Quispe",
+    "monto": 125,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000709",
+    "fecha": "2026-04-23",
+    "nombre": "Victor Pineda Herrera",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Abril"
+  },
+  {
+    "num": "0000710",
+    "fecha": "2026-05-04",
+    "nombre": "Pedro Luis Yana Panca",
+    "monto": 120,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000711",
+    "fecha": "2026-05-04",
+    "nombre": "Ruth Danitza Yucra Jalliri",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000712",
+    "fecha": "2026-05-05",
+    "nombre": "Jean Marco Hilasaca Colquehuanca",
+    "monto": 120,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000713",
+    "fecha": "2026-05-05",
+    "nombre": "Yuly Noemi Hilasaca Colquehuanca",
+    "monto": 120,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000714",
+    "fecha": "2026-05-06",
+    "nombre": "Roxana Jeydi Calcina Larico",
+    "monto": 120,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000715",
+    "fecha": "2026-05-07",
+    "nombre": "Jorge Miguel Arce Adco",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000716",
+    "fecha": "2026-05-08",
+    "nombre": "Brayan Arce Adco",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000717",
+    "fecha": "2026-05-11",
+    "nombre": "Yan Marco Ramos Juarez",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000718",
+    "fecha": "2026-05-11",
+    "nombre": "Tonny Inder Mamani Juarez",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000719",
+    "fecha": "2026-05-12",
+    "nombre": "Vilma Elizabeth Coaquira Coaquira",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000720",
+    "fecha": "2026-05-13",
+    "nombre": "Evelin Anyela Cutiri Hancco",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000721",
+    "fecha": "2026-05-14",
+    "nombre": "Evelin Yulisa Quispe Quispe",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000722",
+    "fecha": "2026-05-15",
+    "nombre": "Marco Antonio Zegarra Laura",
+    "monto": 150,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000723",
+    "fecha": "2026-05-18",
+    "nombre": "Liz Magaly Turpo Calli",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000724",
+    "fecha": "2026-05-18",
+    "nombre": "Fortunata Vilca Gutierrez",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000725",
+    "fecha": "2026-05-19",
+    "nombre": "Madely Flor Vilca Gutierrez",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000726",
+    "fecha": "2026-05-19",
+    "nombre": "Ivan Vilca Gutierrez",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000727",
+    "fecha": "2026-05-20",
+    "nombre": "Mirian Lizbeth Mamani Lipa",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000728",
+    "fecha": "2026-05-21",
+    "nombre": "Edwin Condori Churata",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000729",
+    "fecha": "2026-05-22",
+    "nombre": "Sussan Marleny Catunta Quispe",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000730",
+    "fecha": "2026-05-25",
+    "nombre": "Royan Nadher Quea Mamani",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000731",
+    "fecha": "2026-05-25",
+    "nombre": "Julia Carina Uscamayta Chipana",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000732",
+    "fecha": "2026-05-26",
+    "nombre": "Doris Karina Carcasi Condori",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000733",
+    "fecha": "2026-05-26",
+    "nombre": "Franklin Roy Calloapaza Condori",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000734",
+    "fecha": "2026-05-27",
+    "nombre": "Soledad Alvarez Quispe",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000735",
+    "fecha": "2026-05-28",
+    "nombre": "Maily Laila Pacco Huaman",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000736",
+    "fecha": "2026-05-28",
+    "nombre": "Lizbeth Coaquira Condori",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000737",
+    "fecha": "2026-05-29",
+    "nombre": "Rita Edith Tuero Vilca",
+    "monto": 100,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000738",
+    "fecha": "2026-05-29",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 80,
+    "concepto": "Mensualidad",
+    "mes": "Mayo"
+  },
+  {
+    "num": "0000739",
+    "fecha": "2026-06-02",
+    "nombre": "Leonardo Josue Choque Apuri",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000740",
+    "fecha": "2026-06-03",
+    "nombre": "Ruben Jobel Ramirez Apaza",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000741",
+    "fecha": "2026-06-04",
+    "nombre": "Gladys Mery Chura Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000742",
+    "fecha": "2026-06-05",
+    "nombre": "Lucero Erika Condori Quispe",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000743",
+    "fecha": "2026-06-08",
+    "nombre": "Paulina Laruta Gutierrez",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000744",
+    "fecha": "2026-06-10",
+    "nombre": "Deysi Lizbeth Pacci Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000745",
+    "fecha": "2026-06-15",
+    "nombre": "Nely Cuevas Cerpa",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000746",
+    "fecha": "2026-06-18",
+    "nombre": "Reyna Lucrecia Mamani Luque",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000747",
+    "fecha": "2026-06-23",
+    "nombre": "Christopher J. Puma Condori",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Junio"
+  },
+  {
+    "num": "0000748",
+    "fecha": "2026-07-02",
+    "nombre": "Ronal Angel Orihuela Ordoñez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000749",
+    "fecha": "2026-07-03",
+    "nombre": "Sonia Y. Yunga Yupanqui",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000750",
+    "fecha": "2026-07-06",
+    "nombre": "Braulio A. Hancco Ramos",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000751",
+    "fecha": "2026-07-08",
+    "nombre": "Edu Rex Flores Ticona",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000752",
+    "fecha": "2026-07-09",
+    "nombre": "Alfredo Velasquez Velasquez",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000753",
+    "fecha": "2026-07-13",
+    "nombre": "Irma Lilia Ticona Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000754",
+    "fecha": "2026-07-15",
+    "nombre": "Antonia Clara Jahuira Huarcaya",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000755",
+    "fecha": "2026-07-17",
+    "nombre": "Erik Leiton Velasquez Ticona",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000756",
+    "fecha": "2026-07-20",
+    "nombre": "Stiven Yamir Velasquez Ticona",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000757",
+    "fecha": "2026-07-21",
+    "nombre": "Jean Franco Quispe Pilco",
+    "monto": 300,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000758",
+    "fecha": "2026-07-22",
+    "nombre": "Juana Nieves Viza Yana",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000759",
+    "fecha": "2026-07-23",
+    "nombre": "Royan Nadher Quea Mamani",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000760",
+    "fecha": "2026-07-24",
+    "nombre": "Maribel Luque Catunta",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000761",
+    "fecha": "2026-07-27",
+    "nombre": "Heydy Milagros Uscamayta Y.",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Julio"
+  },
+  {
+    "num": "0000762",
+    "fecha": "2026-08-03",
+    "nombre": "Wilian Jose Choque Ñaupa",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000763",
+    "fecha": "2026-08-04",
+    "nombre": "Huber Mamani Limachi",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000764",
+    "fecha": "2026-08-05",
+    "nombre": "Mark Esthif Ruelas Condori",
+    "monto": 75,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000765",
+    "fecha": "2026-08-06",
+    "nombre": "Alicia Ruelas Quispe",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000767",
+    "fecha": "2026-08-07",
+    "nombre": "Noemi Gianela Mamani Soncco",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000768",
+    "fecha": "2026-08-10",
+    "nombre": "Nestor Guevara Machaca",
+    "monto": 120,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000769",
+    "fecha": "2026-08-11",
+    "nombre": "Nory Yoselin Pomari Apaza",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000770",
+    "fecha": "2026-08-12",
+    "nombre": "Edith Medaly Puma Quispe",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000771",
+    "fecha": "2026-08-13",
+    "nombre": "Olinda Flores Tito",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000772",
+    "fecha": "2026-08-14",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000773",
+    "fecha": "2026-08-14",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000774",
+    "fecha": "2026-08-14",
+    "nombre": "Juana Lidia Ponce Mamanchura",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000775",
+    "fecha": "2026-08-17",
+    "nombre": "Yessica Trujillo Condori",
+    "monto": 200,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000776",
+    "fecha": "2026-08-17",
+    "nombre": "Evelin Yulisa Quispe Quispe",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000777",
+    "fecha": "2026-08-18",
+    "nombre": "Gladys Mery Chura Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000778",
+    "fecha": "2026-08-19",
+    "nombre": "Erika Pinto Soco",
+    "monto": 300,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000779",
+    "fecha": "2026-08-20",
+    "nombre": "Ada Merced Jilapa Calsin",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000780",
+    "fecha": "2026-08-21",
+    "nombre": "Noemi Martha Coaquira Roque",
+    "monto": 120,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000781",
+    "fecha": "2026-08-21",
+    "nombre": "Cinthia Lizbeth Mamani Cerpa",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000783",
+    "fecha": "2026-08-24",
+    "nombre": "Hilda Pari Condori",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000784",
+    "fecha": "2026-08-24",
+    "nombre": "Alcides Huanca Quispe",
+    "monto": 50,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000785",
+    "fecha": "2026-08-25",
+    "nombre": "Maodele Machaca Adco",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000786",
+    "fecha": "2026-08-25",
+    "nombre": "Rita Edith Tuero Vilca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000787",
+    "fecha": "2026-08-26",
+    "nombre": "Silvia Elsa Paredes Checalla",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000788",
+    "fecha": "2026-08-26",
+    "nombre": "Laura Paredes Checalla",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000789",
+    "fecha": "2026-08-27",
+    "nombre": "Gregoria Paredes Checalla",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000790",
+    "fecha": "2026-08-27",
+    "nombre": "Veronica Cruz Sejje",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000791",
+    "fecha": "2026-08-28",
+    "nombre": "Alexander Antony Apaza M.",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000792",
+    "fecha": "2026-08-28",
+    "nombre": "Dianeth Amelia Quispe Ccarcahusto",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000793",
+    "fecha": "2026-08-29",
+    "nombre": "Yuly Noemi Hilasaca Colquehuanca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000794",
+    "fecha": "2026-08-29",
+    "nombre": "Yuly Noemi Hilasaca Colquehuanca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000795",
+    "fecha": "2026-08-29",
+    "nombre": "Roxana Jeydi Calcina Larico",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000796",
+    "fecha": "2026-08-31",
+    "nombre": "Jean Marco Hilasaca Colquehuanca",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000797",
+    "fecha": "2026-08-31",
+    "nombre": "Ruth Danitza Yucra Jalliri",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000798",
+    "fecha": "2026-08-31",
+    "nombre": "Licet Dina Leon Lima",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000799",
+    "fecha": "2026-08-31",
+    "nombre": "Alcina Ojeda Poma",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000800",
+    "fecha": "2026-08-31",
+    "nombre": "Ruben Ramirez Apaza",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Agosto"
+  },
+  {
+    "num": "0000801",
+    "fecha": "2026-09-02",
+    "nombre": "Julio Cesar Mamani Chambi",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000802",
+    "fecha": "2026-09-03",
+    "nombre": "Yenefer Carmen Mamani Chambi",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000803",
+    "fecha": "2026-09-04",
+    "nombre": "Jhon Alexander Coloma Mamani",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000804",
+    "fecha": "2026-09-07",
+    "nombre": "Jean Franco Quispe Pilco",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000805",
+    "fecha": "2026-09-08",
+    "nombre": "Jean Franco Quispe Pilco",
+    "monto": 100,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000806",
+    "fecha": "2026-09-10",
+    "nombre": "Sabina Naira Silva",
+    "monto": 150,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  },
+  {
+    "num": "0000807",
+    "fecha": "2026-09-15",
+    "nombre": "Nelson Mamani Pari",
+    "monto": 300,
+    "concepto": "Matrícula",
+    "mes": "Setiembre"
+  }
+]

@@ -1,0 +1,70 @@
+===============================================================================
+              EDUCAJA PRO - CETPRO MICAELA BASTIDAS PUYUCAMA
+                     GUÍA DE ESTRUCTURA Y ORGANIZACIÓN
+===============================================================================
+
+Este directorio contiene el Sistema Profesional de Control de Caja Chica y
+Gestión Institucional. Todos los archivos han sido organizados de forma limpia:
+
+-------------------------------------------------------------------------------
+1. PROGRAMAS Y ACCESOS PRINCIPALES (USO DIARIO)
+-------------------------------------------------------------------------------
+* EduCaja_Pro.exe
+  -> Programa ejecutable principal para Windows (Doble clic para iniciar directamente).
+
+* INICIAR_SISTEMA.bat
+  -> Inicia el servidor local y abre la aplicación en el navegador predeterminado.
+
+* Crear_Acceso_Directo_Escritorio.bat
+  -> Ejecute este archivo una sola vez para colocar un icono de EduCaja Pro en su Escritorio.
+
+-------------------------------------------------------------------------------
+2. DATOS Y REGISTROS ACTIVOS (INFORMACIÓN EN VIVO)
+-------------------------------------------------------------------------------
+* caja_institucional.db
+  -> Base de datos oficial de SQLite con los 176 estudiantes y 207 pagos (S/. 25,080.00).
+
+* CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx
+  -> Hoja de cálculo oficial de Excel que se actualiza y sincroniza en vivo.
+
+* backups/
+  -> Carpeta donde se guardan automáticamente las copias de seguridad de la base de datos
+     con firma criptográfica SHA-256.
+
+-------------------------------------------------------------------------------
+3. COMPONENTES DEL SISTEMA WEB Y MOTOR
+-------------------------------------------------------------------------------
+* server.js
+  -> Motor del servidor Node.js y APIs REST.
+
+* templates/
+  -> Contiene la interfaz gráfica (index.html) con selector de secciones y vouchers.
+
+* public/
+  -> Logotipos, imágenes oficiales, estilos CSS y recursos gráficos.
+
+* package.json / package-lock.json / node_modules/
+  -> Configuración de librerías y dependencias del sistema.
+
+* app.ico
+  -> Ícono institucional oficial del CETPRO San Miguel.
+
+-------------------------------------------------------------------------------
+4. CARPETAS DE HISTORIAL Y ARCHIVADO
+-------------------------------------------------------------------------------
+* archivos_historicos_excel/
+  -> Versiones intermedias, borradores previos y plantillas antiguas de Excel.
+
+* codigo_legado_python/
+  -> Código fuente del prototipo original inicial en Python / Flask.
+
+* utilidades/
+  -> Lanzadores auxiliares y herramientas complementarias previas.
+
+* scratch/
+  -> Scripts de verificación técnica, mantenimiento y pruebas automatizadas.
+
+===============================================================================
+Para cualquier consulta o soporte, el sistema cuenta con respaldos automáticos
+que protegen la integridad de todos los datos institucionales.
+===============================================================================
