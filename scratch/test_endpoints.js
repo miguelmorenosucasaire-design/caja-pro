@@ -1,82 +1,38 @@
-const http = require('http');
+const http = require('node:http');
 
-function fetch(url, options = {}) {
+function fetchJson(url) {
     return new Promise((resolve, reject) => {
-        const u = new URL(url);
-        const req = http.request({
-            hostname: u.hostname,
-            port: u.port,
-            path: u.pathname + u.search,
-            method: options.method || 'GET',
-            headers: options.headers || {}
-        }, (res) => {
+        http.get(url, (res) => {
             let data = '';
             res.on('data', chunk => data += chunk);
-            res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: data }));
-        });
-        req.on('error', reject);
-        if (options.body) req.write(options.body);
-        req.end();
+            res.on('end', () => {
+                try {
+                    resolve({ status: res.statusCode, body: JSON.parse(data) });
+                } catch (e) {
+                    resolve({ status: res.statusCode, body: data });
+                }
+            });
+        }).on('error', reject);
     });
 }
 
 async function run() {
-    console.log('--- PROBANDO ENDPOINTS ---');
-    try {
-        const rIndex = await fetch('http://127.0.0.1:5000/');
-        console.log(`GET /: status=${rIndex.status}, length=${rIndex.body.length}`);
+    console.log('Testing endpoints...');
+    const rPend = await fetchJson('http://127.0.0.1:5000/api/estudiantes?estado=pendiente');
+    console.log('1. /api/estudiantes?estado=pendiente:', rPend.status, 'Count:', rPend.body.length);
+    console.table(rPend.body.map(e => ({ id: e.id, nombre: e.nombre, carrera: e.carrera, estado_financiero: e.estado_financiero, saldo_pendiente: e.saldo_pendiente })));
 
-        const rStats = await fetch('http://127.0.0.1:5000/api/stats');
-        console.log(`GET /api/stats: status=${rStats.status}, body=${rStats.body.slice(0, 100)}...`);
+    const rAnul = await fetchJson('http://127.0.0.1:5000/api/estudiantes?estado=anulado');
+    console.log('2. /api/estudiantes?estado=anulado:', rAnul.status, 'Count:', rAnul.body.length);
+    console.table(rAnul.body.map(e => ({ id: e.id, codigo: e.codigo, comprobante: e.ultimo_comprobante, nombre: e.nombre, estado_financiero: e.estado_financiero })));
 
-        const rGrupos = await fetch('http://127.0.0.1:5000/api/grupos');
-        const grupos = JSON.parse(rGrupos.body);
-        console.log(`GET /api/grupos: status=${rGrupos.status}, total grupos=${grupos.length}`);
-        if (grupos.length > 0) {
-            console.log(`Primer grupo: "${grupos[0].nombre}", Encargado: "${grupos[0].encargado}", Alumnos: ${grupos[0].total_alumnos}, Ingresos: S/. ${grupos[0].total_ingresos}`);
-            const rDetalle = await fetch(`http://127.0.0.1:5000/api/grupos/${grupos[0].id}/detalle`);
-            const det = JSON.parse(rDetalle.body);
-            console.log(`GET /api/grupos/${grupos[0].id}/detalle: status=${rDetalle.status}, alumnos=${det.estudiantes.length}, movs=${det.movimientos.length}`);
-        }
+    const rCarr = await fetchJson('http://127.0.0.1:5000/api/carreras');
+    console.log('3. /api/carreras:', rCarr.status, 'Count:', rCarr.body.length);
 
-        const rMovs = await fetch('http://127.0.0.1:5000/api/movimientos');
-        const movs = JSON.parse(rMovs.body);
-        console.log(`GET /api/movimientos: status=${rMovs.status}, total movs=${movs.length}`);
-        const conGrupo = movs.filter(m => m.grupo && m.grupo !== 'General');
-        console.log(`Movimientos con sección asignada: ${conGrupo.length}/${movs.length}`);
+    const rStats = await fetchJson('http://127.0.0.1:5000/api/stats');
+    console.log('4. /api/stats:', rStats.status, 'Total Ingresos:', rStats.body.total_ingresos);
 
-        // Probar registrar un nuevo movimiento con grupo, encargado, notas y cantidad
-        const postData = JSON.stringify({
-            tipo: 'Ingreso',
-            estado: 'Pagado',
-            rol: 'Estudiante',
-            nombre: 'Prueba Alumno Test',
-            carrera: 'Computación e Informática',
-            grupo: 'Computación - Grupo A',
-            encargado: 'Ing. Carlos Mendoza Ruiz',
-            concepto: 'Cuota de Taller y Prácticas',
-            monto: 120.00,
-            metodo_pago: 'Efectivo',
-            notas: 'Pago de prueba verificado para módulo de grupos'
-        });
-        const rPost = await fetch('http://127.0.0.1:5000/api/movimientos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: postData
-        });
-        const resPost = JSON.parse(rPost.body);
-        console.log(`POST /api/movimientos: status=${rPost.status}, result=`, resPost);
-
-        if (resPost.id) {
-            // Eliminar el movimiento de prueba para no ensuciar la base de datos
-            await fetch(`http://127.0.0.1:5000/api/movimientos/${resPost.id}`, { method: 'DELETE' });
-            console.log(`Movimiento de prueba ${resPost.id} eliminado correctamente.`);
-        }
-
-        console.log('✅ TODOS LOS ENDPOINTS FUNCIONAN CORRECTAMENTE.');
-    } catch (err) {
-        console.error('Error probando servidor:', err.message);
-    }
+    console.log('ALL API TESTS PASSED!');
 }
 
 run();

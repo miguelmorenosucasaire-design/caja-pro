@@ -124,7 +124,15 @@ async function runTests() {
             throw new Error(`Fallo en GET /api/backups/estado-actual`);
         }
 
-        console.log('--- TODOS LOS TESTS DE INTEGRACIÓN DE API PASARON CON ÉXITO (8/8) ---');
+        // 9. Test /public/html2pdf.bundle.min.js (Librería de exportación de PDF para impresión)
+        const rPdfLib = await httpGet('/public/html2pdf.bundle.min.js');
+        if (rPdfLib.status === 200 && rPdfLib.data && typeof rPdfLib.data === 'string' && rPdfLib.data.length > 500000) {
+            console.log(`✔ GET /public/html2pdf.bundle.min.js: OK 200 (${(rPdfLib.data.length / 1024).toFixed(1)} KB servidos localmente)`);
+        } else {
+            throw new Error(`Fallo al servir biblioteca html2pdf local`);
+        }
+
+        console.log('--- TODOS LOS TESTS DE INTEGRACIÓN DE API PASARON CON ÉXITO (9/9) ---');
         cleanupAndExit(0);
     } catch (err) {
         console.error('[ERROR TEST INTEGRAL]:', err.message);

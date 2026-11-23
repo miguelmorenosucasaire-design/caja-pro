@@ -16,11 +16,18 @@ archivos_historicos_excel/
 *.tmp
 *.log
 
-# Scratch temp folders
+# Scratch temp folders and media
 scratch/excel_clean_temp/
 scratch/excel_unpacked/
+scratch/*.png
+scratch/*.jpg
+scratch/*.pdf
+scratch/*.csv
 
 # Operating system files
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Nested git folder
+REGISTRO DE CAJA OFICIAL/

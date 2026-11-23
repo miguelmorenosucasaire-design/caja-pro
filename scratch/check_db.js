@@ -1,0 +1,11 @@
+const { DatabaseSync } = require('node:sqlite');
+const db = new DatabaseSync('caja_institucional.db');
+console.log('--- GRUPOS ---');
+console.log(db.prepare('PRAGMA table_info(grupos)').all());
+console.log('Sample grupos:', db.prepare('SELECT * FROM grupos LIMIT 5').all());
+console.log('--- DOCENTES ---');
+console.log(db.prepare('PRAGMA table_info(docentes)').all());
+console.log('Sample docentes:', db.prepare('SELECT * FROM docentes LIMIT 5').all());
+console.log('--- CARRERAS ---');
+console.log(db.prepare('PRAGMA table_info(carreras)').all());
+console.log('Sample carreras:', db.prepare('SELECT * FROM carreras LIMIT 5').all());

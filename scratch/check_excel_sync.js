@@ -1,17 +1,7 @@
 const fs = require('fs');
-const server = fs.readFileSync('server.js', 'utf8');
-const lines = server.split('\n');
+const content = fs.readFileSync('server.js', 'utf8');
 
-let start = -1;
-for (let i = 0; i < lines.length; i++) {
-    if (lines[i].includes('function guardarLibroExcelEnDisco')) {
-        start = i;
-        break;
-    }
-}
-
-if (start !== -1) {
-    console.log(lines.slice(start, start + 60).join('\n'));
-} else {
-    console.log('guardarLibroExcelEnDisco not found');
-}
+const lines = content.split('\n');
+const idx = lines.findIndex(l => l.includes('function guardarLibroExcelEnDisco'));
+console.log('guardarLibroExcelEnDisco at line', idx + 1);
+console.log(lines.slice(idx, idx + 80).join('\n'));

@@ -35,8 +35,9 @@ echo.
 echo  * ENLACE DIRECTO (Esta PC) : http://localhost:5000
 echo  * ENLACE RED LOCAL         : http://127.0.0.1:5000
 echo.
-echo  * Total de Registros Reales: 202 Recibos (S/. 24,630.00)
-echo  * Secciones y Encargados   : 6 Grupos con Plantillas Individuales
+echo  * Total de Registros Reales: 210 Recibos (S/. 25,360.00)
+echo  * Estudiantes Registrados  : 179 Alumnos en 15 Grupos Oficiales
+echo  * Secciones y Encargados   : 15 Docentes y 12 Carreras Técnicas
 echo  * Exportaciones            : Excel (.xlsm / .xlsx) y PDF de cada hoja
 echo.
 echo  * Para cerrar el sistema por completo, simplemente cierre esta ventana.

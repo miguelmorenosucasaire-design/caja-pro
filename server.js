@@ -119,6 +119,148 @@ function asegurarTablaCarreras() {
 }
 asegurarTablaCarreras();
 
+// -------------------------------------------------------------
+// TABLAS PARA CONTROL DE DEUDORES Y TARIFAS DE MÓDULOS
+// -------------------------------------------------------------
+function asegurarTablasDeudoresYTarifas() {
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS deudas_estudiantes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            estudiante_id INTEGER,
+            nombre TEXT NOT NULL,
+            dni TEXT,
+            telefono TEXT,
+            carrera TEXT,
+            grupo TEXT,
+            concepto TEXT,
+            monto_total REAL NOT NULL,
+            monto_abonado REAL DEFAULT 0,
+            monto_pendiente REAL NOT NULL,
+            fecha_limite TEXT,
+            estado TEXT DEFAULT 'Pendiente',
+            notas TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `).run();
+
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS tarifas_modulos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            carrera TEXT NOT NULL,
+            modulo TEXT NOT NULL,
+            costo REAL NOT NULL DEFAULT 150.00,
+            descripcion TEXT
+        )
+    `).run();
+
+    const countTarifas = db.prepare('SELECT COUNT(*) as c FROM tarifas_modulos').get().c;
+    if (countTarifas === 0) {
+        const carreras = db.prepare("SELECT DISTINCT nombre FROM carreras WHERE nombre NOT LIKE '%Sin Asignar%'").all();
+        const insertTarifa = db.prepare('INSERT INTO tarifas_modulos (carrera, modulo, costo, descripcion) VALUES (?, ?, ?, ?)');
+        for (const c of carreras) {
+            insertTarifa.run(c.nombre, 'Módulo I', 150.00, 'Costo oficial módulo 1');
+            insertTarifa.run(c.nombre, 'Módulo II', 150.00, 'Costo oficial módulo 2');
+            insertTarifa.run(c.nombre, 'Módulo III', 150.00, 'Costo oficial módulo 3');
+            insertTarifa.run(c.nombre, 'Módulo IV', 150.00, 'Costo oficial módulo 4');
+        }
+        insertTarifa.run('General', 'Certificado Oficial', 50.00, 'Emisión de Certificado');
+        insertTarifa.run('General', 'Constancia de Estudio', 20.00, 'Expedición de Constancia');
+        insertTarifa.run('General', 'FUT', 10.00, 'Formulario Único de Trámite');
+    }
+}
+asegurarTablasDeudoresYTarifas();
+
+// -------------------------------------------------------------
+// SINCRONIZACIÓN AUTOMÁTICA CON EL EXCEL OFICIAL DEL USUARIO (23-OCT-_2026_INGRESO_100_.xlsx)
+// -------------------------------------------------------------
+function sincronizarExcelUsuarioOficialCompleto() {
+    try {
+        const excelUserPath = path.join(ROOT_DIR, '23-OCT-_2026_INGRESO_100_.xlsx');
+        if (!fs.existsSync(excelUserPath)) return false;
+
+        const wb = XLSX.readFile(excelUserPath);
+        const movs = db.prepare("SELECT * FROM movimientos WHERE tipo = 'Ingreso' ORDER BY CAST(REPLACE(REPLACE(comprobante, 'N°', ''), ' ', '') AS INTEGER) ASC").all();
+
+        const progSheetMap = {
+            'Corte y Ensamblaje': { sheet: 'CORTE ENSAMBL', prog: 'CORTE ENSAMBL..' },
+            'Computación e Informática': { sheet: 'COMPUTACION INFORMATICA', prog: 'COMPUTACION INFORMATICA' },
+            'Mecánica de Motos': { sheet: 'MOTOS', prog: 'MOTOS' },
+            'Mecánica de Motos y Vehículo Afines': { sheet: 'MOTOS', prog: 'MOTOS' },
+            'Mecánica de Motos y Vehículos Afines': { sheet: 'MOTOS', prog: 'MOTOS' },
+            'Electricidad y Electrónica': { sheet: 'ELECTRONICA', prog: 'ELECTRONICA' },
+            'Mantenimiento de Sistemas Eléctricos': { sheet: 'ELECTRONICA', prog: 'ELECTRONICA' },
+            'Carpintería Metálica': { sheet: 'CARPINTERIA METALICA', prog: 'CARPINTERIA METALICA' },
+            'Peluquería y Barbería': { sheet: 'PELUQUERIA Y BARBERIA', prog: 'PELUQUERIA  Y BARBERIA' },
+            'Mecánica Automotriz': { sheet: 'AUTOMOTORIZ', prog: 'AUTOMOTORIZ' },
+            'Sin Asignar (Pendiente)': { sheet: 'SIN PROGRAMA', prog: 'SIN PROGRAMA' }
+        };
+
+        const generalData = [
+            ['CETPRO "MICAELA BASTIDAS " 2026 INGRESOS RECURSOS PROPIOS'],
+            [],
+            [],
+            ['N° RECIBO', 'FECHA', 'APELLIDOS NOMBRES', 'PROGRAMA DE ESTUDIO', 'MONTO', 'MODULO', 'TURNO', 'DNI', 'N° CEL.', 'OBSERV. ']
+        ];
+
+        const perSheetData = {};
+        for (const sName of Object.values(progSheetMap).map(x => x.sheet)) {
+            perSheetData[sName] = [
+                ['CETPRO "MICAELA BASTIDAS " 2026 INGRESOS RECURSOS PROPIOS'],
+                [],
+                [],
+                ['N° RECIBO', 'FECHA', 'APELLIDOS NOMBRES', 'PROGRAMA DE ESTUDIO', 'MONTO', 'MODULO', 'TURNO', 'DNI', 'N° CEL.', 'OBSERV. ']
+            ];
+        }
+
+        for (const m of movs) {
+            const nro = parseInt(m.comprobante, 10) || m.id;
+            let fecha = m.fecha;
+            let nom = m.nombre;
+            const mapping = progSheetMap[m.carrera] || { sheet: 'SIN PROGRAMA', prog: m.carrera || 'SIN PROGRAMA' };
+            let prog = mapping.prog;
+
+            if (m.estado === 'Anulado') {
+                nom = nom.includes('ANULADO') ? nom : (nom + ' (ANULADO)');
+                prog = 'ANULADO';
+            }
+            const monto = m.monto;
+            const modulo = m.concepto && m.concepto.toUpperCase().includes('MODULO') ? m.concepto : 'MODULO  I';
+            const turno = (m.turno || '').toUpperCase();
+            const dni = m.dni || '';
+            const cel = m.telefono || '';
+            const obs = m.notas || '';
+
+            const row = [nro, fecha, nom, prog, monto, modulo, turno, dni, cel, obs];
+            generalData.push(row);
+
+            const sName = mapping.sheet;
+            if (perSheetData[sName]) {
+                perSheetData[sName].push(row);
+            }
+        }
+
+        const lastNro = movs.length > 0 ? (parseInt(movs[movs.length - 1].comprobante, 10) || 810) : 810;
+        for (let i = 1; i <= 10; i++) {
+            generalData.push([lastNro + i, '', '', '', '', '', '', '', '', '']);
+        }
+
+        wb.Sheets['RECAUDOS  INGRESOS CETPRO MICAE'] = XLSX.utils.aoa_to_sheet(generalData);
+
+        for (const [sName, sRows] of Object.entries(perSheetData)) {
+            if (wb.Sheets[sName]) {
+                wb.Sheets[sName] = XLSX.utils.aoa_to_sheet(sRows);
+            }
+        }
+
+        XLSX.writeFile(wb, excelUserPath);
+        return true;
+    } catch (e) {
+        console.warn('[SINCRONIZAR EXCEL USUARIO] Error:', e.message);
+        return false;
+    }
+}
+
+
 function obtenerConfiguracion() {
     try {
         const rows = db.prepare("SELECT clave, valor FROM configuracion").all();
@@ -145,7 +287,14 @@ function guardarConfiguracion(datos) {
 function parseBody(req) {
     return new Promise((resolve, reject) => {
         let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
+        const MAX_BODY = 10 * 1024 * 1024; // 10MB límite para evitar denegación de servicio
+        req.on('data', chunk => {
+            body += chunk.toString();
+            if (body.length > MAX_BODY) {
+                req.destroy();
+                reject(new Error('Payload Too Large'));
+            }
+        });
         req.on('end', () => {
             try {
                 resolve(body ? JSON.parse(body) : {});
@@ -173,7 +322,11 @@ function sendJSON(res, data, status = 200) {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-XSS-Protection': '1; mode=block',
+        'Referrer-Policy': 'strict-origin-when-cross-origin'
     });
     res.end(JSON.stringify(data));
 }
@@ -329,19 +482,112 @@ function generarLibroExcelActualizado() {
     }
     XLSX.utils.book_append_sheet(wb, wsGrps, 'SECCIONES');
 
+    // 6. Hoja OFICIAL INGRESOS RECURSOS PROPIOS (Estructura idéntica al archivo oficial de talonario)
+    const recursosPropiosAOA = [
+        ['CETPRO "MICAELA BASTIDAS " 2026 INGRESOS RECURSOS PROPIOS'],
+        [],
+        [],
+        ['N° RECIBO', 'FECHA', 'APELLIDOS NOMBRES', 'PROGRAMA DE ESTUDIO', 'MONTO', 'MODULO', 'TURNO', 'DNI', 'N° CEL.', 'OBSERV.']
+    ];
+    const recMovs = db.prepare(`
+        SELECT 
+            m.comprobante,
+            m.fecha,
+            m.nombre,
+            m.carrera,
+            m.monto,
+            m.concepto,
+            m.turno,
+            e.dni,
+            e.telefono,
+            m.notas
+        FROM movimientos m
+        LEFT JOIN estudiantes e ON LOWER(TRIM(e.nombre)) = LOWER(TRIM(m.nombre))
+        WHERE m.tipo = 'Ingreso'
+        ORDER BY CAST(REPLACE(m.comprobante, 'N°', '') AS INTEGER) ASC, m.id ASC
+    `).all();
+
+    recMovs.forEach(r => {
+        let nro = r.comprobante ? parseInt(String(r.comprobante).replace(/\D/g, ''), 10) : '';
+        recursosPropiosAOA.push([
+            nro || r.comprobante,
+            r.fecha || '',
+            r.nombre || '',
+            (r.carrera || '').toUpperCase(),
+            r.monto || 0,
+            r.concepto || 'MODULO I',
+            (r.turno || '').toUpperCase(),
+            r.dni || '',
+            r.telefono || '',
+            r.notas || ''
+        ]);
+    });
+    const wsRecursos = XLSX.utils.aoa_to_sheet(recursosPropiosAOA);
+    XLSX.utils.book_append_sheet(wb, wsRecursos, 'RECURSOS_PROPIOS');
+
     return wb;
 }
+
+// =====================================================================
+// GESTOR DE CONCURRENCIA Y COLA BLINDADA DE ESCRITURA EN EXCEL (FASE 2)
+// =====================================================================
+let excelWriteQueuePending = false;
+let excelWriteRetryTimer = null;
+let excelWriteStats = {
+    totalWrites: 0,
+    successfulWrites: 0,
+    failedAttempts: 0,
+    lastWriteTime: null,
+    lastError: null,
+    isLocked: false
+};
 
 function guardarLibroExcelEnDisco() {
     try {
         const wb = generarLibroExcelActualizado();
-        if (wb && XLSX) {
-            const outPath = path.join(ROOT_DIR, 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx');
+        if (!wb || !XLSX) return null;
+
+        const outPath = path.join(ROOT_DIR, 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx');
+        
+        try {
             XLSX.writeFile(wb, outPath);
+            excelWriteStats.totalWrites++;
+            excelWriteStats.successfulWrites++;
+            excelWriteStats.lastWriteTime = new Date().toISOString();
+            excelWriteStats.lastError = null;
+            excelWriteStats.isLocked = false;
+            
+            if (excelWriteRetryTimer) {
+                clearTimeout(excelWriteRetryTimer);
+                excelWriteRetryTimer = null;
+            }
+            excelWriteQueuePending = false;
+            try { sincronizarExcelUsuarioOficialCompleto(); } catch(e) { console.error(e); }
             return outPath;
+        } catch (fileErr) {
+            excelWriteStats.failedAttempts++;
+            excelWriteStats.lastError = fileErr.message;
+            excelWriteStats.isLocked = (fileErr.code === 'EBUSY' || fileErr.code === 'EPERM');
+            
+            console.warn(`[CONCURRENCIA EXCEL] Archivo bloqueado o en uso (${fileErr.code || fileErr.message}). Guardando copia de contingencia y reintentando automáticamente en 3s...`);
+            
+            try {
+                const tempPath = path.join(ROOT_DIR, 'CEPRO_Control_MICAELA_BASTIDAS_PENDIENTE.xlsx');
+                XLSX.writeFile(wb, tempPath);
+            } catch (e) {}
+
+            if (!excelWriteRetryTimer) {
+                excelWriteQueuePending = true;
+                excelWriteRetryTimer = setTimeout(() => {
+                    excelWriteRetryTimer = null;
+                    console.log('[CONCURRENCIA EXCEL] Reintentando escritura en Excel...');
+                    guardarLibroExcelEnDisco();
+                }, 3000);
+            }
+            return null;
         }
     } catch (err) {
-        console.error('Error al guardar Excel en disco:', err);
+        console.error('Error al generar o guardar Excel en disco:', err);
     }
     return null;
 }
@@ -446,13 +692,31 @@ const server = http.createServer(async (req, res) => {
 
     try {
         // -------------------------------------------------------------
-        // 1. SERVIR ARCHIVOS ESTÁTICOS (/public/img/...)
+        // 1. SERVIR ARCHIVOS ESTÁTICOS (/public/img/...) CON BLINDAJE PATH TRAVERSAL
         // -------------------------------------------------------------
         if (pathname.startsWith('/public/')) {
-            let filePath = path.join(ROOT_DIR, pathname);
-            if (!fs.existsSync(filePath)) {
-                filePath = path.join(__dirname, pathname);
+            const publicDir = path.normalize(path.join(ROOT_DIR, 'public'));
+            const resolvedPath = path.normalize(path.join(ROOT_DIR, pathname));
+
+            // Protección estricta: asegurar que la ruta resuelta permanezca dentro del directorio /public/
+            if (!resolvedPath.startsWith(publicDir)) {
+                res.writeHead(403, { 
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'X-Content-Type-Options': 'nosniff',
+                    'X-Frame-Options': 'SAMEORIGIN'
+                });
+                res.end('Acceso denegado: Intento de Path Traversal bloqueado.');
+                return;
             }
+
+            let filePath = resolvedPath;
+            if (!fs.existsSync(filePath)) {
+                const altPath = path.normalize(path.join(__dirname, pathname));
+                if (altPath.startsWith(publicDir) && fs.existsSync(altPath)) {
+                    filePath = altPath;
+                }
+            }
+
             if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
                 const ext = path.extname(filePath).toLowerCase();
                 const mimeTypes = {
@@ -464,11 +728,20 @@ const server = http.createServer(async (req, res) => {
                     '.js': 'application/javascript',
                     '.ico': 'image/x-icon'
                 };
-                res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' });
+                res.writeHead(200, { 
+                    'Content-Type': mimeTypes[ext] || 'application/octet-stream',
+                    'X-Content-Type-Options': 'nosniff',
+                    'X-Frame-Options': 'SAMEORIGIN',
+                    'Cache-Control': 'public, max-age=86400'
+                });
                 fs.createReadStream(filePath).pipe(res);
                 return;
             } else {
-                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.writeHead(404, { 
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'X-Content-Type-Options': 'nosniff',
+                    'X-Frame-Options': 'SAMEORIGIN'
+                });
                 res.end('Archivo no encontrado');
                 return;
             }
@@ -618,10 +891,18 @@ const server = http.createServer(async (req, res) => {
             }
         }
 
-        // Eliminar un respaldo cuando el usuario ya no lo necesite
+        // Eliminar un respaldo cuando el usuario ya no lo necesite (Validación estricta de seguridad)
         if (pathname.startsWith('/api/backups/') && method === 'DELETE') {
-            const fileName = path.basename(pathname.replace('/api/backups/', ''));
-            const filePath = path.join(BACKUPS_DIR, fileName);
+            const rawParam = pathname.replace('/api/backups/', '');
+            const fileName = path.basename(rawParam);
+            const allowedExts = ['.db', '.xlsx', '.csv'];
+            const fileExt = path.extname(fileName).toLowerCase();
+            const filePath = path.normalize(path.join(BACKUPS_DIR, fileName));
+
+            if (!allowedExts.includes(fileExt) || !filePath.startsWith(path.normalize(BACKUPS_DIR))) {
+                sendJSON(res, { error: "Parámetro de archivo no válido o restringido." }, 400);
+                return;
+            }
 
             if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
                 fs.unlinkSync(filePath);
@@ -1026,7 +1307,41 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             let csv = '\uFEFF';
             let filename = 'Hoja_CETPRO.csv';
 
-            if (sheet === 'estudiantes') {
+            if (sheet === 'control-pagos') {
+                filename = 'Hoja_CONTROL_PAGOS_CETPRO_2026.csv';
+                csv += "CETPRO SAN MIGUEL · MICAELA BASTIDAS PUYUCAMA\r\n";
+                csv += "CONTROL DE PAGOS POR MES (MATRIZ ENERO A DICIEMBRE 2026)\r\n\r\n";
+                csv += "N°,DNI,Estudiante,Grupo / Sección,Matrícula,Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Set,Oct,Nov,Dic,Total Pagado (S/.),Deuda (S/.)\r\n";
+                const ests = db.prepare("SELECT * FROM estudiantes ORDER BY id ASC").all();
+                ests.forEach((e, idx) => {
+                    const pagosEst = db.prepare("SELECT monto, concepto, fecha FROM movimientos WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(?)) AND tipo = 'Ingreso' AND estado = 'Pagado'").all(e.nombre);
+                    const totalPag = pagosEst.reduce((acc, p) => acc + (p.monto || 0), 0);
+                    const cuotaBase = 150;
+                    const deuda = Math.max(0, cuotaBase - totalPag);
+                    const tieneMat = pagosEst.some(p => (p.concepto || '').toLowerCase().includes('matr') || (p.concepto || '').toLowerCase().includes('mantenimiento')) ? 'SI' : '-';
+                    const mes = (m) => pagosEst.some(p => {
+                        const f = p.fecha || '';
+                        return f.includes('-' + String(m).padStart(2, '0') + '-');
+                    }) ? 'PAGADO' : '-';
+                    csv += `"${idx + 1}","${e.dni || e.codigo || '-'}","${e.nombre}","${e.grupo || '-'}","${tieneMat}","${mes(1)}","${mes(2)}","${mes(3)}","${mes(4)}","${mes(5)}","${mes(6)}","${mes(7)}","${mes(8)}","${mes(9)}","${mes(10)}","${mes(11)}","${mes(12)}",${totalPag.toFixed(2)},${deuda.toFixed(2)}\r\n`;
+                });
+            } else if (sheet === 'diario') {
+                const fParam = parsedUrl.searchParams.get('fecha') || new Date().toISOString().split('T')[0];
+                filename = `Hoja_DIARIO_Y_NOTAS_${fParam}_CETPRO.csv`;
+                csv += "CETPRO SAN MIGUEL · MICAELA BASTIDAS PUYUCAMA\r\n";
+                csv += `DIARIO DE CAJA Y BITÁCORA DE CLASE - FECHA: ${fParam}\r\n\r\n`;
+                csv += "N° Recibo,Estudiante / Persona,Grupo / Especialidad,Encargado de Clase,Concepto / Nota,Monto (S/.),Método\r\n";
+                const movs = db.prepare("SELECT * FROM movimientos WHERE fecha = ? ORDER BY id DESC").all(fParam);
+                movs.forEach(m => {
+                    csv += `"REC-${String(m.id).padStart(5, '0')}","${m.nombre}","${m.grupo || '-'}","${m.encargado || '-'}","${m.concepto}",${m.monto.toFixed(2)},"${m.metodo_pago || 'Efectivo'}"\r\n`;
+                });
+                csv += "\r\n\r\nBITÁCORA OFICIAL DE NOTAS Y ACTIVIDADES PEDAGÓGICAS (HOJA NOTAS)\r\n";
+                csv += "Código Grupo,Especialidad / Grupo,Docente Encargado(a),Actividad Realizada / Tema Desarrollado,Observaciones Pedagógicas\r\n";
+                const grupos = db.prepare("SELECT * FROM grupos ORDER BY id ASC").all();
+                grupos.forEach((g, idx) => {
+                    csv += `"G${String(idx + 1).padStart(2, '0')}","${g.nombre}","${g.encargado || '-'}","Práctica y avance modular de taller","Asistencia y desarrollo de actividades al día"\r\n`;
+                });
+            } else if (sheet === 'estudiantes') {
                 filename = 'Hoja_ESTUDIANTES_CETPRO.csv';
                 csv += "CEPRO MICAELA BASTIDAS  ·  ESTUDIANTES\r\n";
                 csv += "Nómina Oficial y Control de Pagos\r\n\r\n";
@@ -1126,13 +1441,33 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
 
             const movsDelDia = db.prepare("SELECT * FROM movimientos WHERE fecha = ? ORDER BY id DESC").all(fecha);
 
+            const metodos = db.prepare(`
+                SELECT COALESCE(metodo_pago, 'Efectivo') as metodo, COALESCE(SUM(monto), 0) as total, COUNT(*) as count 
+                FROM movimientos 
+                WHERE fecha = ? AND tipo = 'Ingreso' AND estado = 'Pagado'
+                GROUP BY metodo_pago
+            `).all(fecha);
+
+            let totalEfectivo = 0, totalYape = 0, totalTransf = 0;
+            metodos.forEach(m => {
+                const met = (m.metodo || '').toLowerCase();
+                if (met.includes('yape') || met.includes('plin') || met.includes('digital')) totalYape += m.total;
+                else if (met.includes('transf') || met.includes('banc') || met.includes('depósito')) totalTransf += m.total;
+                else totalEfectivo += m.total;
+            });
+
             sendJSON(res, {
                 fecha,
                 ingresos: ingRow ? ingRow.total : 0,
                 pagos_count: ingRow ? ingRow.count : 0,
                 egresos: egrRow ? egrRow.total : 0,
                 saldo: (ingRow ? ingRow.total : 0) - (egrRow ? egrRow.total : 0),
-                movimientos: movsDelDia
+                movimientos: movsDelDia,
+                desglose_metodos: {
+                    efectivo: totalEfectivo,
+                    yape: totalYape,
+                    transferencia: totalTransf
+                }
             });
             return;
         }
@@ -1140,6 +1475,201 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
         // -------------------------------------------------------------
         // 5. API: STATS GENERALES Y DASHBOARD
         // -------------------------------------------------------------
+        // -------------------------------------------------------------
+        // ENDPOINT: SALUD E INTEGRIDAD DEL SISTEMA (FASE 1 Y 2)
+        // -------------------------------------------------------------
+        if (pathname === '/api/sistema/diagnostico-completo' && method === 'GET') {
+            try {
+                const pragma = db.prepare('PRAGMA integrity_check').get();
+                const totalMovs = db.prepare("SELECT count(*) as c, COALESCE(SUM(monto), 0) as sum FROM movimientos WHERE tipo = 'Ingreso' AND estado = 'Pagado'").get();
+                const totalEst = db.prepare('SELECT count(*) as c FROM estudiantes').get().c;
+                const totalDoc = db.prepare('SELECT count(*) as c FROM docentes').get().c;
+                const totalGrp = db.prepare('SELECT count(*) as c FROM grupos').get().c;
+                const totalCarr = db.prepare('SELECT count(*) as c FROM carreras').get().c;
+
+                const excelPath = path.join(__dirname, 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx');
+                const excelExists = fs.existsSync(excelPath);
+                let excelStats = { existe: excelExists, hojas: [] };
+                if (excelExists) {
+                    const wb = XLSX.readFile(excelPath);
+                    excelStats.hojas = wb.SheetNames;
+                    excelStats.estudiantesCount = wb.Sheets['ESTUDIANTES'] ? XLSX.utils.sheet_to_json(wb.Sheets['ESTUDIANTES']).length : 0;
+                }
+
+                const backupsDir = path.join(__dirname, 'backups');
+                let backupCount = 0;
+                if (fs.existsSync(backupsDir)) {
+                    backupCount = fs.readdirSync(backupsDir).filter(f => f.endsWith('.db')).length;
+                }
+
+                sendJSON(res, {
+                    orquestacion: 'EXITOSA',
+                    estado: 'OPTIMO',
+                    timestamp: new Date().toISOString(),
+                    base_de_datos: {
+                        integridad: pragma.integrity_check || 'ok',
+                        movimientos: totalMovs.c,
+                        total_recaudado: totalMovs.sum,
+                        estudiantes: totalEst,
+                        docentes: totalDoc,
+                        grupos: totalGrp,
+                        carreras: totalCarr
+                    },
+                    excel_oficial: excelStats,
+                    respaldos: {
+                        total_archivos: backupCount,
+                        directorio: backupsDir
+                    },
+                    servidor: {
+                        uptime_segundos: Math.floor(process.uptime()),
+                        memoria_mb: Math.round(process.memoryUsage().rss / 1024 / 1024),
+                        node_version: process.version
+                    }
+                });
+            } catch (err) {
+                sendJSON(res, { estado: 'ERROR', error: err.message }, 500);
+            }
+            return;
+        }
+
+        if (pathname === '/api/sistema/salud-integridad' && method === 'GET') {
+            try {
+                const integrityRow = db.prepare("PRAGMA integrity_check").get();
+                const totalMovs = db.prepare("SELECT COUNT(*) as c FROM movimientos").get().c;
+                const totalEst = db.prepare("SELECT COUNT(*) as c FROM estudiantes").get().c;
+                const totalDoc = db.prepare("SELECT COUNT(*) as c FROM docentes").get().c;
+                const totalCarr = db.prepare("SELECT COUNT(*) as c FROM carreras").get().c;
+                const totalGrup = db.prepare("SELECT COUNT(*) as c FROM grupos").get().c;
+                const totalIngresos = db.prepare("SELECT COALESCE(SUM(monto), 0) as s FROM movimientos WHERE tipo = 'Ingreso' AND estado = 'Pagado'").get().s;
+                
+                const excelPath = path.join(ROOT_DIR, 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx');
+                const excelExists = fs.existsSync(excelPath);
+                let excelSize = 0;
+                let excelMtime = null;
+                if (excelExists) {
+                    const st = fs.statSync(excelPath);
+                    excelSize = st.size;
+                    excelMtime = st.mtime.toISOString();
+                }
+
+                const backupFiles = fs.existsSync(BACKUPS_DIR) ? fs.readdirSync(BACKUPS_DIR).filter(f => f.endsWith('.db')) : [];
+                const dbPath = path.join(ROOT_DIR, 'caja_institucional.db');
+                const dbHash = fs.existsSync(dbPath) ? calcSHA256(dbPath) : null;
+
+                sendJSON(res, {
+                    ok: true,
+                    timestamp: new Date().toISOString(),
+                    sqlite: {
+                        estado: (integrityRow && integrityRow.integrity_check === 'ok') ? 'OPTIMO' : 'REVISAR',
+                        integrity_check: integrityRow ? integrityRow.integrity_check : 'error',
+                        sha256: dbHash,
+                        registros: {
+                            movimientos: totalMovs,
+                            estudiantes: totalEst,
+                            docentes: totalDoc,
+                            carreras: totalCarr,
+                            grupos: totalGrup
+                        },
+                        total_recaudado: totalIngresos
+                    },
+                    excel: {
+                        ruta: 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx',
+                        existe: excelExists,
+                        tamano_bytes: excelSize,
+                        ultima_modificacion: excelMtime,
+                        estadisticas_escritura: excelWriteStats,
+                        cola_pendiente: excelWriteQueuePending
+                    },
+                    respaldos: {
+                        total_snapshots: backupFiles.length,
+                        carpeta: 'backups/'
+                    }
+                });
+            } catch (err) {
+                sendJSON(res, { ok: false, error: err.message }, 500);
+            }
+            return;
+        }
+
+        // -------------------------------------------------------------
+        // ENDPOINT: ARQUEO DIARIO DE CAJA OFICIAL (FASE 3)
+        // -------------------------------------------------------------
+        if (pathname === '/api/reportes/arqueo-diario' && method === 'GET') {
+            try {
+                const hoyStr = new Date().toISOString().slice(0, 10);
+                const fechaFiltro = parsedUrl.searchParams.get('fecha') || hoyStr;
+
+                const saldoAntRow = db.prepare(`
+                    SELECT 
+                        COALESCE(SUM(CASE WHEN tipo = 'Ingreso' AND estado = 'Pagado' THEN monto ELSE 0 END), 0) -
+                        COALESCE(SUM(CASE WHEN tipo = 'Egreso' AND estado = 'Pagado' THEN monto ELSE 0 END), 0) as saldo_anterior
+                    FROM movimientos 
+                    WHERE fecha < ?
+                `).get(fechaFiltro);
+                const saldoAnterior = saldoAntRow ? Number(saldoAntRow.saldo_anterior) : 0;
+
+                const movsDia = db.prepare(`
+                    SELECT id, fecha, comprobante, nombre, dni, rol, carrera, grupo, tipo, concepto, monto, metodo_pago, estado, notas
+                    FROM movimientos
+                    WHERE fecha = ? AND estado = 'Pagado'
+                    ORDER BY id ASC
+                `).all(fechaFiltro);
+
+                const ingresos = movsDia.filter(m => m.tipo === 'Ingreso');
+                const egresos = movsDia.filter(m => m.tipo === 'Egreso');
+
+                const totalIngresosDia = ingresos.reduce((acc, m) => acc + Number(m.monto || 0), 0);
+                const totalEgresosDia = egresos.reduce((acc, m) => acc + Number(m.monto || 0), 0);
+                const netoDia = totalIngresosDia - totalEgresosDia;
+                const saldoCierre = saldoAnterior + netoDia;
+
+                let rem = totalIngresosDia;
+                const denom = [200, 100, 50, 20, 10, 5, 2, 1, 0.5];
+                const desglose = denom.map(d => {
+                    const cant = Math.floor(rem / d);
+                    const sub = cant * d;
+                    rem = Number((rem - sub).toFixed(2));
+                    return {
+                        denominacion: d >= 10 ? `Billete S/ ${d}` : `Moneda S/ ${d.toFixed(2)}`,
+                        valor: d,
+                        cantidad_sugerida: cant,
+                        subtotal: Number(sub.toFixed(2))
+                    };
+                });
+
+                const conf = obtenerConfiguracion();
+
+                sendJSON(res, {
+                    ok: true,
+                    institucion: conf.nombre_institucion || "CETPRO SAN MIGUEL · MICAELA BASTIDAS PUYUCAMA",
+                    ugel: conf.ugel || "UGEL SAN ROMÁN - JULIACA",
+                    fecha: fechaFiltro,
+                    saldo_anterior: Number(saldoAnterior.toFixed(2)),
+                    ingresos_dia: {
+                        total: Number(totalIngresosDia.toFixed(2)),
+                        cantidad_recibos: ingresos.length,
+                        detalle: ingresos
+                    },
+                    egresos_dia: {
+                        total: Number(totalEgresosDia.toFixed(2)),
+                        cantidad_movimientos: egresos.length,
+                        detalle: egresos
+                    },
+                    saldo_cierre_dia: Number(saldoCierre.toFixed(2)),
+                    efectivo_dia_neto: Number(netoDia.toFixed(2)),
+                    desglose_efectivo_sugerido: desglose,
+                    firmas: {
+                        tesorero: conf.tesorero || "Sello y Firma del Tesorero",
+                        recaudador: conf.recaudador || "Sello y Firma del Recaudador",
+                        director: conf.director || "Dirección General CETPRO"
+                    }
+                });
+            } catch (err) {
+                sendJSON(res, { ok: false, error: err.message }, 500);
+            }
+            return;
+        }
+
         if (pathname === '/api/stats' && method === 'GET') {
             const hoy = new Date();
             const yearStr = parsedUrl.searchParams.get('year') || String(hoy.getFullYear());
@@ -1292,6 +1822,18 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
         // -------------------------------------------------------------
         // 6. API: MOVIMIENTOS DE CAJA (GET, POST, DELETE)
         // -------------------------------------------------------------
+        if (pathname === '/api/movimientos/proximo-comprobante' && method === 'GET') {
+            const rowMax = db.prepare("SELECT MAX(CAST(REPLACE(REPLACE(comprobante, 'N°', ''), ' ', '') AS INTEGER)) as max_nro FROM movimientos WHERE comprobante IS NOT NULL").get();
+            const nextNro = ((rowMax && rowMax.max_nro) ? rowMax.max_nro : 810) + 1;
+            const proximo = String(nextNro).padStart(7, '0');
+            sendJSON(res, {
+                proximo_comprobante: proximo,
+                siguiente_numero: nextNro,
+                total_movimientos: db.prepare("SELECT count(*) as c FROM movimientos").get().c
+            });
+            return;
+        }
+
         if (pathname === '/api/movimientos' && method === 'GET') {
             const tipo = parsedUrl.searchParams.get('tipo');
             const rol = parsedUrl.searchParams.get('rol');
@@ -1346,15 +1888,16 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             const montoAbonado = parseFloat(data.monto_abonado || 0);
             const metodo = data.metodo_pago || 'Efectivo';
             const vencimiento = data.fecha_vencimiento || '';
-            const comprobante = data.comprobante || '';
+            let comprobante = (data.comprobante || '').trim();
+            const rowMax = db.prepare("SELECT MAX(CAST(REPLACE(REPLACE(comprobante, 'N°', ''), ' ', '') AS INTEGER)) as max_nro FROM movimientos WHERE comprobante IS NOT NULL").get();
+            const nextNro = ((rowMax && rowMax.max_nro) ? rowMax.max_nro : 807) + 1;
+            if (!comprobante && tipo === 'Ingreso') {
+                comprobante = String(nextNro).padStart(7, '0');
+            }
             const notas = data.notas || '';
-
-            const stmt = db.prepare(`
-                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, monto_total, monto_abonado, metodo_pago, fecha_vencimiento, comprobante, notas)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `);
-            const info = stmt.run(fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, montoTotal, montoAbonado, metodo, vencimiento, comprobante, notas);
-            const newId = Number(info.lastInsertRowid);
+            let dni = (data.dni || '').trim();
+            let turno = (data.turno || '').trim();
+            let telefono = (data.telefono || data.celular || '').trim();
 
             if (rol === 'Docente' && nombre) {
                 const exist = db.prepare("SELECT id FROM docentes WHERE LOWER(nombre) = LOWER(?)").get(nombre);
@@ -1364,10 +1907,45 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             }
 
             if (rol === 'Estudiante' && nombre) {
-                const exist = db.prepare("SELECT id FROM estudiantes WHERE LOWER(nombre) = LOWER(?)").get(nombre);
-                if (!exist) {
-                    const cod = `EST-${new Date().getFullYear()}-${String(newId).padStart(3, '0')}`;
-                    db.prepare("INSERT INTO estudiantes (codigo, nombre, carrera, grupo) VALUES (?, ?, ?, ?)").run(cod, nombre, carrera, grupo);
+                const exist = db.prepare("SELECT * FROM estudiantes WHERE LOWER(nombre) = LOWER(?)").get(nombre);
+                if (exist) {
+                    if (!dni && exist.dni) dni = exist.dni;
+                    if (!turno && exist.turno) turno = exist.turno;
+                    if (!telefono && exist.telefono) telefono = exist.telefono;
+                    if (dni && !exist.dni) {
+                        db.prepare("UPDATE estudiantes SET dni = ? WHERE id = ?").run(dni, exist.id);
+                    }
+                    if (turno && !exist.turno) {
+                        db.prepare("UPDATE estudiantes SET turno = ? WHERE id = ?").run(turno, exist.id);
+                    }
+                    if (telefono && !exist.telefono) {
+                        db.prepare("UPDATE estudiantes SET telefono = ? WHERE id = ?").run(telefono, exist.id);
+                    }
+                    if (notas) {
+                        db.prepare("UPDATE estudiantes SET notas = ? WHERE id = ?").run(notas, exist.id);
+                    }
+                } else {
+                    const cod = `EST-${new Date().getFullYear()}-${String(nextNro).padStart(3, '0')}`;
+                    db.prepare("INSERT INTO estudiantes (codigo, nombre, carrera, grupo, dni, turno, telefono, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)").run(cod, nombre, carrera, grupo, dni, turno, telefono, notas || '');
+                }
+            }
+
+            const stmt = db.prepare(`
+                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, monto_total, monto_abonado, metodo_pago, fecha_vencimiento, comprobante, notas, dni, turno)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+            const info = stmt.run(fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, montoTotal, montoAbonado, metodo, vencimiento, comprobante, notas, dni, turno);
+            const newId = Number(info.lastInsertRowid);
+
+            // Actualizar deuda_id si proviene de cobranza de cuota
+            if (data.deuda_id) {
+                const deudaId = parseInt(data.deuda_id, 10);
+                const dRecord = db.prepare("SELECT * FROM deudas_estudiantes WHERE id = ?").get(deudaId);
+                if (dRecord) {
+                    const nuevoPendiente = Math.max(0, dRecord.monto_pendiente - monto);
+                    const nuevoAbonado = dRecord.monto_abonado + monto;
+                    const nuevoEstado = nuevoPendiente <= 0 ? 'Pagado' : 'Pendiente';
+                    db.prepare("UPDATE deudas_estudiantes SET monto_pendiente = ?, monto_abonado = ?, estado = ? WHERE id = ?").run(nuevoPendiente, nuevoAbonado, nuevoEstado, deudaId);
                 }
             }
 
@@ -1375,12 +1953,21 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             guardarLibroExcelEnDisco();
             generarRespaldoCompleto('Auto_Mov_' + newId);
 
-            sendJSON(res, { success: true, id: newId, message: "Movimiento registrado con éxito y guardado en Excel" });
+            sendJSON(res, { success: true, id: newId, comprobante: comprobante, fecha: fecha, monto: monto, nombre: nombre, message: "Movimiento registrado con éxito y guardado en Excel" });
             return;
         }
 
         if (pathname.startsWith('/api/movimientos/') && method === 'DELETE') {
             const movId = parseInt(pathname.split('/')[3], 10);
+            if (isNaN(movId) || movId <= 0) {
+                sendJSON(res, { error: "ID de movimiento inválido" }, 400);
+                return;
+            }
+            const mov = db.prepare("SELECT id FROM movimientos WHERE id = ?").get(movId);
+            if (!mov) {
+                sendJSON(res, { error: "Movimiento no encontrado" }, 404);
+                return;
+            }
             db.prepare("DELETE FROM movimientos WHERE id = ?").run(movId);
             db.prepare("DELETE FROM abonos WHERE movimiento_id = ?").run(movId);
             guardarLibroExcelEnDisco();
@@ -1558,9 +2145,10 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             }
 
             // 3. Insertar movimiento de ingreso en 'movimientos'
+            const encargadoDocente = (data.docente || data.encargado || '').trim();
             const infoMov = db.prepare(`
-                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, concepto, monto, monto_total, monto_abonado, metodo_pago, comprobante, notas, grupo, dni, turno)
-                VALUES (?, 'Ingreso', 'Pagado', 'Estudiante', ?, ?, ?, ?, ?, ?, 'Efectivo', ?, ?, ?, ?, ?)
+                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, concepto, monto, monto_total, monto_abonado, metodo_pago, comprobante, notas, grupo, dni, turno, encargado)
+                VALUES (?, 'Ingreso', 'Pagado', 'Estudiante', ?, ?, ?, ?, ?, ?, 'Efectivo', ?, ?, ?, ?, ?, ?)
             `).run(
                 fechaEmision,
                 nombreTrim,
@@ -1573,7 +2161,8 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 notasFinal,
                 grupoFinal,
                 dni || '',
-                turnoFinal
+                turnoFinal,
+                encargadoDocente || 'General'
             );
 
             const movId = infoMov.lastInsertRowid;
@@ -1687,28 +2276,30 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             return;
         }
 
-        // Modificar Sección / Grupo y su Turno
+        // Modificar Sección / Grupo, Turno y Docente Encargado
         if (((pathname.match(/^\/api\/grupos\/(\d+)$/) && (method === 'PUT' || method === 'POST')) ||
-             (pathname.match(/^\/api\/grupos\/(\d+)\/editar$/) && method === 'POST'))) {
+             (pathname.match(/^\/api\/grupos\/(\d+)\/editar$/) && method === 'POST') ||
+             (pathname.match(/^\/api\/grupos\/(\d+)\/encargado$/) && method === 'POST'))) {
             const grupoId = parseInt(pathname.split('/')[3], 10);
             const data = await parseBody(req);
-            const nombre = (data.nombre || '').trim();
-            const carrera = (data.carrera || '').trim();
-            const encargado = (data.encargado || '').trim();
-            const turno = (data.turno || 'Mañana').trim();
-            const horario = (data.horario || '').trim();
-            const aula = (data.aula_taller || '').trim();
-            const desc = (data.descripcion || '').trim();
-
-            if (!nombre) {
-                sendJSON(res, { error: "El nombre del grupo o sección es obligatorio" }, 400);
-                return;
-            }
-
+            
             try {
                 const oldGrupo = db.prepare("SELECT * FROM grupos WHERE id = ?").get(grupoId);
                 if (!oldGrupo) {
                     sendJSON(res, { error: "Sección no encontrada" }, 404);
+                    return;
+                }
+
+                const nombre = (data.nombre !== undefined ? String(data.nombre) : oldGrupo.nombre).trim();
+                const carrera = (data.carrera !== undefined ? String(data.carrera) : oldGrupo.carrera).trim();
+                const encargado = (data.encargado !== undefined ? String(data.encargado) : oldGrupo.encargado).trim();
+                const turno = (data.turno !== undefined ? String(data.turno) : oldGrupo.turno).trim();
+                const horario = (data.horario !== undefined ? String(data.horario) : oldGrupo.horario || '').trim();
+                const aula = (data.aula_taller !== undefined ? String(data.aula_taller) : oldGrupo.aula_taller || '').trim();
+                const desc = (data.descripcion !== undefined ? String(data.descripcion) : oldGrupo.descripcion || '').trim();
+
+                if (!nombre) {
+                    sendJSON(res, { error: "El nombre del grupo o sección es obligatorio" }, 400);
                     return;
                 }
 
@@ -1718,18 +2309,25 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     WHERE id = ?
                 `).run(nombre, carrera, encargado, turno, horario, aula, desc, grupoId);
 
+                // Si cambió el encargado, actualizar en los movimientos de ese grupo
+                if (encargado && oldGrupo.encargado !== encargado) {
+                    db.prepare("UPDATE movimientos SET encargado = ? WHERE grupo = ?").run(encargado, nombre);
+                }
+
                 // Si cambió el nombre del grupo, mantener la integridad en estudiantes y movimientos
                 if (oldGrupo.nombre !== nombre) {
                     db.prepare("UPDATE estudiantes SET grupo = ? WHERE grupo = ?").run(nombre, oldGrupo.nombre);
                     db.prepare("UPDATE movimientos SET grupo = ? WHERE grupo = ?").run(nombre, oldGrupo.nombre);
                 }
 
-                // Si cambió el encargado, actualizar en los movimientos de ese grupo
-                if (encargado && oldGrupo.encargado !== encargado) {
-                    db.prepare("UPDATE movimientos SET encargado = ? WHERE grupo = ?").run(encargado, nombre);
-                }
+                guardarLibroExcelEnDisco();
+                generarRespaldoCompleto('Docente_Grupo_' + grupoId);
 
-                sendJSON(res, { success: true, message: "Sección y turno actualizados exitosamente" });
+                sendJSON(res, { 
+                    success: true, 
+                    message: `Docente encargado de "${nombre}" actualizado a "${encargado}" exitosamente`,
+                    grupo: { id: grupoId, nombre, carrera, encargado, turno }
+                });
             } catch (err) {
                 sendJSON(res, { error: "Error al actualizar sección: " + err.message }, 500);
             }
@@ -1798,7 +2396,10 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 qEst += " AND carrera = ?";
                 pEst.push(carrera);
             }
-            if (search) { qEst += " AND (LOWER(nombre) LIKE ? OR LOWER(codigo) LIKE ?)"; pEst.push(`%${search}%`, `%${search}%`); }
+            if (search) {
+                qEst += " AND (LOWER(nombre) LIKE ? OR LOWER(codigo) LIKE ? OR LOWER(COALESCE(dni, '')) LIKE ? OR LOWER(COALESCE(telefono, '')) LIKE ?)";
+                pEst.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+            }
             qEst += " ORDER BY nombre ASC";
 
             const estudiantes = db.prepare(qEst).all(...pEst);
@@ -1820,8 +2421,13 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 let tieneAbonosParciales = false;
                 const conceptosPendientes = [];
                 let diasMinimos = 999;
+                let ultimoComprobante = null;
+                const pagosPorMes = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 };
 
                 for (const m of movs) {
+                    if (m.comprobante && !ultimoComprobante) {
+                        ultimoComprobante = m.comprobante;
+                    }
                     const mTotal = m.monto_total || m.monto;
                     const mAbonado = m.monto_abonado || 0;
 
@@ -1831,6 +2437,33 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                         saldoPendiente += m.monto;
 
                         if (mAbonado > 0) tieneAbonosParciales = true;
+
+                        // Registrar pagos parciales / abonos en su mes correspondiente
+                        if (mAbonado > 0) {
+                            try {
+                                const abonosList = db.prepare("SELECT fecha, monto, comprobante FROM abonos WHERE movimiento_id = ?").all(m.id);
+                                if (abonosList.length > 0) {
+                                    for (const ab of abonosList) {
+                                        if (ab.fecha) {
+                                            const fP = ab.fecha.split('-');
+                                            if (fP.length >= 2) {
+                                                const mAb = parseInt(fP[1], 10);
+                                                if (mAb >= 1 && mAb <= 12) pagosPorMes[mAb] = Math.round(((pagosPorMes[mAb] || 0) + Number(ab.monto)) * 100) / 100;
+                                            }
+                                        }
+                                        if (ab.comprobante && !ultimoComprobante) ultimoComprobante = ab.comprobante;
+                                    }
+                                } else if (m.fecha) {
+                                    const fP = m.fecha.split('-');
+                                    if (fP.length >= 2) {
+                                        const mAb = parseInt(fP[1], 10);
+                                        if (mAb >= 1 && mAb <= 12) pagosPorMes[mAb] = Math.round(((pagosPorMes[mAb] || 0) + Number(mAbonado)) * 100) / 100;
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn("Error leyendo abonos para estudiante:", e.message);
+                            }
+                        }
 
                         const dias = m.dias_restantes;
                         let urg = 'sin_fecha';
@@ -1851,6 +2484,35 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     } else if (m.estado === 'Pagado' && m.tipo === 'Ingreso') {
                         totalComprometido += m.monto;
                         totalPagado += m.monto;
+
+                        // Si en notas indica saldo pendiente ("debe 50", "a cuenta", etc.)
+                        if (m.notas) {
+                            const nLow = m.notas.toLowerCase();
+                            if (nLow.includes('debe') || nLow.includes('a cuenta')) {
+                                const matchDebe = m.notas.match(/debe\s+(\d+(?:\.\d+)?)/i);
+                                const debeVal = matchDebe ? parseFloat(matchDebe[1]) : 50.0;
+                                saldoPendiente += debeVal;
+                                totalComprometido += debeVal;
+                                tieneAbonosParciales = true;
+                                m.urgencia = 'alerta';
+                                conceptosPendientes.push({
+                                    ...m,
+                                    monto: debeVal,
+                                    concepto: `Saldo Pendiente / Debe S/. ${debeVal.toFixed(2)}: ${m.concepto}`
+                                });
+                            }
+                        }
+
+                        // Registro de pago en el mes real de la fecha
+                        if (m.fecha) {
+                            const fP = m.fecha.split('-');
+                            if (fP.length >= 2) {
+                                const mNum = parseInt(fP[1], 10);
+                                if (mNum >= 1 && mNum <= 12) {
+                                    pagosPorMes[mNum] = Math.round(((pagosPorMes[mNum] || 0) + Number(m.monto)) * 100) / 100;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -1892,11 +2554,20 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     msgUrgencia = `En plazo (${diasMinimos} días)`;
                 }
 
-                if (estadoFiltro && estadoFinanciero !== estadoFiltro) continue;
+                if (estadoFiltro === 'pendiente') {
+                    const esSinAsignar = !est.carrera || est.carrera.trim() === '' || est.carrera === 'Sin Asignar' || est.carrera.includes('Pendiente');
+                    const tieneDeuda = saldoPendiente > 0 || (est.notas && (est.notas.toLowerCase().includes('debe') || est.notas.toLowerCase().includes('cuenta')));
+                    if (!tieneDeuda && !esSinAsignar && estadoFinanciero === 'al_dia') continue;
+                } else if (estadoFiltro === 'anulado') {
+                    continue;
+                } else if (estadoFiltro && estadoFinanciero !== estadoFiltro) {
+                    continue;
+                }
 
                 resultados.push({
                     id: est.id,
                     codigo: est.codigo || `EST-${est.id}`,
+                    ultimo_comprobante: ultimoComprobante || (est.codigo ? est.codigo.replace(/\D/g, '').padStart(7, '0') : null) || '---',
                     nombre: est.nombre,
                     dni: est.dni || 'No registrado',
                     carrera: est.carrera,
@@ -1909,6 +2580,8 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     total_comprometido: Math.round(totalComprometido * 100) / 100,
                     total_pagado: Math.round(totalPagado * 100) / 100,
                     saldo_pendiente: Math.round(saldoPendiente * 100) / 100,
+                    total_deuda: Math.round(saldoPendiente * 100) / 100,
+                    pagos_por_mes: pagosPorMes,
                     porcentaje_avance: porcentajeAvance,
                     estado_financiero: estadoFinanciero,
                     etiqueta_estado: etiquetaEstado,
@@ -1919,6 +2592,50 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     total_pendientes_count: conceptosPendientes.length,
                     conceptos_pendientes: conceptosPendientes
                 });
+            }
+
+            if (estadoFiltro === 'anulado') {
+                const movsAnulados = db.prepare(`
+                    SELECT id, comprobante, fecha, nombre, carrera, monto, estado, concepto, notas 
+                    FROM movimientos 
+                    WHERE estado = 'Anulado' 
+                       OR LOWER(nombre) LIKE '%anulado%' 
+                       OR LOWER(nombre) LIKE '%no existe%' 
+                       OR LOWER(nombre) LIKE '%sin registro%'
+                    ORDER BY comprobante ASC
+                `).all();
+
+                for (const ma of movsAnulados) {
+                    resultados.push({
+                        id: -ma.id,
+                        codigo: 'REC-' + (ma.comprobante || ma.id),
+                        ultimo_comprobante: ma.comprobante || '---',
+                        nombre: ma.nombre,
+                        dni: 'N/A',
+                        carrera: ma.carrera || 'Sin Asignar (Pendiente)',
+                        grupo: 'Talonario Anulado',
+                        ciclo: 'N/A',
+                        email: 'anulado@institucion.edu',
+                        telefono: 'N/A',
+                        turno: 'N/A',
+                        notas: ma.notas || 'Boleta o comprobante anulado / sin emisión',
+                        total_comprometido: 0,
+                        total_pagado: 0,
+                        saldo_pendiente: 0,
+                        total_deuda: 0,
+                        pagos_por_mes: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 },
+                        porcentaje_avance: 0,
+                        estado_financiero: 'anulado',
+                        estado_academico: 'Anulado',
+                        etiqueta_estado: '⚪ Comprobante Anulado',
+                        clase_estado: 'bg-slate-100 text-slate-700 border-slate-300',
+                        urgencia_global: 'anulado',
+                        msg_urgencia: 'Registro anulado en talonario oficial',
+                        dias_minimos: 999,
+                        total_pendientes_count: 0,
+                        conceptos_pendientes: []
+                    });
+                }
             }
 
             resultados.sort((a, b) => {
@@ -1948,13 +2665,28 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 ORDER BY estado DESC, fecha_vencimiento ASC
             `).all(est.nombre);
 
-            const abonos = db.prepare(`
-                SELECT a.id, a.fecha, a.monto, a.metodo_pago, a.comprobante, a.notas, m.concepto as concepto_original
+            const abonosDirectos = db.prepare(`
+                SELECT a.id, a.fecha, a.monto, a.metodo_pago, a.comprobante, a.notas, m.concepto as concepto_original, a.movimiento_id
                 FROM abonos a
                 JOIN movimientos m ON a.movimiento_id = m.id
                 WHERE LOWER(m.nombre) = LOWER(?)
                 ORDER BY a.fecha DESC
             `).all(est.nombre);
+
+            const pagosCompletos = db.prepare(`
+                SELECT id as movimiento_id, id, fecha, monto, metodo_pago, comprobante, notas, concepto as concepto_original
+                FROM movimientos
+                WHERE LOWER(nombre) = LOWER(?) AND rol = 'Estudiante' AND estado = 'Pagado' AND tipo = 'Ingreso'
+                ORDER BY fecha DESC, id DESC
+            `).all(est.nombre);
+
+            const abonos = [...abonosDirectos];
+            for (const p of pagosCompletos) {
+                if (!abonos.some(a => a.movimiento_id == p.movimiento_id && a.comprobante == p.comprobante)) {
+                    abonos.push(p);
+                }
+            }
+            abonos.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
 
             let totalComprometido = 0;
             let totalPagado = 0;
@@ -2056,10 +2788,14 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             const lastId = (db.prepare("SELECT MAX(id) as m FROM estudiantes").get().m || 0) + 1;
             const codigo = data.codigo || `E${String(lastId).padStart(3, '0')}`;
 
+            const dni = (data.dni || '').trim();
+            const turno = (data.turno || 'Tarde').trim();
+            const notas = (data.notas || '').trim();
+
             const info = db.prepare(`
-                INSERT INTO estudiantes (codigo, nombre, carrera, ciclo, email, telefono, estado_academico, grupo)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `).run(codigo, nombre, carrera, ciclo, email, telefono, estado, grupo);
+                INSERT INTO estudiantes (codigo, nombre, carrera, ciclo, email, telefono, estado_academico, grupo, dni, turno, notas)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(codigo, nombre, carrera, ciclo, email, telefono, estado, grupo, dni, turno, notas);
 
             guardarLibroExcelEnDisco();
             sendJSON(res, { success: true, message: "Estudiante registrado correctamente", id: info.lastInsertRowid, codigo });
@@ -2086,11 +2822,15 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             const ciclo = data.ciclo !== undefined ? data.ciclo : prevEst.ciclo;
             const estado = data.estado_academico !== undefined ? data.estado_academico : prevEst.estado_academico;
 
+            const dni = data.dni !== undefined ? data.dni.trim() : prevEst.dni;
+            const turno = data.turno !== undefined ? data.turno.trim() : prevEst.turno;
+            const notas = data.notas !== undefined ? data.notas.trim() : prevEst.notas;
+
             db.prepare(`
                 UPDATE estudiantes 
-                SET nombre = ?, carrera = ?, grupo = ?, telefono = ?, email = ?, ciclo = ?, estado_academico = ?
+                SET nombre = ?, carrera = ?, grupo = ?, telefono = ?, email = ?, ciclo = ?, estado_academico = ?, dni = ?, turno = ?, notas = ?
                 WHERE id = ?
-            `).run(nombre, carrera, grupo, telefono, email, ciclo, estado, estId);
+            `).run(nombre, carrera, grupo, telefono, email, ciclo, estado, dni, turno, notas, estId);
 
             // Sincronizar movimientos del estudiante ante cualquier asignación o cambio de carrera / grupo
             if (carrera !== undefined) {
@@ -2105,51 +2845,203 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             return;
         }
 
+        // Eliminar Estudiante (con sincronización inmediata a Excel)
+        if (pathname.startsWith('/api/estudiantes/') && method === 'DELETE') {
+            const parts = pathname.split('/');
+            const id = parts[3];
+            db.prepare("DELETE FROM estudiantes WHERE id = ?").run(id);
+            guardarLibroExcelEnDisco();
+            sendJSON(res, { success: true, message: "Estudiante eliminado y Excel sincronizado" });
+            return;
+        }
+
+        // Endpoint para sincronización explícita de Excel
+        if (pathname === '/api/sistema/sincronizar-excel' && (method === 'POST' || method === 'GET')) {
+            guardarLibroExcelEnDisco();
+            sendJSON(res, { success: true, message: "Libro Excel sincronizado con éxito desde SQLite" });
+            return;
+        }
+
         // -------------------------------------------------------------
         // 8. API: CONTROL DE DEUDORES / VENCIMIENTOS
         // -------------------------------------------------------------
+        
+        // -------------------------------------------------------------
+        // CONTROL DE DEUDORES: GESTIÓN DE CUOTAS PENDIENTES
+        // -------------------------------------------------------------
         if (pathname === '/api/deudores' && method === 'GET') {
             const carrera = parsedUrl.searchParams.get('carrera');
-            let q = `
-                SELECT id, fecha, nombre, carrera, concepto, monto, monto_total, monto_abonado, fecha_vencimiento, comprobante, notas,
-                       julianday(fecha_vencimiento) - julianday(date('now')) as dias_restantes
-                FROM movimientos
-                WHERE tipo = 'Ingreso' AND estado = 'Pendiente' AND rol = 'Estudiante'
-            `;
+            const search = (parsedUrl.searchParams.get('search') || '').toLowerCase().trim();
+
+            let q = "SELECT * FROM deudas_estudiantes WHERE estado = 'Pendiente'";
             const p = [];
-            if (carrera) { q += " AND carrera = ?"; p.push(carrera); }
-            q += " ORDER BY fecha_vencimiento ASC";
+            if (carrera) {
+                q += " AND carrera = ?";
+                p.push(carrera);
+            }
+            if (search) {
+                q += " AND (LOWER(nombre) LIKE ? OR LOWER(dni) LIKE ?)";
+                p.push(`%${search}%`, `%${search}%`);
+            }
+            q += " ORDER BY id DESC";
 
             const rows = db.prepare(q).all(...p);
-            const deudores = rows.map(r => {
-                const dias = r.dias_restantes;
-                const mTot = r.monto_total || r.monto;
-                const mAbo = r.monto_abonado || 0;
-                let urg = 'sin_fecha';
-                let msg = 'Sin fecha límite';
-                let dInt = 999;
-
-                if (dias !== null && dias !== undefined) {
-                    dInt = Math.round(dias);
-                    if (dInt < 0) { urg = 'vencido'; msg = `Vencido hace ${Math.abs(dInt)} días`; }
-                    else if (dInt === 0) { urg = 'vence_hoy'; msg = '¡Vence el día de hoy!'; }
-                    else if (dInt <= 7) { urg = 'urgente'; msg = `Vence en ${dInt} días (Próximo)`; }
-                    else if (dInt <= 15) { urg = 'alerta'; msg = `Vence en ${dInt} días`; }
-                    else { urg = 'a_tiempo'; msg = `En plazo (${dInt} días)`; }
+            let deudores = rows.map(r => {
+                let urg = 'a_tiempo';
+                let msg = 'Cuota asignada';
+                if (r.fecha_limite) {
+                    const diffDays = Math.round((new Date(r.fecha_limite) - new Date()) / (1000 * 60 * 60 * 24));
+                    if (diffDays < 0) { urg = 'vencido'; msg = `Vencido hace ${Math.abs(diffDays)} días`; }
+                    else if (diffDays === 0) { urg = 'vence_hoy'; msg = '¡Vence hoy!'; }
+                    else if (diffDays <= 7) { urg = 'urgente'; msg = `Vence en ${diffDays} días`; }
                 }
-
                 return {
-                    ...r,
-                    monto_total: mTot,
-                    monto_abonado: mAbo,
-                    falta_completar: mAbo > 0,
-                    dias_restantes: dInt,
+                    id: r.id,
+                    deuda_id: r.id,
+                    estudiante_id: r.estudiante_id,
+                    nombre: r.nombre,
+                    dni: r.dni || 'Sin DNI',
+                    telefono: r.telefono || 'Sin Celular',
+                    carrera: r.carrera || 'General',
+                    grupo: r.grupo || 'General',
+                    concepto: r.concepto || 'Cuota Pendiente',
+                    monto: r.monto_pendiente,
+                    monto_total: r.monto_total,
+                    monto_abonado: r.monto_abonado,
+                    monto_pendiente: r.monto_pendiente,
+                    falta_completar: r.monto_abonado > 0,
+                    fecha_vencimiento: r.fecha_limite,
                     urgencia: urg,
-                    mensaje_urgencia: msg
+                    mensaje_urgencia: msg,
+                    notas: r.notas || ''
                 };
             });
 
+            // Deudores solo aparecen cuando son seleccionados/asignados manualmente por el usuario
+
             sendJSON(res, deudores);
+            return;
+        }
+
+        if (pathname === '/api/deudores' && method === 'POST') {
+            const data = await parseBody(req);
+            const nombre = (data.nombre || '').trim();
+            if (!nombre) {
+                sendJSON(res, { error: "El nombre del estudiante es obligatorio" }, 400);
+                return;
+            }
+            const montoPendiente = parseFloat(data.monto_pendiente || data.monto || 0);
+            if (isNaN(montoPendiente) || montoPendiente <= 0) {
+                sendJSON(res, { error: "El monto de la cuota faltante debe ser mayor a cero" }, 400);
+                return;
+            }
+            const montoTotal = parseFloat(data.monto_total || montoPendiente);
+            const montoAbonado = parseFloat(data.monto_abonado || (montoTotal - montoPendiente) || 0);
+            const estId = parseInt(data.estudiante_id || 0, 10);
+            const dni = (data.dni || '').trim();
+            const tel = (data.telefono || data.celular || '').trim();
+            const carrera = (data.carrera || '').trim();
+            const grupo = (data.grupo || '').trim();
+            const concepto = (data.concepto || 'Cuota Pendiente de Módulo').trim();
+            const fechaLimite = data.fecha_limite || '';
+            const notas = data.notas || '';
+
+            const stmt = db.prepare(`
+                INSERT INTO deudas_estudiantes (estudiante_id, nombre, dni, telefono, carrera, grupo, concepto, monto_total, monto_abonado, monto_pendiente, fecha_limite, estado, notas)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pendiente', ?)
+            `);
+            const info = stmt.run(estId, nombre, dni, tel, carrera, grupo, concepto, montoTotal, montoAbonado, montoPendiente, fechaLimite, notas);
+            const newDeudaId = Number(info.lastInsertRowid);
+
+            sendJSON(res, {
+                success: true,
+                id: newDeudaId,
+                nombre,
+                monto_pendiente: montoPendiente,
+                message: `Estudiante ${nombre} registrado en deudores con saldo pendiente de S/. ${montoPendiente.toFixed(2)}`
+            });
+            return;
+        }
+
+        if (pathname.startsWith('/api/deudores/') && method === 'DELETE') {
+            const deudaId = parseInt(pathname.split('/')[3], 10);
+            db.prepare("DELETE FROM deudas_estudiantes WHERE id = ?").run(deudaId);
+            sendJSON(res, { success: true, message: "Registro de deudor eliminado correctamente" });
+            return;
+        }
+
+        if (pathname === '/api/exportar/deudores-excel' && method === 'GET') {
+            const rows = db.prepare("SELECT * FROM deudas_estudiantes WHERE estado = 'Pendiente' ORDER BY carrera ASC, nombre ASC").all();
+            const data = [
+                ['CETPRO SAN MIGUEL · MICAELA BASTIDAS PUYUCAMA'],
+                ['PADRÓN OFICIAL DE ESTUDIANTES CON CUOTAS PENDIENTES (DEUDORES)'],
+                ['Fecha de Generación:', new Date().toLocaleString('es-PE')],
+                [],
+                ['N°', 'FECHA ASIGNACIÓN', 'ESTUDIANTE', 'DNI', 'CELULAR', 'CARRERA / ESPECIALIDAD', 'GRUPO / SECCIÓN', 'CONCEPTO / CUOTA', 'COSTO TOTAL (S/.)', 'ABONADO (S/.)', 'PENDIENTE A COBRAR (S/.)', 'FECHA LÍMITE', 'ESTADO', 'NOTAS']
+            ];
+
+            let totalSaldo = 0;
+            rows.forEach((r, idx) => {
+                totalSaldo += r.monto_pendiente;
+                data.push([
+                    idx + 1,
+                    r.created_at ? r.created_at.split(' ')[0] : '-',
+                    r.nombre,
+                    r.dni || '-',
+                    r.telefono || '-',
+                    r.carrera || '-',
+                    r.grupo || '-',
+                    r.concepto,
+                    r.monto_total,
+                    r.monto_abonado,
+                    r.monto_pendiente,
+                    r.fecha_limite || 'Sin fecha',
+                    r.estado,
+                    r.notas || ''
+                ]);
+            });
+
+            data.push([]);
+            data.push(['TOTAL PENDIENTE DE COBRANZA:', '', '', '', '', '', '', '', '', '', totalSaldo, '', '', '']);
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'DEUDORES_OFICIAL');
+
+            const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+            res.writeHead(200, {
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition': 'attachment; filename="PADRON_DEUDORES_CETPRO_2026.xlsx"',
+                'Content-Length': buf.length
+            });
+            res.end(buf);
+            return;
+        }
+
+        // -------------------------------------------------------------
+        // TARIFAS Y COSTOS OFICIALES POR MÓDULO Y CARRERA
+        // -------------------------------------------------------------
+        if (pathname === '/api/tarifas' && method === 'GET') {
+            const tarifas = db.prepare("SELECT * FROM tarifas_modulos ORDER BY carrera ASC, id ASC").all();
+            sendJSON(res, tarifas);
+            return;
+        }
+
+        if (pathname === '/api/tarifas' && method === 'POST') {
+            const data = await parseBody(req);
+            if (Array.isArray(data)) {
+                const updateStmt = db.prepare("UPDATE tarifas_modulos SET costo = ?, descripcion = ? WHERE id = ?");
+                for (const t of data) {
+                    if (t.id && t.costo !== undefined) {
+                        updateStmt.run(parseFloat(t.costo) || 0, t.descripcion || '', t.id);
+                    }
+                }
+            } else if (data.id) {
+                db.prepare("UPDATE tarifas_modulos SET costo = ?, descripcion = ? WHERE id = ?").run(parseFloat(data.costo) || 0, data.descripcion || '', data.id);
+            } else if (data.carrera && data.modulo) {
+                db.prepare("INSERT INTO tarifas_modulos (carrera, modulo, costo, descripcion) VALUES (?, ?, ?, ?)").run(data.carrera, data.modulo, parseFloat(data.costo) || 150.00, data.descripcion || '');
+            }
+            sendJSON(res, { success: true, message: "Tarifas actualizadas correctamente" });
             return;
         }
 
@@ -2340,6 +3232,8 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     c.id, c.nombre, c.codigo, c.descripcion,
                     (SELECT COUNT(*) FROM estudiantes e WHERE LOWER(TRIM(e.carrera)) = LOWER(TRIM(c.nombre))) as total_alumnos,
                     (SELECT COUNT(*) FROM docentes d WHERE LOWER(TRIM(d.carrera)) = LOWER(TRIM(c.nombre))) as total_docentes,
+                    (SELECT GROUP_CONCAT(DISTINCT d.nombre) FROM docentes d WHERE LOWER(TRIM(d.carrera)) = LOWER(TRIM(c.nombre))) as docentes_nombres,
+                    (SELECT GROUP_CONCAT(DISTINCT g.encargado) FROM grupos g WHERE LOWER(TRIM(g.carrera)) = LOWER(TRIM(c.nombre)) AND g.encargado != 'General' AND g.encargado != 'Por Asignar') as grupos_encargados,
                     (SELECT COALESCE(SUM(monto), 0) FROM movimientos m WHERE LOWER(TRIM(m.carrera)) = LOWER(TRIM(c.nombre)) AND m.tipo = 'Ingreso' AND m.estado = 'Pagado') as total_ingreso,
                     (SELECT COALESCE(SUM(monto), 0) FROM movimientos m WHERE LOWER(TRIM(m.carrera)) = LOWER(TRIM(c.nombre)) AND m.tipo = 'Egreso' AND m.estado = 'Pagado') as total_egreso,
                     (SELECT COALESCE(SUM(monto), 0) FROM movimientos m WHERE LOWER(TRIM(m.carrera)) = LOWER(TRIM(c.nombre)) AND m.tipo = 'Ingreso' AND m.estado = 'Pendiente') as total_deuda

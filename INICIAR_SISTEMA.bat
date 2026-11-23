@@ -36,8 +36,9 @@ echo.
 echo  * ENLACE DIRECTO (Esta PC) : http://localhost:5000
 echo  * ENLACE RED LOCAL         : http://127.0.0.1:5000
 echo.
-echo  * Total de Registros Reales: 207 Recibos (S/. 25,080.00)
-echo  * Estudiantes Registrados  : 176 Alumnos organizados en 15 Grupos Oficiales
+echo  * Total de Registros Reales: 210 Recibos (S/. 25,360.00)
+echo  * Estudiantes Registrados  : 179 Alumnos organizados en 15 Grupos Oficiales
+echo  * Plana Docente y Carreras : 15 Docentes y 12 Carreras Técnicas
 echo  * Secciones Disponibles    : Confección, Computación, Cosmetología, Motos, etc.
 echo  * Exportaciones            : Excel (.xlsx oficial) y PDF de cada comprobante
 echo.

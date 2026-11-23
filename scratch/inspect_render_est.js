@@ -2,4 +2,6 @@ const fs = require('fs');
 const html = fs.readFileSync('templates/index.html', 'utf8');
 
 const idx = html.indexOf('function renderEstudiantes(');
-console.log(html.substring(idx, idx + 2500));
+if (idx !== -1) {
+    console.log(html.substring(idx + 2200, idx + 4000));
+}

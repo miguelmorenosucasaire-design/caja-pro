@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 225 140" width="225" height="140" role="img" aria-label="Ministerio de Educación - República del Perú">
+  <g>
+    <rect x="7"  y="63" width="18" height="47" fill="#93c5fd"/>
+    <rect x="32" y="36" width="18" height="74" fill="#60a5fa"/>
+    <rect x="57" y="10" width="18" height="100" fill="#3b82f6"/>
+    <rect x="83" y="10" width="55"  height="30" fill="#1e40af"/>
+    <rect x="83" y="48" width="91"  height="30" fill="#1e40af"/>
+    <rect x="83" y="85" width="127" height="25" fill="#1e40af"/>
+  </g>
+  <text x="108" y="127" text-anchor="middle" font-family="'Times New Roman',Times,serif" font-weight="bold" font-size="13" fill="#1e40af">Ministerio de Educación</text>
+  <text x="108" y="138" text-anchor="middle" font-family="'Times New Roman',Times,serif" font-size="8" fill="#1e40af">REPÚBLICA DEL PERÚ</text>
+</svg>

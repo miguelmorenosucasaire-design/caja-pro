@@ -1,4 +1,12 @@
 const fs = require('fs');
-const html = fs.readFileSync('templates/index.html', 'utf8');
-const matches = html.match(/id="factura-[a-zA-Z0-9_-]+"/g) || [];
-console.log('Factura IDs found:', [...new Set(matches)]);
+const content = fs.readFileSync('templates/index.html', 'utf8');
+
+const regex = /document\.getElementById\(['"]([^'"]+)['"]\)/g;
+let match;
+const ids = new Set();
+while ((match = regex.exec(content)) !== null) {
+  if (match[1].startsWith('factura-') || match[1].startsWith('copia-') || match[1].includes('box-mod') || match[1].includes('check-')) {
+    ids.add(match[1]);
+  }
+}
+console.log(Array.from(ids));
