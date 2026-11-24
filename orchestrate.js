@@ -292,7 +292,8 @@ async function runMasterOrchestration() {
             { path: '/api/carreras', expectedStatus: 200, desc: 'API de Carreras y Especialidades' },
             { path: '/api/reportes/arqueo-diario', expectedStatus: 200, desc: 'API de Reporte de Arqueo Diario' },
             { path: '/api/exportar/hoja?sheet=control-pagos', expectedStatus: 200, desc: 'API de Matriz Mensual de Pagos' },
-            { path: '/api/exportar/hoja?sheet=diario', expectedStatus: 200, desc: 'API de Libro Diario y Bitácora' }
+            { path: '/api/exportar/hoja?sheet=diario', expectedStatus: 200, desc: 'API de Libro Diario y Bitácora' },
+            { path: '/api/sistema/anios', expectedStatus: 200, desc: 'API de Gestión Multianual y Años Lectivos' }
         ];
 
         let totalLatency = 0;
@@ -465,6 +466,29 @@ async function runMasterOrchestration() {
             pass("Integridad estructural DOM y encapsulamiento de secciones", "13 secciones balanceadas y contenidas en <main>");
         } else {
             fail("Estructura DOM de secciones rota o desbalanceada", new Error("Verificar etiquetas <div> y <main>"));
+        }
+
+        // 7.5 Selector Interactivo y Guardado Diferenciado de Boleta Oficial
+        const hasSelectorBoleta = html.includes('id="btn-toggle-emitir-boleta-si"') &&
+                                  html.includes('id="btn-toggle-emitir-boleta-no"') &&
+                                  html.includes('guardarSoloBaseDatosModal()') &&
+                                  html.includes('guardarEImprimirDirectoModal()');
+        if (hasSelectorBoleta) {
+            pass("Selector interactivo y guardado diferenciado de Boleta", "Opciones: Solo Guardar vs Guardar e Imprimir Boleta con jalado en vivo");
+        } else {
+            fail("Selector interactivo de Boleta no integrado", new Error("Verificar botones de emisión en modal-nuevo-movimiento"));
+        }
+
+        // 7.6 Arquitectura Multianual y Modal de Cierre de Año
+        const hasMultianual = html.includes('id="select-anio-activo-header"') &&
+                              html.includes('id="badge-estado-anio-header"') &&
+                              html.includes('id="modal-cierre-anual"') &&
+                              html.includes('id="modal-apertura-anio"') &&
+                              html.includes('id="contenedor-tarjetas-anios"');
+        if (hasMultianual) {
+            pass("Arquitectura Multianual y Cierre de Año Institucional", "Selector de año en cabecera + Modales de Cierre (backup sellado) y Apertura");
+        } else {
+            fail("Arquitectura multianual no integrada", new Error("Verificar componentes multianuales"));
         }
 
         // 8. Recursos estáticos locales para funcionamiento offline

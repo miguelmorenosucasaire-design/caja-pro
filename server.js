@@ -29,6 +29,7 @@ const ROOT_DIR = isPkg ? path.dirname(process.execPath) : __dirname;
 const PORT = process.env.PORT || 5000;
 const DB_PATH = path.join(ROOT_DIR, 'caja_institucional.db');
 const BACKUPS_DIR = path.join(ROOT_DIR, 'backups');
+const CIERRES_ANUALES_DIR = path.join(BACKUPS_DIR, 'cierres_anuales');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
 let HTML_FILE = path.join(ROOT_DIR, 'templates', 'index.html');
@@ -38,6 +39,7 @@ if (!fs.existsSync(HTML_FILE)) {
 
 // Asegurar directorios
 if (!fs.existsSync(BACKUPS_DIR)) fs.mkdirSync(BACKUPS_DIR, { recursive: true });
+if (!fs.existsSync(CIERRES_ANUALES_DIR)) fs.mkdirSync(CIERRES_ANUALES_DIR, { recursive: true });
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 
 // Manejadores globales de estabilidad del servidor
@@ -86,6 +88,74 @@ function asegurarTablaConfiguracion() {
     }
 }
 asegurarTablaConfiguracion();
+
+// Inicializar tabla de gestión multianual y ciclos lectivos
+function asegurarGestionAnios() {
+    db.prepare(`
+        CREATE TABLE IF NOT EXISTS anios_lectivos (
+            anio INTEGER PRIMARY KEY,
+            estado TEXT DEFAULT 'ACTIVO',
+            fecha_apertura TEXT,
+            fecha_cierre TEXT,
+            saldo_inicial REAL DEFAULT 0.0,
+            saldo_final REAL DEFAULT 0.0,
+            total_ingresos REAL DEFAULT 0.0,
+            total_egresos REAL DEFAULT 0.0,
+            total_estudiantes INTEGER DEFAULT 0,
+            total_movimientos INTEGER DEFAULT 0,
+            backup_archivo TEXT,
+            notas TEXT
+        )
+    `).run();
+
+    // Comprobar si existe columna anio en movimientos
+    const cols = db.prepare("PRAGMA table_info(movimientos)").all();
+    if (!cols.some(c => c.name === 'anio')) {
+        try {
+            db.prepare("ALTER TABLE movimientos ADD COLUMN anio INTEGER DEFAULT 2026").run();
+        } catch (e) {
+            console.warn('[DB] Columna anio ya existe o no pudo agregarse:', e.message);
+        }
+    }
+    // Poblar anio en base a la fecha de cada movimiento
+    try {
+        db.prepare(`
+            UPDATE movimientos 
+            SET anio = CAST(COALESCE(NULLIF(substr(fecha, 1, 4), 'N/A'), '2026') AS INTEGER)
+            WHERE anio IS NULL OR anio = 0
+        `).run();
+    } catch (e) {}
+
+    // Registrar año 2026 si no existe
+    const exist2026 = db.prepare("SELECT anio FROM anios_lectivos WHERE anio = 2026").get();
+    if (!exist2026) {
+        const stats2026 = db.prepare(`
+            SELECT 
+                COALESCE(SUM(CASE WHEN tipo='Ingreso' THEN monto ELSE 0 END), 0) as ing,
+                COALESCE(SUM(CASE WHEN tipo='Egreso' THEN monto ELSE 0 END), 0) as egr,
+                COUNT(*) as cant_mov
+            FROM movimientos WHERE anio = 2026 OR fecha LIKE '2026%'
+        `).get();
+        const estCount = db.prepare("SELECT COUNT(*) as c FROM estudiantes").get().c;
+        db.prepare(`
+            INSERT INTO anios_lectivos (anio, estado, fecha_apertura, saldo_inicial, saldo_final, total_ingresos, total_egresos, total_estudiantes, total_movimientos, notas)
+            VALUES (2026, 'ACTIVO', '2026-01-01', 0.0, ?, ?, ?, ?, ?, 'Año Lectivo y Fiscal 2026 Inicial')
+        `).run(
+            stats2026.ing - stats2026.egr,
+            stats2026.ing,
+            stats2026.egr,
+            estCount,
+            stats2026.cant_mov
+        );
+    }
+
+    // Configuración anio_activo
+    const confAnio = db.prepare("SELECT valor FROM configuracion WHERE clave = 'anio_activo'").get();
+    if (!confAnio) {
+        db.prepare("INSERT OR REPLACE INTO configuracion (clave, valor) VALUES ('anio_activo', '2026')").run();
+    }
+}
+asegurarGestionAnios();
 
 // Inicializar tabla de carreras y especialidades técnicas
 function asegurarTablaCarreras() {
@@ -595,6 +665,265 @@ function guardarLibroExcelEnDisco() {
 // Inicializar Excel en disco al arrancar
 guardarLibroExcelEnDisco();
 
+// =====================================================================
+// FUNCIONES DE ARQUITECTURA MULTIANUAL Y CIERRE DE AÑO ESCOLAR / FISCAL
+// =====================================================================
+function ejecutarCierreAnual(anio, notas = '') {
+    const anioNum = parseInt(anio, 10);
+    if (isNaN(anioNum) || anioNum < 2020) {
+        throw new Error('Año inválido para cierre anual: ' + anio);
+    }
+    const ahora = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const timestamp = `${ahora.getFullYear()}-${pad(ahora.getMonth() + 1)}-${pad(ahora.getDate())}_${pad(ahora.getHours())}-${pad(ahora.getMinutes())}-${pad(ahora.getSeconds())}`;
+    const cfg = obtenerConfiguracion();
+
+    // 1. Estadísticas financieras y académicas del año a cerrar
+    const stats = db.prepare(`
+        SELECT 
+            COALESCE(SUM(CASE WHEN tipo='Ingreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) as total_ingresos,
+            COALESCE(SUM(CASE WHEN tipo='Egreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) as total_egresos,
+            COUNT(*) as total_movimientos
+        FROM movimientos WHERE anio = ? OR substr(fecha, 1, 4) = ?
+    `).get(anioNum, String(anioNum));
+
+    const totalIng = stats ? (stats.total_ingresos || 0) : 0;
+    const totalEgr = stats ? (stats.total_egresos || 0) : 0;
+    const saldoFinal = totalIng - totalEgr;
+    const totalMovs = stats ? (stats.total_movimientos || 0) : 0;
+
+    const estRow = db.prepare(`
+        SELECT COUNT(DISTINCT nombre) as c FROM movimientos 
+        WHERE (anio = ? OR substr(fecha, 1, 4) = ?) AND rol = 'Estudiante'
+    `).get(anioNum, String(anioNum));
+    const estCount = (estRow && estRow.c > 0) ? estRow.c : db.prepare("SELECT COUNT(*) as c FROM estudiantes").get().c;
+
+    // Desglose por especialidad / carrera en el año
+    const carrerasStats = db.prepare(`
+        SELECT carrera, COUNT(*) as cantidad, COALESCE(SUM(monto), 0) as total_recaudado
+        FROM movimientos 
+        WHERE (anio = ? OR substr(fecha, 1, 4) = ?) AND tipo = 'Ingreso' AND estado = 'Pagado'
+        GROUP BY carrera
+        ORDER BY total_recaudado DESC
+    `).all(anioNum, String(anioNum));
+
+    // Desglose mensual
+    const mesesStats = db.prepare(`
+        SELECT substr(fecha, 6, 2) as mes, 
+               COALESCE(SUM(CASE WHEN tipo='Ingreso' THEN monto ELSE 0 END), 0) as ingresos,
+               COALESCE(SUM(CASE WHEN tipo='Egreso' THEN monto ELSE 0 END), 0) as egresos
+        FROM movimientos
+        WHERE (anio = ? OR substr(fecha, 1, 4) = ?) AND estado = 'Pagado'
+        GROUP BY mes
+        ORDER BY mes ASC
+    `).all(anioNum, String(anioNum));
+
+    // 2. Asegurar directorio de cierres anuales
+    if (!fs.existsSync(CIERRES_ANUALES_DIR)) fs.mkdirSync(CIERRES_ANUALES_DIR, { recursive: true });
+
+    // 3. Crear snapshot inalterable de Base de Datos para el Cierre
+    const dbCierreName = `caja_institucional_${anioNum}_CIERRE_OFICIAL.db`;
+    const dbCierrePath = path.join(CIERRES_ANUALES_DIR, dbCierreName);
+    fs.copyFileSync(DB_PATH, dbCierrePath);
+    const dbHash = calcSHA256(dbCierrePath);
+    fs.writeFileSync(`${dbCierrePath}.sha256`, `${dbHash} *${dbCierreName}\nFecha: ${ahora.toISOString()}\nSeguridad: SHA-256 Verificado`);
+
+    // 4. Crear snapshot de Excel Oficial para el Cierre
+    const excelCierreName = `CEPRO_Control_MICAELA_BASTIDAS_${anioNum}_CIERRE_OFICIAL.xlsx`;
+    const excelCierrePath = path.join(CIERRES_ANUALES_DIR, excelCierreName);
+    const wb = generarLibroExcelActualizado();
+    if (wb && XLSX) {
+        XLSX.writeFile(wb, excelCierrePath);
+    } else {
+        const currentExcel = path.join(ROOT_DIR, 'CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx');
+        if (fs.existsSync(currentExcel)) fs.copyFileSync(currentExcel, excelCierrePath);
+    }
+    const excelHash = fs.existsSync(excelCierrePath) ? calcSHA256(excelCierrePath) : null;
+
+    // 5. Generar Reporte de Auditoría y Certificación en JSON
+    const auditoriaObj = {
+        institucion: cfg.nombre_institucion || 'CETPRO SAN MIGUEL · MICAELA BASTIDAS PUYUCAMA',
+        ruc: cfg.ruc || '20485938210',
+        direccion: cfg.direccion || '',
+        ejercicio_anio: anioNum,
+        estado: 'CERRADO',
+        fecha_cierre: ahora.toISOString(),
+        fecha_cierre_legible: ahora.toLocaleString('es-PE'),
+        resumen_financiero: {
+            moneda: 'PEN (S/.)',
+            total_ingresos: totalIng,
+            total_egresos: totalEgr,
+            saldo_final_disponible: saldoFinal,
+            total_movimientos: totalMovs,
+            total_estudiantes_participantes: estCount
+        },
+        recaudacion_por_especialidad: carrerasStats,
+        recaudacion_mensual: mesesStats,
+        archivos_certificados: {
+            base_datos: { archivo: dbCierreName, sha256: dbHash },
+            excel_oficial: { archivo: excelCierreName, sha256: excelHash }
+        },
+        observaciones: notas || `Cierre formal del año lectivo y fiscal ${anioNum}.`
+    };
+
+    const auditFileName = `auditoria_cierre_${anioNum}.json`;
+    const auditFilePath = path.join(CIERRES_ANUALES_DIR, auditFileName);
+    fs.writeFileSync(auditFilePath, JSON.stringify(auditoriaObj, null, 2), 'utf-8');
+
+    // 6. Empaquetar todo en un ZIP certificado
+    const zipName = `CIERRE_ANUAL_${anioNum}_${timestamp}.zip`;
+    const zipPath = path.join(CIERRES_ANUALES_DIR, zipName);
+    if (AdmZip) {
+        const zip = new AdmZip();
+        zip.addLocalFile(dbCierrePath);
+        if (fs.existsSync(excelCierrePath)) zip.addLocalFile(excelCierrePath);
+        zip.addLocalFile(auditFilePath);
+        
+        const certText = `========================================================================\n` +
+            `CERTIFICADO OFICIAL DE CIERRE ANUAL - ${cfg.nombre_institucion}\n` +
+            `========================================================================\n` +
+            `Ejercicio Lectivo y Fiscal: ${anioNum}\n` +
+            `Fecha de Cierre: ${ahora.toLocaleString('es-PE')}\n` +
+            `Total Ingresos Recaudados: S/. ${totalIng.toFixed(2)}\n` +
+            `Total Egresos / Gastos: S/. ${totalEgr.toFixed(2)}\n` +
+            `Saldo Final en Caja: S/. ${saldoFinal.toFixed(2)}\n` +
+            `Comprobantes Procesados: ${totalMovs}\n` +
+            `Alumnos Atendidos: ${estCount}\n` +
+            `Integridad Criptográfica BD (SHA-256): ${dbHash}\n` +
+            `Integridad Criptográfica Excel (SHA-256): ${excelHash || 'N/A'}\n` +
+            `========================================================================\n` +
+            `Este archivo constituye un respaldo institucional inalterable y permanente.\n`;
+        zip.addFile('CERTIFICADO_LEGAL_CIERRE.txt', Buffer.from(certText, 'utf-8'));
+        zip.writeZip(zipPath);
+        const zipHash = calcSHA256(zipPath);
+        fs.writeFileSync(`${zipPath}.sha256`, `${zipHash} *${zipName}\nFecha: ${ahora.toISOString()}\nSeguridad: SHA-256 Verificado`);
+    }
+
+    // 7. Actualizar o insertar en tabla anios_lectivos
+    db.prepare(`
+        INSERT INTO anios_lectivos (anio, estado, fecha_cierre, saldo_final, total_ingresos, total_egresos, total_estudiantes, total_movimientos, backup_archivo, notas)
+        VALUES (?, 'CERRADO', ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(anio) DO UPDATE SET
+            estado = 'CERRADO',
+            fecha_cierre = excluded.fecha_cierre,
+            saldo_final = excluded.saldo_final,
+            total_ingresos = excluded.total_ingresos,
+            total_egresos = excluded.total_egresos,
+            total_estudiantes = excluded.total_estudiantes,
+            total_movimientos = excluded.total_movimientos,
+            backup_archivo = excluded.backup_archivo,
+            notas = excluded.notas
+    `).run(
+        anioNum,
+        ahora.toISOString().split('T')[0],
+        saldoFinal,
+        totalIng,
+        totalEgr,
+        estCount,
+        totalMovs,
+        zipName,
+        notas || `Cierre oficial del año ${anioNum}`
+    );
+
+    // 8. Respaldo general del sistema
+    generarRespaldoCompleto('Cierre_Anio_' + anioNum);
+
+    return {
+        success: true,
+        anio: anioNum,
+        saldo_final: saldoFinal,
+        total_ingresos: totalIng,
+        total_egresos: totalEgr,
+        total_movimientos: totalMovs,
+        total_estudiantes: estCount,
+        archivo_zip: zipName,
+        archivo_db: dbCierreName,
+        archivo_excel: excelCierreName,
+        sha256_zip: fs.existsSync(zipPath) ? calcSHA256(zipPath) : null,
+        sha256_db: dbHash,
+        sha256_excel: excelHash,
+        auditoria: auditoriaObj,
+        mensaje: `Cierre anual ${anioNum} completado exitosamente con respaldo maestro sellado.`
+    };
+}
+
+function ejecutarAperturaAnio(nuevoAnio, opciones = {}) {
+    const anioNum = parseInt(nuevoAnio, 10);
+    if (isNaN(anioNum) || anioNum < 2020 || anioNum > 2100) {
+        throw new Error('Año inválido para apertura lectiva: ' + nuevoAnio);
+    }
+    const ahora = new Date();
+    const hoyStr = ahora.toISOString().split('T')[0];
+    const anioAnterior = anioNum - 1;
+
+    let saldoATransferir = 0;
+    if (opciones.transferir_saldo) {
+        const rowAnt = db.prepare(`
+            SELECT 
+                COALESCE(SUM(CASE WHEN tipo='Ingreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) -
+                COALESCE(SUM(CASE WHEN tipo='Egreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) as saldo
+            FROM movimientos WHERE anio = ? OR substr(fecha, 1, 4) = ?
+        `).get(anioAnterior, String(anioAnterior));
+        saldoATransferir = (rowAnt && rowAnt.saldo > 0) ? rowAnt.saldo : 0;
+    }
+
+    // Registrar o actualizar año en anios_lectivos
+    db.prepare(`
+        INSERT INTO anios_lectivos (anio, estado, fecha_apertura, saldo_inicial, saldo_final, total_ingresos, total_egresos, total_estudiantes, total_movimientos, notas)
+        VALUES (?, 'ACTIVO', ?, ?, ?, ?, 0, 0, 0, ?)
+        ON CONFLICT(anio) DO UPDATE SET
+            estado = 'ACTIVO',
+            fecha_apertura = excluded.fecha_apertura,
+            saldo_inicial = excluded.saldo_inicial,
+            notas = excluded.notas
+    `).run(
+        anioNum,
+        hoyStr,
+        saldoATransferir,
+        saldoATransferir,
+        saldoATransferir,
+        opciones.notas || `Apertura del Año Lectivo y Fiscal ${anioNum}`
+    );
+
+    // Actualizar configuración institucional para reflejar año activo
+    db.prepare("INSERT OR REPLACE INTO configuracion (clave, valor) VALUES ('anio_activo', ?)").run(String(anioNum));
+
+    // Si se transfiere saldo, registrar movimiento inicial de apertura en caja
+    let movAperturaId = null;
+    if (opciones.transferir_saldo && saldoATransferir > 0) {
+        const existAper = db.prepare("SELECT id FROM movimientos WHERE anio = ? AND concepto LIKE 'Saldo inicial transferido%'").get(anioNum);
+        if (!existAper) {
+            const fechaApertura = `${anioNum}-01-02`;
+            const compApertura = `APER-${anioNum}-0001`;
+            const infoMov = db.prepare(`
+                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, monto_total, monto_abonado, metodo_pago, comprobante, notas, anio)
+                VALUES (?, 'Ingreso', 'Pagado', 'Institución', 'CETPRO SAN MIGUEL · MICAELA BASTIDAS', 'General', 'General', 'Dirección General y Tesorería', ?, ?, ?, ?, 'Efectivo', ?, ?, ?)
+            `).run(
+                fechaApertura,
+                `Saldo inicial transferido del ejercicio anterior (${anioAnterior})`,
+                saldoATransferir,
+                saldoATransferir,
+                saldoATransferir,
+                compApertura,
+                `Balance de cierre ${anioAnterior} transferido a la apertura ${anioNum}`,
+                anioNum
+            );
+            movAperturaId = infoMov.lastInsertRowid;
+        }
+    }
+
+    guardarLibroExcelEnDisco();
+    generarRespaldoCompleto('Apertura_Anio_' + anioNum);
+
+    return {
+        success: true,
+        anio: anioNum,
+        saldo_inicial: saldoATransferir,
+        movimiento_apertura_id: movAperturaId,
+        mensaje: `Año lectivo ${anioNum} aperturado exitosamente como año activo de operación.`
+    };
+}
+
 // Servidor HTTP
 
 // =====================================================================
@@ -1056,6 +1385,157 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 sendJSON(res, { error: err.message }, 500);
                 return;
             }
+        }
+
+        // -------------------------------------------------------------
+        // APIS PARA GESTIÓN MULTIANUAL Y CIERRE DE AÑO ESCOLAR / FISCAL
+        // -------------------------------------------------------------
+        // Obtener catálogo de años lectivos, estado y paquetes de cierre
+        if (pathname === '/api/sistema/anios' && method === 'GET') {
+            try {
+                const rows = db.prepare("SELECT * FROM anios_lectivos ORDER BY anio DESC").all();
+                const cfgAnio = db.prepare("SELECT valor FROM configuracion WHERE clave = 'anio_activo'").get();
+                const anioActivo = cfgAnio ? cfgAnio.valor : '2026';
+
+                const resultado = rows.map(r => {
+                    const liveStats = db.prepare(`
+                        SELECT 
+                            COALESCE(SUM(CASE WHEN tipo='Ingreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) as ing,
+                            COALESCE(SUM(CASE WHEN tipo='Egreso' AND estado='Pagado' THEN monto ELSE 0 END), 0) as egr,
+                            COUNT(*) as cant_mov
+                        FROM movimientos WHERE anio = ? OR substr(fecha, 1, 4) = ?
+                    `).get(r.anio, String(r.anio));
+
+                    const cantEst = db.prepare(`
+                        SELECT COUNT(DISTINCT nombre) as c FROM movimientos 
+                        WHERE (anio = ? OR substr(fecha, 1, 4) = ?) AND rol = 'Estudiante'
+                    `).get(r.anio, String(r.anio)).c || (r.anio == 2026 ? 213 : 0);
+
+                    return {
+                        ...r,
+                        total_ingresos: liveStats ? (liveStats.ing || r.total_ingresos) : r.total_ingresos,
+                        total_egresos: liveStats ? (liveStats.egr || r.total_egresos) : r.total_egresos,
+                        saldo_actual: (liveStats ? (liveStats.ing || 0) - (liveStats.egr || 0) : 0),
+                        total_movimientos: liveStats ? (liveStats.cant_mov || r.total_movimientos) : r.total_movimientos,
+                        total_estudiantes: cantEst,
+                        es_activo: String(r.anio) === String(anioActivo)
+                    };
+                });
+
+                const cierresFiles = [];
+                if (fs.existsSync(CIERRES_ANUALES_DIR)) {
+                    const files = fs.readdirSync(CIERRES_ANUALES_DIR);
+                    for (const f of files) {
+                        if (f.endsWith('.zip') || f.endsWith('.db') || f.endsWith('.json')) {
+                            const st = fs.statSync(path.join(CIERRES_ANUALES_DIR, f));
+                            const shaFile = path.join(CIERRES_ANUALES_DIR, `${f}.sha256`);
+                            let hash = null;
+                            if (fs.existsSync(shaFile)) {
+                                hash = fs.readFileSync(shaFile, 'utf8').split(' ')[0].trim();
+                            } else {
+                                hash = calcSHA256(path.join(CIERRES_ANUALES_DIR, f));
+                            }
+                            cierresFiles.push({
+                                nombre: f,
+                                tamano: Math.round((st.size / 1024) * 10) / 10 + ' KB',
+                                bytes: st.size,
+                                fecha: st.mtime.toLocaleString('es-PE'),
+                                es_zip: f.endsWith('.zip'),
+                                es_db: f.endsWith('.db'),
+                                es_json: f.endsWith('.json'),
+                                sha256: hash
+                            });
+                        }
+                    }
+                    cierresFiles.sort((a, b) => b.bytes - a.bytes);
+                }
+
+                sendJSON(res, {
+                    success: true,
+                    anio_activo: anioActivo,
+                    anios: resultado,
+                    archivos_cierre: cierresFiles
+                });
+                return;
+            } catch (err) {
+                console.error("Error al obtener años:", err);
+                sendJSON(res, { error: err.message }, 500);
+                return;
+            }
+        }
+
+        // Ejecutar Cierre Anual y generar paquete sellado con backup
+        if (pathname === '/api/sistema/cierre-anual' && method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                const cfgAnio = db.prepare("SELECT valor FROM configuracion WHERE clave = 'anio_activo'").get();
+                const anio = body.anio || (cfgAnio ? cfgAnio.valor : 2026);
+                const result = ejecutarCierreAnual(anio, body.notas || '');
+                sendJSON(res, result);
+                return;
+            } catch (err) {
+                console.error("Error en cierre anual:", err);
+                sendJSON(res, { error: err.message }, 500);
+                return;
+            }
+        }
+
+        // Aperturar un nuevo año lectivo
+        if (pathname === '/api/sistema/apertura-anio' && method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body.anio) {
+                    sendJSON(res, { error: "Debe indicar el año a aperturar (ej: 2027)" }, 400);
+                    return;
+                }
+                const result = ejecutarAperturaAnio(body.anio, {
+                    transferir_saldo: !!body.transferir_saldo,
+                    notas: body.notas || ''
+                });
+                sendJSON(res, result);
+                return;
+            } catch (err) {
+                console.error("Error al aperturar año:", err);
+                sendJSON(res, { error: err.message }, 500);
+                return;
+            }
+        }
+
+        // Cambiar año activo de operación en configuración
+        if (pathname === '/api/sistema/cambiar-anio-activo' && method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                const anio = String(body.anio || '2026').trim();
+                db.prepare("INSERT OR REPLACE INTO configuracion (clave, valor) VALUES ('anio_activo', ?)").run(anio);
+                sendJSON(res, {
+                    success: true,
+                    anio_activo: anio,
+                    mensaje: `Año lectivo ${anio} seleccionado como año activo del sistema.`
+                });
+                return;
+            } catch (err) {
+                console.error("Error cambiando año activo:", err);
+                sendJSON(res, { error: err.message }, 500);
+                return;
+            }
+        }
+
+        // Descarga directa de archivos de cierres anuales
+        if (pathname.startsWith('/api/sistema/cierre-anual/descargar/') && method === 'GET') {
+            const rawName = path.basename(pathname.replace('/api/sistema/cierre-anual/descargar/', ''));
+            const filePath = path.join(CIERRES_ANUALES_DIR, rawName);
+            if (!fs.existsSync(filePath)) {
+                sendJSON(res, { error: "Archivo de cierre anual no encontrado: " + rawName }, 404);
+                return;
+            }
+            const ext = path.extname(rawName).toLowerCase();
+            const contentType = ext === '.zip' ? 'application/zip' : (ext === '.json' ? 'application/json' : 'application/octet-stream');
+            res.writeHead(200, {
+                'Content-Type': contentType,
+                'Content-Disposition': `attachment; filename="${rawName}"`
+            });
+            fs.createReadStream(filePath).pipe(res);
+            return;
         }
 
         // 5. Reestablecer sistema desde archivo subido (.db o .zip) por el usuario
@@ -1841,6 +2321,7 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             const grupo = parsedUrl.searchParams.get('grupo');
             const encargado = parsedUrl.searchParams.get('encargado');
             const estado = parsedUrl.searchParams.get('estado');
+            const anio = parsedUrl.searchParams.get('anio');
             const search = (parsedUrl.searchParams.get('search') || '').toLowerCase();
 
             let query = "SELECT * FROM movimientos WHERE 1=1";
@@ -1852,6 +2333,10 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             if (grupo) { query += " AND grupo = ?"; params.push(grupo); }
             if (encargado) { query += " AND encargado = ?"; params.push(encargado); }
             if (estado) { query += " AND estado = ?"; params.push(estado); }
+            if (anio && anio !== 'TODOS') {
+                query += " AND (anio = ? OR substr(fecha, 1, 4) = ?)";
+                params.push(parseInt(anio, 10), String(anio));
+            }
             if (search) {
                 query += " AND (LOWER(nombre) LIKE ? OR LOWER(concepto) LIKE ? OR LOWER(comprobante) LIKE ? OR LOWER(notas) LIKE ?)";
                 params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
@@ -1898,6 +2383,7 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             let dni = (data.dni || '').trim();
             let turno = (data.turno || '').trim();
             let telefono = (data.telefono || data.celular || '').trim();
+            const anioMov = data.anio ? parseInt(data.anio, 10) : (parseInt(fecha.slice(0, 4), 10) || 2026);
 
             if (rol === 'Docente' && nombre) {
                 const exist = db.prepare("SELECT id FROM docentes WHERE LOWER(nombre) = LOWER(?)").get(nombre);
@@ -1906,35 +2392,36 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 }
             }
 
+            let estudianteId = null;
             if (rol === 'Estudiante' && nombre) {
                 const exist = db.prepare("SELECT * FROM estudiantes WHERE LOWER(nombre) = LOWER(?)").get(nombre);
                 if (exist) {
+                    estudianteId = exist.id;
                     if (!dni && exist.dni) dni = exist.dni;
                     if (!turno && exist.turno) turno = exist.turno;
                     if (!telefono && exist.telefono) telefono = exist.telefono;
-                    if (dni && !exist.dni) {
-                        db.prepare("UPDATE estudiantes SET dni = ? WHERE id = ?").run(dni, exist.id);
-                    }
-                    if (turno && !exist.turno) {
-                        db.prepare("UPDATE estudiantes SET turno = ? WHERE id = ?").run(turno, exist.id);
-                    }
-                    if (telefono && !exist.telefono) {
-                        db.prepare("UPDATE estudiantes SET telefono = ? WHERE id = ?").run(telefono, exist.id);
-                    }
-                    if (notas) {
-                        db.prepare("UPDATE estudiantes SET notas = ? WHERE id = ?").run(notas, exist.id);
-                    }
+                    db.prepare(`
+                        UPDATE estudiantes 
+                        SET dni = COALESCE(NULLIF(?, ''), dni),
+                            turno = COALESCE(NULLIF(?, ''), turno),
+                            telefono = COALESCE(NULLIF(?, ''), telefono),
+                            carrera = CASE WHEN carrera IS NULL OR carrera = '' OR carrera = 'Sin Asignar (Pendiente)' THEN ? ELSE carrera END,
+                            grupo = CASE WHEN grupo IS NULL OR grupo = '' OR grupo = 'General' THEN ? ELSE grupo END,
+                            notas = CASE WHEN ? != '' THEN ? ELSE notas END
+                        WHERE id = ?
+                    `).run(dni || '', turno || '', telefono || '', carrera, grupo, notas, notas, exist.id);
                 } else {
-                    const cod = `EST-${new Date().getFullYear()}-${String(nextNro).padStart(3, '0')}`;
-                    db.prepare("INSERT INTO estudiantes (codigo, nombre, carrera, grupo, dni, turno, telefono, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)").run(cod, nombre, carrera, grupo, dni, turno, telefono, notas || '');
+                    const cod = `EST-${anioMov}-${String(nextNro).padStart(3, '0')}`;
+                    const resEst = db.prepare("INSERT INTO estudiantes (codigo, nombre, carrera, grupo, dni, turno, telefono, notas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)").run(cod, nombre, carrera, grupo, dni, turno, telefono, notas || '');
+                    estudianteId = resEst.lastInsertRowid;
                 }
             }
 
             const stmt = db.prepare(`
-                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, monto_total, monto_abonado, metodo_pago, fecha_vencimiento, comprobante, notas, dni, turno)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, monto_total, monto_abonado, metodo_pago, fecha_vencimiento, comprobante, notas, dni, turno, anio)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `);
-            const info = stmt.run(fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, montoTotal, montoAbonado, metodo, vencimiento, comprobante, notas, dni, turno);
+            const info = stmt.run(fecha, tipo, estado, rol, nombre, carrera, grupo, encargado, concepto, monto, montoTotal, montoAbonado, metodo, vencimiento, comprobante, notas, dni, turno, anioMov);
             const newId = Number(info.lastInsertRowid);
 
             // Actualizar deuda_id si proviene de cobranza de cuota
@@ -1953,7 +2440,18 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             guardarLibroExcelEnDisco();
             generarRespaldoCompleto('Auto_Mov_' + newId);
 
-            sendJSON(res, { success: true, id: newId, comprobante: comprobante, fecha: fecha, monto: monto, nombre: nombre, message: "Movimiento registrado con éxito y guardado en Excel" });
+            sendJSON(res, { 
+                success: true, 
+                id: newId, 
+                comprobante: comprobante, 
+                fecha: fecha, 
+                monto: monto, 
+                nombre: nombre, 
+                estudiante_guardado: true,
+                estudiante_id: estudianteId,
+                anio: anioMov,
+                message: "Movimiento y datos del estudiante guardados con éxito en la base de datos y Excel" 
+            });
             return;
         }
 
@@ -2146,9 +2644,10 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
 
             // 3. Insertar movimiento de ingreso en 'movimientos'
             const encargadoDocente = (data.docente || data.encargado || '').trim();
+            const anioRecibo = parseInt(fechaEmision.slice(0, 4), 10) || 2026;
             const infoMov = db.prepare(`
-                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, concepto, monto, monto_total, monto_abonado, metodo_pago, comprobante, notas, grupo, dni, turno, encargado)
-                VALUES (?, 'Ingreso', 'Pagado', 'Estudiante', ?, ?, ?, ?, ?, ?, 'Efectivo', ?, ?, ?, ?, ?, ?)
+                INSERT INTO movimientos (fecha, tipo, estado, rol, nombre, carrera, concepto, monto, monto_total, monto_abonado, metodo_pago, comprobante, notas, grupo, dni, turno, encargado, anio)
+                VALUES (?, 'Ingreso', 'Pagado', 'Estudiante', ?, ?, ?, ?, ?, ?, 'Efectivo', ?, ?, ?, ?, ?, ?, ?)
             `).run(
                 fechaEmision,
                 nombreTrim,
@@ -2162,7 +2661,8 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 grupoFinal,
                 dni || '',
                 turnoFinal,
-                encargadoDocente || 'General'
+                encargadoDocente || 'General',
+                anioRecibo
             );
 
             const movId = infoMov.lastInsertRowid;

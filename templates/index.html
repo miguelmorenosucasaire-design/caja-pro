@@ -1449,6 +1449,18 @@
                     </select>
                 </div>
 
+                <!-- Selector de Año Lectivo Multianual (2026, 2027...) -->
+                <div class="relative inline-flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 text-xs font-bold rounded-xl px-2.5 py-1.5 shadow-xs" title="Ciclo Lectivo y Fiscal de Operación">
+                    <i class="fa-solid fa-calendar-days text-indigo-600 dark:text-indigo-400 text-xs"></i>
+                    <span class="hidden sm:inline text-slate-500 dark:text-slate-400 font-semibold text-[11px]">Año:</span>
+                    <select id="select-anio-activo-header" onchange="alCambiarAnioDesdeHeader(this.value)" class="bg-transparent font-black focus:outline-none cursor-pointer text-slate-900 dark:text-white text-xs">
+                        <option value="2026">2026</option>
+                    </select>
+                    <span id="badge-estado-anio-header" class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                        Activo
+                    </span>
+                </div>
+
                 <!-- Exportar Hoja a PDF -->
                 <button onclick="exportarHojaPDF()" title="Exportar la hoja seleccionada a documento PDF con membrete oficial" class="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition shadow-xs">
                     <i class="fa-solid fa-file-pdf text-rose-600"></i>
@@ -2796,6 +2808,68 @@
                             <i class="fa-solid fa-file-zipper"></i>
                             <span>Descargar Paquete (.zip)</span>
                         </a>
+                    </div>
+                </div>
+
+                <!-- PANEL MULTIANUAL: CIERRE DE AÑO Y APERTURA DE AÑOS POSTERIORES -->
+                <div class="bg-gradient-to-br from-indigo-900/10 via-slate-900/5 to-purple-900/10 dark:from-indigo-950/40 dark:via-slate-900 dark:to-purple-950/40 p-5 rounded-2xl border-2 border-indigo-200 dark:border-indigo-800/80 shadow-sm space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-indigo-200 dark:border-indigo-900/60">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg shadow-sm">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                    <span>Gestión Multianual y Cierre de Año Escolar</span>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                                        Diseñado para Múltiples Años
+                                    </span>
+                                </h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">
+                                    Cierra el año en curso (ej. 2026) con respaldo sellado inalterable (DB + Excel + Auditoría SHA-256) y apertura nuevos años lectivos (2027...) con caja limpia y catálogo conservado.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" onclick="abrirModalCierreAnual()" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-extrabold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>🔒 Ejecutar Cierre Anual</span>
+                            </button>
+                            <button type="button" onclick="abrirModalAperturaAnio()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                <span>➕ Aperturar Nuevo Año</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tarjetas de Años Lectivos -->
+                    <div id="contenedor-tarjetas-anios" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <!-- Se llena dinámicamente con cargarGestionAnios() -->
+                    </div>
+
+                    <!-- Historial de Cierres Anuales Sellados -->
+                    <div class="space-y-2 pt-2">
+                        <span class="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+                            Historial de Respaldos de Cierre Anual Certificados (SHA-256):
+                        </span>
+                        <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-50 dark:bg-slate-800/80 text-[10px] text-slate-600 dark:text-slate-300 font-extrabold uppercase border-b border-slate-200 dark:border-slate-800">
+                                    <tr>
+                                        <th class="p-2.5">Archivo de Cierre</th>
+                                        <th class="p-2.5">Tamaño</th>
+                                        <th class="p-2.5">Fecha</th>
+                                        <th class="p-2.5">Integridad (SHA-256)</th>
+                                        <th class="p-2.5 text-right">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-archivos-cierres-anuales" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                                    <tr>
+                                        <td colspan="5" class="p-3 text-center text-slate-400 italic">Cargando historial de cierres...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -4586,6 +4660,44 @@
                         <input type="hidden" id="form-tipo" value="Ingreso">
                     </div>
 
+                    <!-- SELECTOR INTERACTIVO: ¿DESEA EMITIR / IMPRIMIR BOLETA OFICIAL? -->
+                    <div class="bg-gradient-to-r from-indigo-50 via-sky-50 to-emerald-50 dark:from-indigo-950/40 dark:via-sky-950/30 dark:to-emerald-950/40 p-3 rounded-xl border border-indigo-200 dark:border-indigo-800/80 shadow-xs space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                                    <i class="fa-solid fa-receipt"></i>
+                                </span>
+                                <div>
+                                    <label class="block font-black text-slate-800 dark:text-slate-100 text-[11px] uppercase tracking-wider">
+                                        ¿Desea Emitir / Imprimir Boleta Oficial?
+                                    </label>
+                                    <span class="text-[10px] text-slate-500 dark:text-slate-400">Elige si deseas emitir la boleta física o solo registrar en la base de datos</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1.5 flex-shrink-0">
+                                <button type="button" id="btn-toggle-emitir-boleta-si" onclick="seleccionarOpcionEmisionBoleta(true)" class="px-3 py-1.5 rounded-lg border-2 border-indigo-600 bg-indigo-600 text-white font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>SÍ, Con Boleta</span>
+                                </button>
+                                <button type="button" id="btn-toggle-emitir-boleta-no" onclick="seleccionarOpcionEmisionBoleta(false)" class="px-3 py-1.5 rounded-lg border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-[11px] flex items-center gap-1 shadow-xs transition hover:bg-slate-50">
+                                    <span>Solo Guardar</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Botón para ver y autollenar la boleta en vivo -->
+                        <div class="flex items-center justify-between pt-1 border-t border-indigo-100 dark:border-indigo-900/40 text-[10px]">
+                            <span class="text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-arrows-rotate text-emerald-500 animate-spin"></i>
+                                <span>Llenado automático en vivo activado (todos los campos se sincronizan al escribir)</span>
+                            </span>
+                            <button type="button" onclick="mostrarYDesplazarABoletaModal()" class="text-indigo-600 dark:text-indigo-400 font-black hover:underline flex items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>Ver Boleta Oficial</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- 2. SECCIÓN POR GRUPO Y ENCARGADO DE ESA CLASE -->
                     <div class="bg-indigo-50/50 dark:bg-indigo-950/40 p-3.5 rounded-xl border border-indigo-100 dark:border-indigo-900/60 space-y-2.5">
                         <div class="flex items-center space-x-2 text-indigo-900 dark:text-indigo-300 font-bold text-[11px] uppercase tracking-wider">
@@ -4833,13 +4945,13 @@
                             Cerrar
                         </button>
                         <div class="flex items-center space-x-2">
-                            <button type="submit" id="btn-guardar-mov-modal" class="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold rounded-xl shadow-md transition flex items-center space-x-1.5 text-xs cursor-pointer">
+                            <button type="button" onclick="guardarSoloBaseDatosModal()" id="btn-guardar-mov-modal" class="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold rounded-xl shadow-md transition flex items-center space-x-1.5 text-xs cursor-pointer" title="Guarda al estudiante en el padrón SQLite y la operación en caja sin lanzar impresión">
                                 <i class="fa-solid fa-floppy-disk"></i>
-                                <span>💾 Guardar Movimiento</span>
+                                <span>💾 Solo Guardar en Base de Datos</span>
                             </button>
-                            <button type="button" onclick="guardarEImprimirDirectoModal()" id="btn-guardar-imprimir-modal" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white font-black rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2 text-xs hover:scale-105 active:scale-95 cursor-pointer" title="Guarda en base de datos, Excel y abre la impresión oficial en 1 sola hoja de inmediato">
+                            <button type="button" onclick="guardarEImprimirDirectoModal()" id="btn-guardar-imprimir-modal" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white font-black rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2 text-xs hover:scale-105 active:scale-95 cursor-pointer" title="Guarda al estudiante en SQLite, registra en Excel y abre la boleta oficial para impresión directa">
                                 <i class="fa-solid fa-print"></i>
-                                <span>⚡ Guardar e Imprimir Directo</span>
+                                <span>🖨️ Guardar e Imprimir Boleta</span>
                             </button>
                         </div>
                     </div>
@@ -6422,6 +6534,147 @@
         </div>
     </div>
 
+    <!-- ======================================================== -->
+    <!-- MODAL: CIERRE ANUAL Y GENERACIÓN DE BACKUP MAESTRO       -->
+    <!-- ======================================================== -->
+    <div id="modal-cierre-anual" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto animate-fade-in">
+            <div class="p-5 bg-gradient-to-r from-rose-950 via-slate-900 to-rose-950 text-white flex items-center justify-between border-b border-rose-900/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-400/30 flex items-center justify-center text-rose-400 text-lg shadow-inner">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-base text-white flex items-center gap-2">
+                            <span>Cierre Anual Oficial & Generación de Respaldo Maestro</span>
+                            <span id="cierre-anual-badge-anio" class="px-2 py-0.5 rounded-full bg-rose-500/30 text-rose-200 border border-rose-400/30 text-[10px] font-bold">2026</span>
+                        </h3>
+                        <p class="text-[11px] text-slate-300">Sellado del ejercicio fiscal y generación de paquete inalterable de auditoría.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cerrarModalCierreAnual()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form onsubmit="confirmarCierreAnual(event)" class="p-5 space-y-4 text-xs">
+                <!-- Resumen en vivo de cifras del año -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                        <span class="text-[10px] text-slate-500 font-bold block">Total Ingresos:</span>
+                        <span id="cierre-ingresos" class="text-xs font-black text-emerald-600 dark:text-emerald-400">S/. 0.00</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                        <span class="text-[10px] text-slate-500 font-bold block">Total Egresos:</span>
+                        <span id="cierre-egresos" class="text-xs font-black text-rose-600 dark:text-rose-400">S/. 0.00</span>
+                    </div>
+                    <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                        <span class="text-[10px] text-indigo-700 dark:text-indigo-300 font-bold block">Balance Neto Final:</span>
+                        <span id="cierre-saldo" class="text-xs font-black text-indigo-700 dark:text-indigo-300">S/. 0.00</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700/80">
+                        <span class="text-[10px] text-slate-500 font-bold block">Movimientos / Alumnos:</span>
+                        <span id="cierre-movs" class="text-xs font-black text-slate-800 dark:text-white">0 / 0</span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 dark:bg-amber-950/40 p-3.5 rounded-xl border border-amber-200 dark:border-amber-900/60 space-y-1.5 text-slate-800 dark:text-slate-200">
+                    <div class="font-extrabold text-[11px] text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                        <span>Garantía de Respaldo Sellado y Permanencia</span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                        Al ejecutar el cierre anual, el sistema creará automáticamente un archivo comprimido sellado en <code class="font-mono bg-white dark:bg-slate-900 px-1 py-0.5 rounded text-[10px] border border-amber-200">backups/cierres_anuales/</code> conteniendo:
+                    </p>
+                    <ul class="list-disc list-inside text-[10px] text-slate-600 dark:text-slate-400 space-y-0.5 pl-1">
+                        <li>Copia exacta e inalterable de la Base de Datos SQLite del año.</li>
+                        <li>Libro oficial Excel institucional (.xlsx) cerrado con todas sus hojas.</li>
+                        <li>Certificado de Auditoría oficial en formato JSON y TXT.</li>
+                        <li>Firma criptográfica SHA-256 de verificación para auditorías UGEL / MINEDU.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Notas u Observaciones del Cierre (Opcional)</label>
+                    <input type="text" id="cierre-anual-notas" placeholder="Ej: Cierre anual regular 2026 - Aprobado por Dirección y Tesorería" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white">
+                </div>
+
+                <div class="flex items-center justify-end space-x-2.5 pt-3 border-t border-slate-200 dark:border-slate-800">
+                    <button type="button" onclick="cerrarModalCierreAnual()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btn-confirmar-cierre-anual" class="bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black px-5 py-2.5 rounded-xl text-xs shadow-lg shadow-rose-600/30 transition flex items-center space-x-2 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>🔒 Confirmar y Ejecutar Cierre Anual</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- MODAL: APERTURA DE NUEVO AÑO LECTIVO / FISCAL            -->
+    <!-- ======================================================== -->
+    <div id="modal-apertura-anio" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-auto animate-fade-in">
+            <div class="p-5 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white flex items-center justify-between border-b border-indigo-900/40">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-400 text-lg shadow-inner">
+                        <i class="fa-solid fa-calendar-plus"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-base text-white">Apertura de Nuevo Año Lectivo / Fiscal</h3>
+                        <p class="text-[11px] text-slate-300">Inicializa el nuevo ciclo con caja limpia preservando el catálogo de estudiantes y carreras.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cerrarModalAperturaAnio()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form onsubmit="confirmarAperturaAnio(event)" class="p-5 space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Año Lectivo a Aperturar (*)</label>
+                    <input type="number" id="apertura-input-anio" required min="2026" max="2050" value="2027" class="w-full bg-white dark:bg-slate-900 border-2 border-indigo-500 rounded-xl px-3 py-2 text-base font-black font-mono text-indigo-600 dark:text-indigo-400">
+                    <span class="text-[10px] text-slate-500 mt-0.5 block">Ejemplo: 2027, 2028, etc.</span>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700/80 space-y-3">
+                    <label class="flex items-start space-x-2.5 cursor-pointer">
+                        <input type="checkbox" id="apertura-check-transferir-saldo" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <span class="font-extrabold text-slate-800 dark:text-white block">Transferir Saldo Final de Caja como Saldo Inicial</span>
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400">Si está marcado, el balance remanente del año anterior se registrará como ingreso inicial de apertura en caja. Si no, la caja inicia limpia en S/. 0.00.</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start space-x-2.5 cursor-pointer">
+                        <input type="checkbox" id="apertura-check-conservar-catalogo" checked disabled class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <span class="font-extrabold text-emerald-700 dark:text-emerald-400 block">✓ Preservar Padrón de Estudiantes, Carreras y Docentes</span>
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400">El catálogo maestro se mantiene intacto para permitir matrículas y cobros directos sin tener que volver a escribir los datos de los alumnos.</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Notas u Observaciones de Apertura</label>
+                    <input type="text" id="apertura-input-notas" placeholder="Ej: Inicio de actividades académicas 2027" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 dark:text-white">
+                </div>
+
+                <div class="flex items-center justify-end space-x-2.5 pt-3 border-t border-slate-200 dark:border-slate-800">
+                    <button type="button" onclick="cerrarModalAperturaAnio()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="btn-confirmar-apertura-anio" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-black px-5 py-2.5 rounded-xl text-xs shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>➕ Confirmar y Aperturar Año</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
 
@@ -6438,6 +6691,361 @@
         let ultimoPdfBlobUrl = null;
         let ultimoPdfFilename = 'Comprobante_Pago.pdf';
         let isGeneratingPdf = false;
+
+        // =============================================================
+        // CONTROL INTERACTIVO DE EMISIÓN DE BOLETA Y GESTIÓN MULTIANUAL
+        // =============================================================
+        let deseaEmitirBoletaGlobal = true;
+        let anioOperativoGlobal = '2026';
+        let catalogoAniosGlobal = [];
+
+        function seleccionarOpcionEmisionBoleta(desea) {
+            deseaEmitirBoletaGlobal = !!desea;
+            const btnSi = document.getElementById('btn-toggle-emitir-boleta-si');
+            const btnNo = document.getElementById('btn-toggle-emitir-boleta-no');
+            
+            if (deseaEmitirBoletaGlobal) {
+                if (btnSi) {
+                    btnSi.className = 'px-3 py-1.5 rounded-lg border-2 border-indigo-600 bg-indigo-600 text-white font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition';
+                }
+                if (btnNo) {
+                    btnNo.className = 'px-3 py-1.5 rounded-lg border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-[11px] flex items-center gap-1 shadow-xs transition hover:bg-slate-50';
+                }
+                mostrarYDesplazarABoletaModal();
+            } else {
+                if (btnSi) {
+                    btnSi.className = 'px-3 py-1.5 rounded-lg border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-[11px] flex items-center gap-1 shadow-xs transition hover:bg-slate-50';
+                }
+                if (btnNo) {
+                    btnNo.className = 'px-3 py-1.5 rounded-lg border-2 border-emerald-600 bg-emerald-600 text-white font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition';
+                }
+            }
+        }
+
+        function mostrarYDesplazarABoletaModal() {
+            actualizarBoletaModalEnVivo();
+            const cont = document.getElementById('contenedor-boleta-modal-costado');
+            if (cont) {
+                cont.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                cont.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-2');
+                setTimeout(() => cont.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-2'), 1200);
+            }
+        }
+
+        async function guardarSoloBaseDatosModal() {
+            const form = document.getElementById('form-nuevo-movimiento');
+            if (form && !form.reportValidity()) return;
+
+            const btn = document.getElementById('btn-guardar-mov-modal');
+            const txtOriginal = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i><span>Guardando...</span>';
+            }
+
+            try {
+                await guardarMovimiento(new Event('submit', { cancelable: true }));
+                mostrarNotificacion('✅ Estudiante y movimiento registrados en la Base de Datos SQLite y Excel con éxito.', 'exito');
+                cerrarModalNuevoMovimiento();
+            } catch (err) {
+                console.error("Error al guardar solo base de datos:", err);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = txtOriginal;
+                }
+            }
+        }
+
+        // =============================================================
+        // SISTEMA DE GESTIÓN MULTIANUAL, CIERRE ANUAL Y APERTURA DE AÑOS
+        // =============================================================
+        async function cargarGestionAnios() {
+            try {
+                const res = await fetch('/api/sistema/anios');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data.success) return;
+
+                anioOperativoGlobal = String(data.anio_activo || '2026');
+                catalogoAniosGlobal = data.anios || [];
+
+                // 1. Actualizar selector en Header
+                const selHeader = document.getElementById('select-anio-activo-header');
+                if (selHeader) {
+                    selHeader.innerHTML = '';
+                    catalogoAniosGlobal.forEach(a => {
+                        const opt = document.createElement('option');
+                        opt.value = a.anio;
+                        opt.textContent = `${a.anio}${a.estado === 'CERRADO' ? ' (Cerrado)' : ''}`;
+                        if (String(a.anio) === anioOperativoGlobal) opt.selected = true;
+                        selHeader.appendChild(opt);
+                    });
+                }
+
+                // 2. Actualizar badge de estado en Header
+                const badgeHeader = document.getElementById('badge-estado-anio-header');
+                const anioActualObj = catalogoAniosGlobal.find(a => String(a.anio) === anioOperativoGlobal);
+                if (badgeHeader && anioActualObj) {
+                    if (anioActualObj.estado === 'CERRADO') {
+                        badgeHeader.className = 'px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800';
+                        badgeHeader.textContent = 'Cerrado';
+                    } else {
+                        badgeHeader.className = 'px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800';
+                        badgeHeader.textContent = 'Activo';
+                    }
+                }
+
+                // 3. Renderizar Tarjetas de Años en section-respaldos
+                const contCards = document.getElementById('contenedor-tarjetas-anios');
+                if (contCards) {
+                    contCards.innerHTML = '';
+                    const fMoney = (val) => 'S/. ' + Number(val || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    
+                    catalogoAniosGlobal.forEach(a => {
+                        const esActivo = String(a.anio) === anioOperativoGlobal;
+                        const esCerrado = a.estado === 'CERRADO';
+
+                        const card = document.createElement('div');
+                        card.className = `p-4 rounded-xl border-2 transition shadow-xs flex flex-col justify-between space-y-3 ${
+                            esActivo 
+                                ? 'bg-white dark:bg-slate-900 border-indigo-500 shadow-indigo-500/10' 
+                                : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
+                        }`;
+
+                        card.innerHTML = `
+                            <div>
+                                <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-calendar-days ${esActivo ? 'text-indigo-600' : 'text-slate-400'} text-base"></i>
+                                        <span class="text-base font-black text-slate-900 dark:text-white">Año Lectivo ${a.anio}</span>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                        esCerrado 
+                                            ? 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800' 
+                                            : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
+                                    }">
+                                        ${esCerrado ? '🔒 Cerrado' : '⚡ Activo'}
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-2.5 text-xs">
+                                    <div>
+                                        <span class="text-[10px] text-slate-400 font-bold block">Recaudado (Ingresos):</span>
+                                        <span class="font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">${fMoney(a.total_ingresos)}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-400 font-bold block">Balance Neto:</span>
+                                        <span class="font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">${fMoney(a.saldo_actual || a.saldo_final)}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-400 font-bold block">Estudiantes:</span>
+                                        <span class="font-bold text-slate-700 dark:text-slate-300">${a.total_estudiantes || 0} alumnos</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-slate-400 font-bold block">Movimientos:</span>
+                                        <span class="font-bold text-slate-700 dark:text-slate-300">${a.total_movimientos || 0} recibos</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-1.5">
+                                ${esActivo ? `
+                                    <span class="text-[10px] text-indigo-600 dark:text-indigo-400 font-black flex items-center gap-1">
+                                        <i class="fa-solid fa-circle-check"></i> Año Operativo en Curso
+                                    </span>
+                                ` : `
+                                    <button type="button" onclick="seleccionarAnioOperativo(${a.anio})" class="text-[11px] font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-600 flex items-center gap-1">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Ver Datos de este Año
+                                    </button>
+                                `}
+                                ${a.backup_archivo ? `
+                                    <a href="/api/sistema/cierre-anual/descargar/${a.backup_archivo}" class="px-2 py-1 rounded bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 border border-teal-300 text-[10px] font-black flex items-center gap-1 hover:bg-teal-100" title="Descargar Respaldo Sellado ZIP">
+                                        <i class="fa-solid fa-download"></i> Backup .zip
+                                    </a>
+                                ` : ''}
+                            </div>
+                        `;
+                        contCards.appendChild(card);
+                    });
+                }
+
+                // 4. Renderizar Historial de Archivos de Cierre
+                const tablaArchivos = document.getElementById('tabla-archivos-cierres-anuales');
+                if (tablaArchivos) {
+                    if (data.archivos_cierre && data.archivos_cierre.length > 0) {
+                        tablaArchivos.innerHTML = '';
+                        data.archivos_cierre.forEach(f => {
+                            const tr = document.createElement('tr');
+                            tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 transition';
+                            tr.innerHTML = `
+                                <td class="p-2.5 font-mono font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                    <i class="fa-solid ${f.es_zip ? 'fa-file-zipper text-teal-600' : (f.es_db ? 'fa-database text-sky-600' : 'fa-file-code text-amber-600')}"></i>
+                                    <span>${f.nombre}</span>
+                                </td>
+                                <td class="p-2.5 font-mono text-slate-600 dark:text-slate-400">${f.tamano}</td>
+                                <td class="p-2.5 text-slate-600 dark:text-slate-400">${f.fecha}</td>
+                                <td class="p-2.5 font-mono text-[10px] text-slate-500 max-w-xs truncate" title="${f.sha256 || ''}">
+                                    <span class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-bold text-slate-700 dark:text-slate-300">SHA-256</span>
+                                    <span class="ml-1">${(f.sha256 || '').slice(0, 16)}...</span>
+                                </td>
+                                <td class="p-2.5 text-right">
+                                    <a href="/api/sistema/cierre-anual/descargar/${f.nombre}" download="${f.nombre}" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-[11px] inline-flex items-center gap-1 shadow-xs transition">
+                                        <i class="fa-solid fa-download"></i>
+                                        <span>Descargar</span>
+                                    </a>
+                                </td>
+                            `;
+                            tablaArchivos.appendChild(tr);
+                        });
+                    } else {
+                        tablaArchivos.innerHTML = '<tr><td colspan="5" class="p-3 text-center text-slate-400 italic">No hay archivos sellados aún. Presiona "Ejecutar Cierre Anual" para generar el primero.</td></tr>';
+                    }
+                }
+            } catch (e) {
+                console.warn('Error al cargar gestión de años:', e);
+            }
+        }
+
+        async function alCambiarAnioDesdeHeader(anio) {
+            await seleccionarAnioOperativo(anio);
+        }
+
+        async function seleccionarAnioOperativo(anio) {
+            try {
+                const res = await fetch('/api/sistema/cambiar-anio-activo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ anio: anio })
+                });
+                const d = await res.json();
+                if (d.success) {
+                    anioOperativoGlobal = String(anio);
+                    mostrarNotificacion(`📅 Año ${anio} seleccionado como año activo de operación.`, 'exito');
+                    await cargarTodo();
+                }
+            } catch (e) {
+                console.error("Error al seleccionar año operativo:", e);
+            }
+        }
+
+        function abrirModalCierreAnual() {
+            const anioObj = catalogoAniosGlobal.find(a => String(a.anio) === anioOperativoGlobal) || {
+                anio: anioOperativoGlobal,
+                total_ingresos: 29920,
+                total_egresos: 0,
+                saldo_actual: 29920,
+                total_estudiantes: 206,
+                total_movimientos: 241
+            };
+
+            const fMoney = (val) => 'S/. ' + Number(val || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('cierre-anual-badge-anio').innerText = anioObj.anio;
+            document.getElementById('cierre-ingresos').innerText = fMoney(anioObj.total_ingresos);
+            document.getElementById('cierre-egresos').innerText = fMoney(anioObj.total_egresos);
+            document.getElementById('cierre-saldo').innerText = fMoney(anioObj.saldo_actual || anioObj.saldo_final);
+            document.getElementById('cierre-movs').innerText = `${anioObj.total_movimientos || 0} ops / ${anioObj.total_estudiantes || 0} est.`;
+
+            document.getElementById('modal-cierre-anual')?.classList.remove('hidden');
+        }
+
+        function cerrarModalCierreAnual() {
+            document.getElementById('modal-cierre-anual')?.classList.add('hidden');
+        }
+
+        async function confirmarCierreAnual(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-confirmar-cierre-anual');
+            const txtOriginal = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i><span>Sellando Ejercicio y Creando Backup...</span>';
+            }
+
+            try {
+                const notas = document.getElementById('cierre-anual-notas')?.value || '';
+                const res = await fetch('/api/sistema/cierre-anual', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ anio: parseInt(anioOperativoGlobal, 10), notas: notas })
+                });
+                const d = await res.json();
+                if (d.success) {
+                    cerrarModalCierreAnual();
+                    mostrarNotificacion(`🔒 ¡Cierre Anual ${d.anio} ejecutado con éxito! Paquete sellado: ${d.archivo_zip}`, 'exito');
+                    await cargarGestionAnios();
+                    await cargarTodo();
+                } else {
+                    alert('Error en cierre anual: ' + (d.error || 'Desconocido'));
+                }
+            } catch (err) {
+                console.error("Error en cierre anual:", err);
+                alert("Error al conectar con el servidor para ejecutar el cierre anual");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = txtOriginal;
+                }
+            }
+        }
+
+        function abrirModalAperturaAnio() {
+            const anioSiguiente = (parseInt(anioOperativoGlobal, 10) || 2026) + 1;
+            const inp = document.getElementById('apertura-input-anio');
+            if (inp) inp.value = anioSiguiente;
+            document.getElementById('modal-apertura-anio')?.classList.remove('hidden');
+        }
+
+        function cerrarModalAperturaAnio() {
+            document.getElementById('modal-apertura-anio')?.classList.add('hidden');
+        }
+
+        async function confirmarAperturaAnio(e) {
+            e.preventDefault();
+            const anioVal = parseInt(document.getElementById('apertura-input-anio')?.value, 10);
+            if (!anioVal || anioVal < 2026) {
+                alert("Por favor ingrese un año válido (ej: 2027)");
+                return;
+            }
+            const transferirSaldo = !!document.getElementById('apertura-check-transferir-saldo')?.checked;
+            const notas = document.getElementById('apertura-input-notas')?.value || '';
+
+            const btn = document.getElementById('btn-confirmar-apertura-anio');
+            const txtOriginal = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i><span>Aperturando Año...</span>';
+            }
+
+            try {
+                const res = await fetch('/api/sistema/apertura-anio', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        anio: anioVal,
+                        transferir_saldo: transferirSaldo,
+                        notas: notas
+                    })
+                });
+                const d = await res.json();
+                if (d.success) {
+                    cerrarModalAperturaAnio();
+                    mostrarNotificacion(`🎉 ¡Año Lectivo ${d.anio} aperturado con éxito como año activo de operación!`, 'exito');
+                    await cargarGestionAnios();
+                    await cargarTodo();
+                } else {
+                    alert('Error en apertura de año: ' + (d.error || 'Desconocido'));
+                }
+            } catch (err) {
+                console.error("Error en apertura de año:", err);
+                alert("Error al conectar con el servidor para aperturar el nuevo año");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = txtOriginal;
+                }
+            }
+        }
 
         // Navegación directa desde la Ficha del Estudiante a la Emisión de Boleta
         // Cargar boleta oficial con los datos que ya se guardaron del estudiante
@@ -10083,6 +10691,7 @@
             initTheme();
             await cargarConfiguracion();
             await cargarCarreras();
+            await cargarGestionAnios();
             await cargarStats();
             await cargarGrupos();
             await cargarMovimientos();
@@ -10097,7 +10706,8 @@
         // 1. STATS Y DASHBOARD
         async function cargarStats() {
             try {
-                const res = await fetch('/api/stats');
+                const anioQuery = (typeof anioOperativoGlobal !== 'undefined' && anioOperativoGlobal) ? '?year=' + anioOperativoGlobal : '';
+                const res = await fetch('/api/stats' + anioQuery);
                 const data = await res.json();
                 const fMoney = (val) => 'S/. ' + Number(val).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -10422,7 +11032,8 @@
         // 2. CAJA DE MOVIMIENTOS
         async function cargarMovimientos() {
             try {
-                const res = await fetch('/api/movimientos');
+                const anioQuery = (typeof anioOperativoGlobal !== 'undefined' && anioOperativoGlobal && anioOperativoGlobal !== 'TODOS') ? '?anio=' + anioOperativoGlobal : '';
+                const res = await fetch('/api/movimientos' + anioQuery);
                 movimientosGlobales = await res.json();
                 renderTablaMovimientos(movimientosGlobales);
             } catch (err) {
