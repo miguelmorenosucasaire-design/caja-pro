@@ -452,7 +452,7 @@ async function runMasterOrchestration() {
         }
 
         // 7.4 Integridad de Estructura DOM y Aislamiento de Secciones
-        const secList = ['section-dashboard', 'section-resultados', 'section-caja', 'section-grupos', 'section-estudiantes', 'section-docentes', 'section-deudores', 'section-carreras', 'section-respaldos', 'section-control-pagos', 'section-diario', 'section-factura', 'section-configuracion'];
+        const secList = ['section-dashboard', 'section-resultados', 'section-caja', 'section-grupos', 'section-estudiantes', 'section-docentes', 'section-deudores', 'section-respaldos', 'section-control-pagos', 'section-diario', 'section-factura', 'section-configuracion'];
         let domOk = true;
         const mainOp = html.indexOf('<main');
         const mainCl = html.indexOf('</main>');
@@ -469,7 +469,7 @@ async function runMasterOrchestration() {
             if (o !== c) { domOk = false; break; }
         }
         if (domOk) {
-            pass("Integridad estructural DOM y encapsulamiento de secciones", "13 secciones balanceadas y contenidas en <main>");
+            pass("Integridad estructural DOM y encapsulamiento de secciones", "12 secciones balanceadas y contenidas en <main>");
         } else {
             fail("Estructura DOM de secciones rota o desbalanceada", new Error("Verificar etiquetas <div> y <main>"));
         }

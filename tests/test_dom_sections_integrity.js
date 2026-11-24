@@ -14,7 +14,6 @@ const sections = [
     'section-estudiantes',
     'section-docentes',
     'section-deudores',
-    'section-carreras',
     'section-respaldos',
     'section-control-pagos',
     'section-diario',

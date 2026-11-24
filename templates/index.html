@@ -1413,15 +1413,6 @@
                 </span>
                 <span class="truncate">Configuración</span>
             </button>
-
-            <!-- 13. CARRERAS Y ESPECIALIDADES -->
-            <button onclick="cambiarSeccion('carreras')" id="nav-carreras" class="nav-item group w-full flex items-center space-x-3 px-3 py-2 rounded-xl font-semibold text-xs transition-all text-slate-400 hover:text-white hover:bg-slate-800/60 hover:translate-x-0.5">
-                <span class="w-7 h-7 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-graduation-cap text-xs"></i>
-                </span>
-                <span class="truncate">Carreras Técnicas</span>
-                <span id="badge-carreras-count" class="ml-auto bg-purple-500/15 text-purple-300 text-[10px] px-2 py-0.5 rounded-full font-semibold border border-purple-500/25">13</span>
-            </button>
         </nav>
 
         <!-- Footer Sidebar -->
@@ -2976,43 +2967,6 @@
                     </div>
                 </div>
 </div>
-
-            <!-- ======================================================== -->
-            <!-- 6. SECCIÓN: REPORTE POR ESPECIALIDADES / CARRERAS        -->
-            <!-- ======================================================== -->
-            <div id="section-carreras" class="hidden space-y-6">
-                <!-- Banner Superior Minimalista -->
-                <div class="bg-white dark:bg-[#0c1220] p-6 rounded-2xl border border-slate-200/90 dark:border-slate-800/80 border-l-4 border-l-purple-500 shadow-sm flex flex-wrap items-center justify-between gap-4 no-print">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/60 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl shadow-sm">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-400 text-xs font-semibold uppercase tracking-wider mb-1">
-                                <i class="fa-solid fa-book-bookmark"></i>
-                                <span>Oferta Académica & Especialidades • CETPRO San Miguel</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                                Rendimiento y Control por Especialidad / Carrera
-                            </h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-3xl leading-relaxed">Supervisa los balances financieros, total de estudiantes matriculados y modifica los nombres oficiales de cada carrera.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center space-x-2.5">
-                        <button onclick="abrirModalNuevaCarrera()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-sm transition">
-                            <i class="fa-solid fa-plus-circle"></i>
-                            <span>Nueva Carrera</span>
-                        </button>
-                        <button onclick="cambiarSeccion('configuracion')" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2 shadow-sm transition">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span>Configurar Nombres</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-carreras-reporte"></div>
-            </div>
 
             <!-- =================================================================== -->
             <!-- 7. SECCIÓN: SISTEMA DE RESPALDOS DE BASE DE DATOS (NUEVA)           -->
@@ -8782,7 +8736,7 @@
             const secciones = [
                 'dashboard', 'resultados', 'grupos', 'estudiantes', 
                 'control-pagos', 'deudores', 'caja', 'diario', 
-                'docentes', 'factura', 'respaldos', 'configuracion', 'carreras'
+                'docentes', 'factura', 'respaldos', 'configuracion'
             ];
             
             secciones.forEach(s => {
