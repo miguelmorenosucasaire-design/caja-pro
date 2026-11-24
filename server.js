@@ -2266,6 +2266,44 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                 ORDER BY total_ingreso DESC
             `).all();
 
+            const metodosRows = db.prepare(`
+                SELECT COALESCE(metodo_pago, 'Efectivo') as metodo,
+                       COALESCE(SUM(CASE WHEN tipo = 'Ingreso' AND estado = 'Pagado' THEN monto ELSE 0 END), 0) as total_ingreso,
+                       COALESCE(SUM(CASE WHEN tipo = 'Egreso' AND estado = 'Pagado' THEN monto ELSE 0 END), 0) as total_egreso,
+                       COUNT(CASE WHEN estado = 'Pagado' THEN 1 END) as count
+                FROM movimientos 
+                WHERE strftime('%Y', fecha) = ?
+                GROUP BY metodo_pago
+            `).all(yearStr);
+
+            let efectivoIng = 0, efectivoEgr = 0, efectivoCount = 0;
+            let yapeIng = 0, yapeEgr = 0, yapeCount = 0;
+            let bancoIng = 0, bancoEgr = 0, bancoCount = 0;
+
+            metodosRows.forEach(r => {
+                const met = (r.metodo || '').toLowerCase();
+                if (met.includes('yape') || met.includes('plin') || met.includes('digital')) {
+                    yapeIng += r.total_ingreso;
+                    yapeEgr += r.total_egreso;
+                    yapeCount += r.count;
+                } else if (met.includes('transf') || met.includes('banc') || met.includes('depósito') || met.includes('deposito')) {
+                    bancoIng += r.total_ingreso;
+                    bancoEgr += r.total_egreso;
+                    bancoCount += r.count;
+                } else {
+                    efectivoIng += r.total_ingreso;
+                    efectivoEgr += r.total_egreso;
+                    efectivoCount += r.count;
+                }
+            });
+
+            const ultimosMovs = db.prepare(`
+                SELECT id, fecha, tipo, estado, rol, nombre, carrera, concepto, monto, metodo_pago, comprobante, grupo
+                FROM movimientos
+                ORDER BY id DESC
+                LIMIT 6
+            `).all();
+
             sendJSON(res, {
                 total_ingresos: Math.round(totalIngresos * 100) / 100,
                 total_egresos: Math.round(totalEgresos * 100) / 100,
@@ -2287,6 +2325,18 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
                     total_entradas: Math.round(entradasDoc * 100) / 100,
                     balance: Math.round((entradasDoc - salidasDoc) * 100) / 100
                 },
+                desglose_metodos: {
+                    efectivo: Math.round((efectivoIng - efectivoEgr) * 100) / 100,
+                    efectivo_ing: Math.round(efectivoIng * 100) / 100,
+                    efectivo_count: efectivoCount,
+                    yape: Math.round((yapeIng - yapeEgr) * 100) / 100,
+                    yape_ing: Math.round(yapeIng * 100) / 100,
+                    yape_count: yapeCount,
+                    banco: Math.round((bancoIng - bancoEgr) * 100) / 100,
+                    banco_ing: Math.round(bancoIng * 100) / 100,
+                    banco_count: bancoCount
+                },
+                ultimos_movimientos: ultimosMovs,
                 chart: {
                     meses: mesesNombres,
                     ingresos: chartIngresos,
