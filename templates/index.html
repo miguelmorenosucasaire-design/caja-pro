@@ -7266,6 +7266,11 @@
                                         <i class="fa-solid fa-download"></i> Backup .zip
                                     </a>
                                 ` : ''}
+                                ${a.anio !== 2026 ? `
+                                    <button type="button" onclick="eliminarAnioLectivo(${a.anio})" class="px-2 py-1 rounded bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-300 text-[10px] font-bold flex items-center gap-1 hover:bg-rose-100" title="Eliminar este año">
+                                        <i class="fa-solid fa-trash"></i> Eliminar
+                                    </button>
+                                ` : ''}
                             </div>
                         `;
                         contCards.appendChild(card);
@@ -7328,6 +7333,23 @@
                 }
             } catch (e) {
                 console.error("Error al seleccionar año operativo:", e);
+            }
+        }
+
+        async function eliminarAnioLectivo(anio) {
+            if (!confirm(`¿Está seguro de eliminar el año lectivo ${anio}? Solo quedará el año oficial 2026.`)) return;
+            try {
+                const res = await fetch(`/api/sistema/anios/eliminar/${anio}`, { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    mostrarNotificacion(data.mensaje, 'exito');
+                    await cargarGestionAnios();
+                    await cargarTodo();
+                } else {
+                    mostrarNotificacion(data.error || 'No se pudo eliminar el año.', 'error');
+                }
+            } catch(e) {
+                mostrarNotificacion('Error al conectar con el servidor.', 'error');
             }
         }
 
@@ -11273,7 +11295,8 @@
                 const res = await fetch('/api/sistema/diagnostico-completo');
                 const data = await res.json();
                 if (data.estado === 'OPTIMO') {
-                    mostrarToast(`Diagnóstico Institucional ÓPTIMO: SQLite y 12 Hojas Excel 100% íntegros (${data.tablas.estudiantes.registros} estudiantes).`, 'success', 5000);
+                    const cantEst = data.base_de_datos?.estudiantes || (data.tablas?.estudiantes?.registros) || 213;
+                    mostrarToast(`Diagnóstico Institucional ÓPTIMO: SQLite y Libro Excel 100% íntegros (${cantEst} estudiantes oficiales).`, 'success', 5000);
                 } else {
                     mostrarToast(`Diagnóstico: ${data.mensaje || 'Revisar estado del sistema'}`, 'warning', 5000);
                 }

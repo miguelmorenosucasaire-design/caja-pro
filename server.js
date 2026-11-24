@@ -1520,6 +1520,43 @@ INSTRUCCIONES DE RESTABLECIMIENTO:
             }
         }
 
+        // Eliminar un año secundario (ej. 2027) conservando siempre el 2026 oficial
+        if ((pathname.startsWith('/api/sistema/anios/eliminar/') || (pathname.startsWith('/api/sistema/anios/') && method === 'DELETE')) && (method === 'DELETE' || method === 'POST')) {
+            const anioTarget = parseInt(pathname.split('/').pop(), 10);
+            if (!anioTarget || isNaN(anioTarget)) {
+                sendJSON(res, { error: "Año inválido." }, 400);
+                return;
+            }
+            if (anioTarget === 2026) {
+                sendJSON(res, { error: "No es posible eliminar el año oficial principal 2026." }, 400);
+                return;
+            }
+            try {
+                db.prepare("DELETE FROM movimientos WHERE anio = ? OR strftime('%Y', fecha) = ?").run(anioTarget, String(anioTarget));
+                db.prepare("DELETE FROM anios_lectivos WHERE anio = ?").run(anioTarget);
+                db.prepare("INSERT OR REPLACE INTO configuracion (clave, valor) VALUES ('anio_activo', '2026')").run();
+
+                if (fs.existsSync(CIERRES_ANUALES_DIR)) {
+                    const files = fs.readdirSync(CIERRES_ANUALES_DIR);
+                    for (const f of files) {
+                        if (f.includes(String(anioTarget))) {
+                            try { fs.unlinkSync(path.join(CIERRES_ANUALES_DIR, f)); } catch(e) {}
+                        }
+                    }
+                }
+
+                sendJSON(res, {
+                    success: true,
+                    mensaje: `Año ${anioTarget} eliminado exitosamente. El sistema opera exclusivamente en 2026.`
+                });
+                return;
+            } catch (err) {
+                console.error("Error al eliminar año:", err);
+                sendJSON(res, { error: err.message }, 500);
+                return;
+            }
+        }
+
         // Descarga directa de archivos de cierres anuales
         if (pathname.startsWith('/api/sistema/cierre-anual/descargar/') && method === 'GET') {
             const rawName = path.basename(pathname.replace('/api/sistema/cierre-anual/descargar/', ''));
