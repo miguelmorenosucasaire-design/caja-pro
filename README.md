@@ -1,75 +1,128 @@
-[README](README.md) · [Guía de Inicio Rápido](#inicio-rápido) · [Estructura y Tecnologías](#tecnologías-y-arquitectura) · [Orquestador de Pruebas](#verificación-y-orquestador) · [Licencia](LICENSE)
+<div align="center">
+
+[README](README.md) · [Guía Rápida](#-inicio-rápido) · [Estructura](#-estructura-del-proyecto) · [Arquitectura](#-arquitectura-y-tecnologías) · [Orquestador](#-verificación-y-orquestador) · [Licencia](LICENSE)
+
+<br/>
+
+<img src="public/img/logo_institucion.jpg" width="110" height="110" alt="Insignia CETPRO San Miguel" style="border-radius: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.18);" />
 
 # 🏫 EduCaja Pro
-### Control Financiero Institucional, Caja Chica y Emisión de Boletas Oficiales en Red Local
-**Centro de Educación Técnico Productiva Público "Micaela Bastidas Puyucawa"** — San Román / Juliaca, Puno - Perú.
+### *Control Financiero Institucional, Caja Chica y Emisión de Boletas Oficiales en Red Local.*
+**Centro de Educación Técnico Productiva Público "Micaela Bastidas Puyucawa"**  
+San Román / Juliaca, Puno — Perú
 
-[🌐 Repositorio GitHub](https://github.com/miguelmorenosucasaire-design/caja-pro) · [💻 Acceso Local](http://localhost:5000) · [📊 Orquestador (63/63)](orchestrate.js) · [📄 Hoja Excel Maestro](CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx)
+<br/>
+
+[![Versión](https://img.shields.io/badge/Versión-2.0.0-0284c7?style=flat-square&logo=git&logoColor=white)](https://github.com/miguelmorenosucasaire-design/caja-pro)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E=18.0.0-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![SQLite3](https://img.shields.io/badge/SQLite3-ACID%20Embedded-0284c7?style=flat-square&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![Excel Sync](https://img.shields.io/badge/Excel%20Sync-12%20Hojas%20Oficiales-10b981?style=flat-square&logo=microsoft-excel&logoColor=white)](CEPRO_Control_MICAELA_BASTIDAS_ACTUALIZADO.xlsx)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3.0%20Obsidian%20Dark-38bdf8?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Orquestador](https://img.shields.io/badge/Orquestador-63%2F63%20Superadas%20(100%25)-emerald?style=flat-square&logo=checkmarx&logoColor=white)](orchestrate.js)
+[![Licencia](https://img.shields.io/badge/Licencia-Apache--2.0-f59e0b?style=flat-square&logo=apache&logoColor=white)](LICENSE)
+
+<br/>
+
+<a href="http://localhost:5000">
+  <img src="public/img/screenshots/dashboard_hero.png" width="96%" alt="EduCaja Pro · Panel General y Dashboard Financiero" style="border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 16px 40px -10px rgba(0,0,0,0.4);" />
+</a>
+
+<p align="center">
+  <em>Panel General Ejecutivo: Monitoreo en vivo de Saldo en Caja, Ingresos, Egresos, Flujo por Docente y Evolución Financiera Mensual.</em>
+</p>
+
+</div>
 
 ---
 
-## ¿Por qué EduCaja Pro?
+## 💡 ¿Por qué EduCaja Pro?
 
-La administración de recursos propios, matrículas y aportes de mantenimiento en instituciones educativas técnicas y CETPROs suele depender de cuadernos físicos, registros dispersos o programas en la nube que fallan ante cortes de internet y conllevan cobros mensuales recurrentes.
+La administración contable de recursos propios, cobro de matrículas y aportes de mantenimiento en instituciones educativas técnicas y CETPROs suele depender de talonarios manuales de imprenta, cuadernos físicos o aplicaciones en la nube que quedan inutilizadas ante caídas de internet y generan altos costos recurrentes.
 
-Al mismo tiempo, la emisión de comprobantes impresos suele exigir talonarios pre-impresos difíciles de cuadrar, y la duplicación de datos entre libros contables y hojas de cálculo genera discrepancias financieras, saldos pendientes no cobrados y descuadres al momento del arqueo de caja institucional.
+Al mismo tiempo, la duplicación manual de información entre recibos de papel y hojas de cálculo deriva en errores de transcripción, saldos deudores sin identificar y descuadres críticos al momento del arqueo de caja institucional ante la UGEL.
 
-**EduCaja Pro es la solución definitiva Local-First.** Es una plataforma institucional desarrollada bajo tres pilares fundamentales:
+**EduCaja Pro es la plataforma definitiva Local-First.** Diseñada con la robustez y simplicidad de los estándares industriales modernos, se fundamenta en tres pilares:
 
-1. **Sincronización Híbrida Automática:** Cada cobro o movimiento registrado se impacta de forma inmediata y simultánea en una **Base de Datos SQLite relacional** y en un **Libro Excel Maestro de 12 hojas oficiales**, garantizando cero discrepancias contables.
-2. **Boleta Oficial Dual Calibrada (Media Carta):** Genera e imprime en formato talonario oficial reglamentario tanto el **Original a Color (Administración)** como la **Copia Azul (Estudiante)** en una sola página física, con membrete oficial del **Ministerio de Educación (MINEDU)** y la **UGEL San Román**, casillas de verificación de módulos y código correlativo.
-3. **Autonomía Total Offline y Cero Fricción:** Funciona al 100% sin conexión a internet en la red local de la institución, cuenta con un monitor de salud criptográfico SHA-256 y un orquestador automatizado con **63 pruebas de validación al 100%**.
+1. **Sincronización Híbrida Automática:** Cada transacción registrada en el sistema se graba instantáneamente tanto en una **Base de Datos SQLite relacional ACID** como en el **Libro Maestro de Microsoft Excel de 12 hojas oficiales**, asegurando respaldo doble e integridad matemática permanente.
+2. **Boleta Oficial Dual Calibrada (Media Carta):** Permite emitir e imprimir en una sola página física tanto el **Original a Color (Administración)** como la **Copia Azul (Estudiante)**, cumpliendo con los membretes reglamentarios del **Ministerio de Educación (MINEDU)**, la **UGEL San Román**, casillas de verificación de módulos y código correlativo.
+3. **Autonomía 100% Offline y Desconectada:** Funciona en la computadora principal y en la red WiFi interna de la institución educativa sin requerir conexión externa ni dependencias en la nube, protegido por un monitor criptográfico con sellos **SHA-256** y **63 pruebas automáticas superadas al 100%**.
 
 ---
 
-## 💻 Instalación
+## ⚡ Instalación
 
-Elige tu método preferido y pon en marcha el sistema en menos de 1 minuto:
+Elige tu método preferido y ejecuta el sistema de inmediato:
 
-| Método / Plataforma | Comando / Instrucción | Descripción |
+| Plataforma / Entorno | Método de Arranque | Detalle de Operación |
 | :--- | :--- | :--- |
-| **Windows (1 Clic)** | Doble clic en `INICIAR_SISTEMA.bat` | Inicia el servidor Node.js y abre automáticamente el navegador en `http://localhost:5000`. |
-| **Terminal / CLI** | `npm install && npm start` | Descarga dependencias y levanta el servicio HTTP en el puerto `5000`. |
-| **Acceso Directo** | Doble clic en `Crear_Acceso_Directo_Escritorio.bat` | Crea un icono de escritorio directo con el escudo institucional para personal de tesorería. |
+| **Windows Nativo (1 Clic)** | Doble clic en `INICIAR_SISTEMA.bat` | Inicia el motor backend Node.js en segundo plano y abre la interfaz web en tu navegador predeterminado. |
+| **Acceso Directo Escritorio** | Doble clic en `Crear_Acceso_Directo_Escritorio.bat` | Crea un icono oficial en el Escritorio de Windows con la insignia institucional para el personal de Tesorería. |
+| **Terminal / Desarrollador** | `npm install && npm start` | Instala dependencias y levanta el servicio HTTP en el puerto `5000`. |
 
-> **Requisitos Previos:** [Node.js](https://nodejs.org/) v18.0.0 o superior instalado en el equipo y un navegador moderno (Google Chrome, Microsoft Edge, Mozilla Firefox o Brave).
+> **Requisitos del Sistema:** Windows 10/11 o Linux con [Node.js](https://nodejs.org/) v18.0.0 o superior y navegador web moderno (Edge, Chrome, Brave o Firefox).
 
 ---
 
-## ⚡ Inicio Rápido
+## 🚀 Inicio Rápido
 
 ```bash
-# 1. Iniciar el servidor local y abrir la interfaz web
+# 1. Iniciar el servidor local y abrir la plataforma web
 npm start
 
-# 2. Ejecutar la suite de diagnóstico y salud integral (63 pruebas)
+# 2. Ejecutar la auditoría maestra y verificación de integridad (63 pruebas)
 node orchestrate.js
 
-# 3. Acceder al sistema desde cualquier equipo en la misma red WiFi
+# 3. Acceder en red local WiFi desde laptops o tablets institucionales
 http://<IP_LOCAL>:5000
 ```
 
-Al iniciar, el sistema carga el tablero directivo general, conecta la base de datos relacional y verifica la integridad del libro Excel.
+---
 
-### Módulos Principales del Sistema
+## 🧾 Emisión de Boleta Oficial Dual (Media Carta)
 
-| Módulo | Sección | Qué hace |
-| :--- | :--- | :--- |
-| **Inicio / Dashboard** | `section-dashboard` | Balance financiero en vivo, gráfico anual interactivo (Chart.js), total recaudado (`S/. 29,920.00`) y KPIs contables. |
-| **Boleta Oficial Dual** | `section-factura` | Emisión y previsualización de talonarios oficiales (Original + Copia) con marcado de módulos I al VII, concepto oficial e impresión en PDF. |
-| **Padrón de Estudiantes** | `section-estudiantes` | Control de 213 estudiantes matriculados en 13 carreras técnicas, vistas Tarjetas/Tabla y **botón directo para imprimir boleta con datos ya guardados**. |
-| **Sección Pendiente** | `filtro: pendiente` | Vista destacada en amarillo para estudiantes con saldos fraccionados, cuotas por completar o trámites pendientes. |
-| **Control de Deudores** | `section-deudores` | Seguimiento de saldos por cobrar, estados de periodo (En Plazo, Próximo, Vencido) y tabla de costos oficiales por módulo. |
-| **Control de Pagos (Mes a Mes)** | `section-control-pagos`| Matriz anual oficial sincronizada con Excel (Marzo a Diciembre) y exportación a PDF para auditorías de UGEL. |
-| **Gestión de Docentes** | `section-docentes` | Control de honorarios devengados, horas lectivas y recaudación generada por sección. |
-| **Caja Chica y Diario** | `section-caja` / `diario` | Arqueo diario de caja institucional con selector de fechas y bitácora de notas. |
-| **Centro de Respaldos BD** | `section-respaldos` | Generación de copias de seguridad en paquetes `.zip` y validación de hash criptográfico SHA-256. |
+El emisor institucional genera en tiempo real el talonario oficial reglamentario cumpliendo con la estructura formal del Ministerio de Educación:
+
+<div align="center">
+  <img src="public/img/screenshots/boleta_modal.png" width="94%" alt="Emisión de Boleta Oficial Dual - Original Color y Copia Azul" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 30px rgba(0,0,0,0.3);" />
+  <p><em>Talonario Oficial Dual: Original en Color (Administración) y Copia Azul (Estudiante) con casillas automáticas de Módulos I-VII, Constancia, FUT y Línea 4.- Otros.</em></p>
+</div>
+
+- **Jalado Inteligente de Datos:** Al emitir desde la lista o la ficha del estudiante, se autocompleta el número correlativo, DNI, celular, nombre completo, carrera y turno.
+- **Logos Oficiales en Base64 HD:** Membretes vectoriales del MINEDU y del CETPRO incrustados directamente para garantizar que la descarga en PDF o impresión física jamás se recorte ni sufra latencia.
+- **Acciones Rápidas:** Marcado instantáneo con un clic de cuotas duales (`+ Módulo 1 y Módulo 2`), certificaciones y conceptos dinámicos.
 
 ---
 
-## 🛠️ Tecnologías y Arquitectura
+## 👥 Padrón de Estudiantes y Sección Pendiente
 
-EduCaja Pro implementa una arquitectura desacoplada de alto rendimiento, libre de dependencias pesadas en la nube:
+Gestión centralizada de los **213 alumnos oficiales** distribuidos en las 13 carreras técnicas:
+
+<div align="center">
+  <img src="public/img/screenshots/estudiantes_padron.png" width="94%" alt="Padrón Oficial de Estudiantes y Sección Pendiente" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 30px rgba(0,0,0,0.3);" />
+  <p><em>Directorio Oficial de Alumnos: Vista en Tarjetas con barra de progreso financiero, Sección Pendiente destacada en amarillo y botón directo "Imprimir Boleta Oficial".</em></p>
+</div>
+
+- **Sección Pendiente (Amarillito):** Filtro dedicado para ubicar inmediatamente a estudiantes con pagos fraccionados, saldos por completar o carreras pendientes de asignación.
+- **Botón Directo "Boleta":** Permite abrir la boleta oficial precargada con los datos ya registrados del alumno para imprimir o descargar en PDF sin volver a digitar información.
+- **Alternancia de Vistas:** Cambio instantáneo entre vista de **Tarjetas (`Grid`)** y **Tabla Administrativa (`Table`)**.
+
+---
+
+## ⏳ Control de Vencimientos, Deudores y Tarifas
+
+Supervisión detallada de saldos por cobrar y parametrización institucional de aranceles:
+
+<div align="center">
+  <img src="public/img/screenshots/deudores_control.png" width="94%" alt="Control de Deudores y Costos Oficiales por Módulo" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 12px 30px rgba(0,0,0,0.3);" />
+  <p><em>Módulo de Deudores: Estados de periodo (En Plazo, Próximo, Vencido) y tabla oficial de Costos y Tarifas por Módulo y Especialidad.</em></p>
+</div>
+
+- **Asignación Controlada de Deudores:** Inicio limpio por defecto, permitiendo vincular deudores y saldos de manera manual sin ensuciar la base de datos con falsos positivos.
+- **Catálogo de Tarifas Oficiales:** Configuración del costo estándar de cada módulo para la asignación automática de cuotas por carrera técnica.
+
+---
+
+## 🛠️ Arquitectura y Tecnologías
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -92,28 +145,26 @@ EduCaja Pro implementa una arquitectura desacoplada de alto rendimiento, libre d
 └─────────────────────────────────┘    └─────────────────────────────────┘
 ```
 
-### Componentes y Motores Integrados
-
-| Motor / Subsistema | Tecnología | Función Específica |
+| Capa / Motor | Tecnologías | Propósito en el Sistema |
 | :--- | :--- | :--- |
-| **Engine de Base de Datos** | `SQLite3` (`better-sqlite3`) | Almacenamiento transaccional ACID local. Cero latencia en consultas y 0 violaciones de claves foráneas. |
-| **Engine de Conciliación** | `SheetJS` (`xlsx`) | Escribe automáticamente en las hojas `RESUMEN`, `CAJA_DIARIO`, `ESTUDIANTES`, `DOCENTES`, `SECCIONES`, etc. |
-| **Engine de Boletas PDF** | `html2pdf.js` & `html2canvas` | Calibración micrométrica a 8.10 pulgadas de ancho. Encabezado a 3 columnas (`1.50in 1fr 1.20in`) sin desbordes. |
-| **Incrustación de Gráficos HD** | `Base64 Data URIs` | Las insignias del Ministerio de Educación y del CETPRO están embebidas en Base64 para garantizar renderizado instantáneo en PDF. |
-| **Suite de Ciberseguridad** | `Consultas Parametrizadas` | Blindaje total frente a ataques de inyección SQL y sanitización contra saltos de directorio. |
+| **Backend & APIs** | `Node.js (v18 - v24)`, `Express.js` | Enrutamiento RESTful, transacciones contables y middleware de seguridad. |
+| **Persistencia ACID** | `SQLite3` (`better-sqlite3`) | Motor de datos relacional ultraligero con claves foráneas e integridad garantizada. |
+| **Sincronización Excel**| `SheetJS` (`xlsx`), `Node fs` | Escritura paralela en hojas oficiales (`RESUMEN`, `CAJA_DIARIO`, `ESTUDIANTES`, etc.). |
+| **Frontend & UI/UX** | `Tailwind CSS 3`, `HTML5`, `ES2024`| Interfaz Single Page Application (SPA) con 13 secciones operativas aisladas y modo oscuro Obsidian. |
+| **Motor de Gráficos** | `Chart.js` | Visualización en tiempo real de ingresos vs egresos y flujos docentes. |
+| **Impresión & PDF** | `html2pdf.js`, `html2canvas` | Calibración a 8.10 pulgadas de ancho con encabezado a 3 columnas sin desbordes. |
+| **Ciberseguridad** | `Consultas Parametrizadas` | Blindaje total frente a ataques de inyección SQL y contención de Path Traversal. |
 
 ---
 
-## 🏛️ Especialidades Técnicas Atendidas
-
-El sistema gestiona integralmente las especialidades reglamentarias del CETPRO:
+## 🏛️ Especialidades Técnicas
 
 1. **Computación e Informática:** Módulo I (Ofimática) · Módulo II (Diseño Gráfico y Plataformas Digitales).
-2. **Confección Textil:** Módulo I (Técnicas de Trazado, Tendido y Corte) · Módulo II (Técnicas de Confección).
-3. **Cosmetología / Peluquería y Barbería:** Módulo I (Corte de Cabello y Barbas) · Módulo II (Ondulación, Decoloración y Tinturación).
-4. **Mecánica Automotriz:** Módulo I (Suspensión, Dirección, Frenos y Transmisión) · Módulo II (Motores de Combustión Interna).
-5. **Mecánica de Motos y Vehículos Afines:** Módulo I (Sistemas Eléctricos y Mecánicos) · Módulo II (Conversión GNV-GLP).
-6. **Mantenimiento de Sistemas Eléctricos:** Módulo I (Sistemas Eléctricos en Edificaciones) · Módulo II (Seguridad en Domótica).
+2. **Confección Textil:** Módulo I (Técnicas de Trazado y Corte) · Módulo II (Confección de Prendas de Vestir).
+3. **Cosmetología / Peluquería y Barbería:** Módulo I (Corte de Cabellos y Barba) · Módulo II (Ondulación y Colorimetría).
+4. **Mecánica Automotriz:** Módulo I (Suspensión, Frenos y Dirección) · Módulo II (Motores de Combustión Interna).
+5. **Mecánica de Motos y Vehículos Afines:** Módulo I (Sistemas Mecánicos y Eléctricos) · Módulo II (Conversión GNV-GLP).
+6. **Mantenimiento de Sistemas Eléctricos:** Módulo I (Instalaciones en Edificaciones) · Módulo II (Seguridad y Domótica).
 7. **Carpintería Metálica:** Módulo I (Soldadura por Arco Eléctrico) · Módulo II (Soldadura TIG-MIG-MAG-Láser).
 8. **Manualidades, Artesanía y Construcciones.**
 
@@ -121,7 +172,7 @@ El sistema gestiona integralmente las especialidades reglamentarias del CETPRO:
 
 ## 🧪 Verificación y Orquestador
 
-El proyecto cuenta con un orquestador de pruebas continuo ([orchestrate.js](orchestrate.js)) que audita 7 fases antes de certificar la operatividad del sistema:
+Para auditar y validar la salud completa del sistema, ejecuta el orquestador:
 
 ```bash
 node orchestrate.js
@@ -151,37 +202,19 @@ node orchestrate.js
 ## 📁 Estructura del Repositorio
 
 ```text
-├── server.js                          # Servidor principal Node.js con APIs REST y sincronización
-├── package.json                       # Dependencias del proyecto (express, better-sqlite3, xlsx)
-├── caja_institucional.db              # Base de datos SQLite (241 movimientos, 213 estudiantes)
+├── server.js                          # Servidor principal Node.js con APIs REST y lógica contable
+├── package.json                       # Configuración y dependencias del sistema
+├── caja_institucional.db              # Base de datos SQLite oficial (241 movimientos, 213 alumnos)
 ├── CEPRO_Control_MICAELA_BASTIDAS...  # Libro Excel de 12 hojas institucionales sincronizadas
-├── orchestrate.js                     # Orquestador con 63 pruebas automáticas
+├── orchestrate.js                     # Orquestador maestro con 63 pruebas automáticas
 ├── INICIAR_SISTEMA.bat                # Lanzador de un clic para Windows
 ├── templates/
-│   └── index.html                     # Frontend Single Page Application (13 secciones aisladas)
+│   └── index.html                     # Frontend SPA completo (13 secciones operativas aisladas)
 ├── public/
-│   ├── html2pdf.bundle.min.js         # Librería offline para generación de PDF
-│   └── img/                           # Logotipos oficiales del MINEDU y CETPRO
-└── tests/                             # Suites automatizadas de pruebas de caja negra y blanca
+│   ├── html2pdf.bundle.min.js         # Librería offline para generación local de PDF
+│   └── img/                           # Logotipos oficiales, insignias y capturas HD
+└── tests/                             # Suites automatizadas de pruebas de seguridad y lógica
 ```
-
----
-
-## 🤝 Contribuciones y Desarrollo
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/miguelmorenosucasaire-design/caja-pro.git
-   ```
-2. Instala las dependencias:
-   ```bash
-   cd caja-pro
-   npm install
-   ```
-3. Ejecuta el orquestador para verificar que tu entorno esté 100% sano:
-   ```bash
-   node orchestrate.js
-   ```
 
 ---
 
@@ -190,10 +223,10 @@ node orchestrate.js
 - **Institución:** Centro de Educación Técnico Productiva Público "Micaela Bastidas Puyucawa"
 - **Ubicación:** San Román / Juliaca, Puno — Perú
 - **UGEL:** Unidad de Gestión Educativa Local San Román
-- **Desarrollo y Diseño:** Miguel Moreno ([@miguelmorenosucasaire-design](https://github.com/miguelmorenosucasaire-design))
+- **Desarrollo:** Miguel Moreno ([@miguelmorenosucasaire-design](https://github.com/miguelmorenosucasaire-design))
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia **Apache 2.0** / Licencia Institucional Educativa. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto se distribuye bajo la Licencia **Apache-2.0** / Licencia Institucional Educativa. Consulta el archivo [LICENSE](LICENSE) para más detalles.

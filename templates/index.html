@@ -10129,6 +10129,15 @@
 
                 renderChart(data.chart);
                 renderReporteCarreras(data.carreras);
+
+                // Soporte para navegación directa por parámetro URL (?sec=estudiantes / ?modal=nuevo)
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('sec')) {
+                    cambiarSeccion(urlParams.get('sec'));
+                }
+                if (urlParams.get('modal') === 'nuevo') {
+                    abrirModalNuevoMovimiento();
+                }
             } catch (err) {
                 console.error("Error cargando estadísticas:", err);
             }
